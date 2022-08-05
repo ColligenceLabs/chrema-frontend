@@ -1,0 +1,10 @@
+{
+  "Service Title": "NFT Management System",
+  "Service Description": "This site is NFT Management System",
+  "startPage":"Start Page",
+  "Hi": "Hi~~",
+  "AirDrop": "AirDrop",
+  "Account is not active!": "Account is not active! After final approval from the administrator, you will be able to log in.",
+  "Username and password is incorrect!": "Username and password is incorrect.",
+  "Password length should be 5 to 30 characters!": "Password length should be 5 to 30 characters."
+}

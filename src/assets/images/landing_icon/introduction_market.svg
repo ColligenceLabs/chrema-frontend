@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #387d46;
+        stroke: #1d1d1b;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #1d1d1b;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g>
+        <g>
+          <path class="cls-1" d="M4.09,5v9.22a1.5,1.5,0,0,0,.43,1L16.69,27.37a1.51,1.51,0,0,0,2.14,0l8.45-8.45a2.12,2.12,0,0,0,0-3L16,4.61a1.45,1.45,0,0,0-1-.42L4.8,4.24A.71.71,0,0,0,4.09,5Z"/>
+          <circle class="cls-2" cx="8.7" cy="9.06" r="2.06"/>
+          <g>
+            <circle class="cls-2" cx="15" cy="17.11" r="2.63"/>
+            <circle class="cls-2" cx="20.51" cy="17.11" r="2.63"/>
+            <path class="cls-2" d="M13.8,16.53h6.77a.07.07,0,0,1,.07.07v5.06a.07.07,0,0,1-.07.07H13.8a.38.38,0,0,1-.38-.38V16.91a.38.38,0,0,1,.38-.38Z" transform="translate(18.52 -6.44) rotate(45)"/>
+            <path class="cls-2" d="M15.24,16.53h6.85a0,0,0,0,1,0,0v5.21a0,0,0,0,1,0,0h-6.9a.33.33,0,0,1-.33-.33V16.9a.37.37,0,0,1,.37-.37Z" transform="translate(45.08 19.6) rotate(135)"/>
+          </g>
+        </g>
+        <rect class="cls-3" width="32" height="32"/>
+      </g>
+    </g>
+  </g>
+</svg>
