@@ -110,14 +110,14 @@ const themesOptions = [
     name: BLUE_THEME,
     palette: {
       primary: {
-        main: '#283D82',
+        main: 'rgb(32, 129, 226)',
         light: '#e6f4ff',
-        dark: '#1682d4',
+        dark: 'rgb(32, 129, 226)',
       },
       secondary: {
-        main: '#1e4db7',
+        main: 'rgb(32, 129, 226)',
         light: '#ddebff',
-        dark: '#173f98',
+        dark: 'rgb(32, 129, 226)',
       },
     },
   },

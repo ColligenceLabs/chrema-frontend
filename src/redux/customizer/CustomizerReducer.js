@@ -5,7 +5,7 @@ const INIT_STATE = {
   activeNavbarBg: '#0b70fb', // This can be any color,
   activeSidebarBg: '#ffffff', // This can be any color
   activeMode: 'light', // This can be light or dark
-  activeTheme: 'GREEN_THEME', // BLUE_THEME, GREEN_THEME, RED_THEME, BLACK_THEME, PURPLE_THEME, INDIGO_THEME, ORANGE_THEME
+  activeTheme: 'BLUE_THEME', // BLUE_THEME, GREEN_THEME, RED_THEME, BLACK_THEME, PURPLE_THEME, INDIGO_THEME, ORANGE_THEME
   SidebarWidth: 240,
   // activeLang: 'ko',
 };
