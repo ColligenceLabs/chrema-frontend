@@ -1,11 +1,16 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import wallet_icon from '../../../../assets/images/landing_icon/introduction_wallet.svg';
 import nft_icon from '../../../../assets/images/landing_icon/introduction_nft.svg';
 import taal_icon from '../../../../assets/images/landing_icon/introduction_taal.svg';
 import market_icon from '../../../../assets/images/landing_icon/introduction_market.svg';
+import Container from '../Container';
+
+const IntroductionSection = styled(Container)`
+  max-width: 1500px;
+`;
 
 const Introduction = () => {
   const theme = useTheme();
@@ -14,7 +19,7 @@ const Introduction = () => {
     defaultMatches: true,
   });
   return (
-    <Box sx={{ mt: '30px' }}>
+    <IntroductionSection>
       <Box
         sx={{
           display: 'flex',
@@ -129,7 +134,7 @@ const Introduction = () => {
           </Typography>
         </Grid>
       </Grid>
-    </Box>
+    </IntroductionSection>
   );
 };
 

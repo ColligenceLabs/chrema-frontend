@@ -4,6 +4,12 @@ import { CollectionResponse } from '../../types';
 import CollectionItem from '../CollectionItem';
 import useSWRInfinite from 'swr/infinite';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { styled } from '@mui/material/styles';
+import Container from '../Container';
+
+const AllCategorySection = styled(Container)`
+  max-width: 1500px;
+`;
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const PAGE_SIZE = 20;
@@ -31,7 +37,7 @@ const AllCollectionList = () => {
     isEmpty || (data && data[data.length - 1]?.data?.headers?.x_pages_count <= size);
 
   return (
-    <Box>
+    <AllCategorySection>
       <Box
         sx={{
           display: 'flex',
@@ -112,7 +118,7 @@ const AllCollectionList = () => {
           </Grid>
         )}
       </Grid>
-    </Box>
+    </AllCategorySection>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Menu, MenuItem, Typography, Divider } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import useSWR from 'swr';
@@ -11,6 +11,11 @@ import klay_icon from '../../../../assets/images/network_icon/klaytn-klay-logo.p
 import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
 import { Link } from 'react-router-dom';
 import sliceFloatNumber from '../../../../utils/sliceFloatNumber';
+import Container from '../Container';
+
+const TopCollectionsSection = styled(Container)`
+  max-width: 1500px;
+`;
 
 interface CategoryTypes {
   id: number;
@@ -82,11 +87,7 @@ const TopCollections = () => {
   }, [data?.data]);
 
   return (
-    <Box
-      sx={{
-        mt: '30px',
-      }}
-    >
+    <TopCollectionsSection>
       <Box
         sx={{
           display: 'flex',
@@ -263,7 +264,7 @@ const TopCollections = () => {
             </Box>
           ))}
       </Box>
-    </Box>
+    </TopCollectionsSection>
   );
 };
 
