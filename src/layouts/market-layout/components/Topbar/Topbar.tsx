@@ -2,7 +2,17 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LogoIcon from '../../../full-layout/logo/LogoIcon';
-import { IconButton, Typography, useMediaQuery } from '@mui/material';
+import {
+  Avatar,
+  Divider,
+  Drawer,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import ProfileButton from '../../../../components/ProfileButton/ProfileButton';
 import { useSelector } from 'react-redux';
@@ -15,8 +25,10 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import FeatherIcon from 'feather-icons-react';
 import WalletConnector from '../../../../components/WalletConnector';
 import { useWeb3React } from '@web3-react/core';
+import AppsIcon from '@mui/icons-material/Apps';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import { Logout, PersonAdd, Settings } from '@mui/icons-material';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -44,6 +56,16 @@ const MenuItemMarker = styled(Box)`
   width: 110%;
 `;
 
+const StyledMenuItem = styled(MenuItem)`
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid rgb(229, 232, 235);
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
 const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -52,6 +74,16 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const { pathname } = useLocation();
   const context = useWeb3React();
   const { connector, activate, deactivate, account } = context;
+  const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
+
+  const openProfile = Boolean(anchorProfileEl);
+
+  const handleClickProfile = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorProfileEl(event.currentTarget);
+  };
+  const handleCloseProfile = () => {
+    setAnchorProfileEl(null);
+  };
 
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
@@ -122,14 +154,71 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
         )}
 
         <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '2rem', gap: 4 }}>
-          <AccountCircleOutlinedIcon
-            sx={{
-              color: 'text.secondary',
-              fontSize: '2rem',
-              cursor: 'pointer',
-              '&:hover': { color: 'text.primary' },
+          <IconButton
+            onClick={handleClickProfile}
+            size="small"
+            sx={{ ml: 2, cursor: 'pointer' }}
+            aria-controls={openProfile ? 'account-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={openProfile ? 'true' : undefined}
+          >
+            {/*<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>*/}
+            <AccountCircleOutlinedIcon
+              sx={{
+                color: 'text.secondary',
+                fontSize: '2rem',
+
+                '&:hover': { color: 'text.primary' },
+              }}
+            />
+          </IconButton>
+          <Menu
+            anchorEl={anchorProfileEl}
+            id="account-menu"
+            open={openProfile}
+            onClose={handleCloseProfile}
+            onClick={handleCloseProfile}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                minWidth: '250px',
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 2.2,
+                '& .MuiMenu-list': {
+                  p: 0,
+                },
+              },
             }}
-          />
+            transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+          >
+            <StyledMenuItem>
+              <ListItemIcon>
+                <AccountCircleOutlinedIcon />
+              </ListItemIcon>
+              Profile
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <AppsIcon />
+              </ListItemIcon>
+              My Collections
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <Settings />
+              </ListItemIcon>
+              Settings
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemIcon>
+                <Logout />
+              </ListItemIcon>
+              Logout
+            </StyledMenuItem>
+          </Menu>
+
           <AccountBalanceWalletOutlinedIcon
             sx={{
               color: 'text.secondary',

@@ -21,7 +21,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const UserProfile = () => {
-  const { user } = useSelector((state) => state?.auth);
+  const { user } = useSelector((state: any) => state?.auth);
   const [userInfor, setUserInfor] = useState({
     image: '',
     full_name: '',
