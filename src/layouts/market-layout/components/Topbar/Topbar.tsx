@@ -7,15 +7,42 @@ import { Link, useLocation } from 'react-router-dom';
 import ProfileButton from '../../../../components/ProfileButton/ProfileButton';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '../../../../views/NftsMarket/types';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import LoginIcon from '@mui/icons-material/Login';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
 import WalletConnector from '../../../../components/WalletConnector';
 import { useWeb3React } from '@web3-react/core';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+
+interface MenuItemWrapperProps {
+  minWidth: string;
+}
+
+interface MenuItemMarkerProps {
+  pathname: boolean;
+  color: string;
+}
+
+const MenuItemWrapper = styled(Box)`
+  position: relative;
+  min-width: ${(props: MenuItemWrapperProps) => props.minWidth};
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`;
+
+const MenuItemMarker = styled(Box)`
+  position: absolute;
+  top: 48px;
+  //length: 40px;
+  border-bottom: ${(props: MenuItemMarkerProps) =>
+    props.pathname ? `3px solid ${props.color}` : ''};
+  width: 110%;
+`;
 
 const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
@@ -32,73 +59,49 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {!smDown ? (
-          <>
-            <Box
-              sx={{
-                position: 'relative',
-                minWidth: '80px',
-                display: 'flex',
-                justifyContent: 'center',
-                textAlign: 'center',
-              }}
-            >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <MenuItemWrapper minWidth="80px">
               <Link to="/" style={{ textDecoration: 'none' }}>
                 <Typography
                   variant="subtitle1"
                   color={pathname === '/' ? 'text.primary' : 'text.secondary'}
-                  // fontSize={{ xs: '12px', md: '14px' }}
                   fontWeight={700}
                 >
                   Home
                 </Typography>
               </Link>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '48px',
-                  length: '20px',
-                  borderBottom: pathname === '/' ? `3px solid ${theme.palette.primary.main}` : '',
-                  width: '100%',
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                position: 'relative',
-                minWidth: '100px',
-                display: 'flex',
-                justifyContent: 'center',
-                textAlign: 'center',
-                mx: '20px',
-              }}
-            >
+              <MenuItemMarker pathname={pathname === '/'} color={theme.palette.primary.main} />
+            </MenuItemWrapper>
+            <MenuItemWrapper minWidth="100px">
               <Link to="/market" style={{ textDecoration: 'none' }}>
                 <Typography
                   variant="subtitle1"
                   color={pathname === '/market' ? 'text.primary' : 'text.secondary'}
-                  // fontSize={{ xs: '12px', md: '14px' }}
                   fontWeight={700}
                 >
                   Marketplace
                 </Typography>
               </Link>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '48px',
-                  length: '20px',
-                  borderBottom:
-                    pathname === '/market' ? `3px solid ${theme.palette.primary.main}` : '',
-                  width: '100%',
-                }}
+              <MenuItemMarker
+                pathname={pathname === '/market'}
+                color={theme.palette.primary.main}
               />
-            </Box>
-          </>
+              {/*<Box*/}
+              {/*  sx={{*/}
+              {/*    position: 'absolute',*/}
+              {/*    top: '48px',*/}
+              {/*    length: '20px',*/}
+              {/*    borderBottom:*/}
+              {/*      pathname === '/market' ? `3px solid ${theme.palette.primary.main}` : '',*/}
+              {/*    width: '100%',*/}
+              {/*  }}*/}
+              {/*/>*/}
+            </MenuItemWrapper>
+          </Box>
         ) : (
           <Box>
             <IconButton
               size="large"
-              // color="inherit"
               aria-label="menu"
               onClick={toggleSidebar}
               sx={{
@@ -113,67 +116,30 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
           </Box>
         )}
 
-        <Box>
-          <WalletConnector activate={activate} />
+        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '2rem', gap: 4 }}>
+          <AccountCircleOutlinedIcon
+            sx={{
+              color: 'text.secondary',
+              fontSize: '2rem',
+              cursor: 'pointer',
+              '&:hover': { color: 'text.primary' },
+            }}
+          />
+          <AccountBalanceWalletOutlinedIcon
+            sx={{
+              color: 'text.secondary',
+              fontSize: '2rem',
+              cursor: 'pointer',
+              '&:hover': { color: 'text.primary' },
+            }}
+          />
         </Box>
-        <Box>
-          {user !== null && <ProfileButton useMarket={true} />}
-          {/*{user !== null ? (*/}
-          {/*  <ProfileButton useMarket={true} />*/}
-          {/*) : (*/}
-          {/*  <Box*/}
-          {/*    sx={{*/}
-          {/*      display: 'flex',*/}
-          {/*      justifyContent: 'space-between',*/}
-          {/*      alignItems: 'center',*/}
-          {/*      gap: 2,*/}
-          {/*      ml: !smDown ? 2 : 1,*/}
-          {/*    }}*/}
-          {/*  >*/}
-          {/*    <IconButton onClick={() => console.log('aa')}>*/}
-          {/*      <AccountCircleOutlinedIcon fontSize={'large'} />*/}
-          {/*    </IconButton>*/}
-
-          {/*    {!smDown ? (*/}
-          {/*      <>*/}
-          {/*        <Link to="/auth/login" style={{ textDecoration: 'none' }}>*/}
-          {/*          <Typography*/}
-          {/*            variant="subtitle1"*/}
-          {/*            color={'text.secondary'}*/}
-          {/*            fontWeight={700}*/}
-          {/*            sx={[(theme) => ({ '&:hover': { color: theme.palette.primary.main } })]}*/}
-          {/*          >*/}
-          {/*            Login*/}
-          {/*          </Typography>*/}
-          {/*        </Link>*/}
-          {/*        <Link to="/auth/market-register" style={{ textDecoration: 'none' }}>*/}
-          {/*          <Typography*/}
-          {/*            variant="subtitle1"*/}
-          {/*            color={'text.secondary'}*/}
-          {/*            fontWeight={700}*/}
-          {/*            sx={[(theme) => ({ '&:hover': { color: theme.palette.primary.main } })]}*/}
-          {/*          >*/}
-          {/*            Register*/}
-          {/*          </Typography>*/}
-          {/*        </Link>*/}
-          {/*      </>*/}
-          {/*    ) : (*/}
-          {/*      <Box>*/}
-          {/*        <Link to="/auth/login" style={{ textDecoration: 'none' }}>*/}
-          {/*          <LoginIcon*/}
-          {/*            sx={{*/}
-          {/*              alignItems: 'center',*/}
-          {/*              display: 'flex',*/}
-          {/*              justifyContent: 'center',*/}
-          {/*            }}*/}
-          {/*            color={'primary'}*/}
-          {/*          />*/}
-          {/*        </Link>*/}
-          {/*      </Box>*/}
-          {/*    )}*/}
-          {/*  </Box>*/}
-          {/*)}*/}
-        </Box>
+        {/*<Box>*/}
+        {/*  <WalletConnector activate={activate} />*/}
+        {/*</Box>*/}
+        {/*<Box>*/}
+        {/*  {user !== null && <ProfileButton useMarket={true} />}*/}
+        {/*</Box>*/}
       </Box>
     </Box>
   );
