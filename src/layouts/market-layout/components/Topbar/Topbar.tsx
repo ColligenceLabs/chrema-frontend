@@ -88,17 +88,17 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               />
             </MenuItemWrapper>
             <MenuItemWrapper minWidth="100px">
-              <Link to="/create" style={{ textDecoration: 'none' }}>
+              <Link to="/market/create" style={{ textDecoration: 'none' }}>
                 <Typography
                   variant="subtitle1"
-                  color={pathname === '/create' ? 'text.primary' : 'text.secondary'}
+                  color={pathname === '/market/create' ? 'text.primary' : 'text.secondary'}
                   fontWeight={700}
                 >
                   Create
                 </Typography>
               </Link>
               <MenuItemMarker
-                pathname={pathname === '/create'}
+                pathname={pathname === '/market/create'}
                 color={theme.palette.primary.main}
               />
             </MenuItemWrapper>
