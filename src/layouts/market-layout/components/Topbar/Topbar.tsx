@@ -86,16 +86,21 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
                 pathname={pathname === '/market'}
                 color={theme.palette.primary.main}
               />
-              {/*<Box*/}
-              {/*  sx={{*/}
-              {/*    position: 'absolute',*/}
-              {/*    top: '48px',*/}
-              {/*    length: '20px',*/}
-              {/*    borderBottom:*/}
-              {/*      pathname === '/market' ? `3px solid ${theme.palette.primary.main}` : '',*/}
-              {/*    width: '100%',*/}
-              {/*  }}*/}
-              {/*/>*/}
+            </MenuItemWrapper>
+            <MenuItemWrapper minWidth="100px">
+              <Link to="/create" style={{ textDecoration: 'none' }}>
+                <Typography
+                  variant="subtitle1"
+                  color={pathname === '/create' ? 'text.primary' : 'text.secondary'}
+                  fontWeight={700}
+                >
+                  Create
+                </Typography>
+              </Link>
+              <MenuItemMarker
+                pathname={pathname === '/create'}
+                color={theme.palette.primary.main}
+              />
             </MenuItemWrapper>
           </Box>
         ) : (
