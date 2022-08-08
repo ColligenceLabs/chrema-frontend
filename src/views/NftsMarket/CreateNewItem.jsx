@@ -27,7 +27,7 @@ const TitleWrapper = styled(Typography)`
 const FieldWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.4rem;
 `;
 
 const FiledTitle = styled('label')`
