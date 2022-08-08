@@ -121,7 +121,7 @@ const NFTList: React.FC<NFTListProps> = ({ onSale }) => {
         </Box>
       )}
       {!isEmpty && (
-        <Grid item xs={12} sm={12} md={12} lg={12} sx={{ px: 2, mt: 2 }}>
+        <Grid item xs={12} sm={12} md={12} lg={12} sx={{ mt: 2 }}>
           {!(isLoadingMore || isReachingEnd) && (
             <Button fullWidth variant={'contained'} onClick={() => setSize(size + 1)}>
               {isLoadingMore ? 'Loading...' : isReachingEnd ? 'No more NFTs' : 'MORE'}
