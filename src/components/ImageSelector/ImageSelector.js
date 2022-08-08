@@ -5,10 +5,10 @@ import { styled } from '@mui/material/styles';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 
 const DropzoneWrapper = styled('div')`
-  width: 400px;
-  height: 250px;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   border: 3px dashed rgb(204, 204, 204);
-  border-radius: 16px;
+  border-radius: ${(props) => props.borderRadius};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,9 +18,9 @@ const DropzoneWrapper = styled('div')`
 
 const PreviewWrapper = styled('img')`
   padding: 3px 5px;
-  border-radius: 16px;
-  width: 400px;
-  height: 250px;
+  border-radius: ${(props) => props.borderRadius};
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   object-fit: cover;
   &:hover {
     opacity: 0.5;
@@ -37,19 +37,26 @@ const SelectWrapper = styled('div')`
   width: 100%;
   height: 100%;
   color: rgb(204, 204, 204);
+  border-radius: ${(props) => props.borderRadius};
   &:hover {
     background-color: rgb(204, 204, 204);
-    border-radius: 16px;
+    border-radius: ${(props) => props.borderRadius};
     color: white;
   }
 `;
 
 const SelectImage = styled(ImageOutlinedIcon)`
-  width: 100px;
-  height: 100px;
+  width: 50%;
+  height: 50%;
+  border-radius: ${(props) => props.borderRadius};
+  &:hover {
+    //background-color: rgb(204, 204, 204);
+    border-radius: ${(props) => props.borderRadius};
+    color: white;
+  }
 `;
 
-const ImageSelector = () => {
+const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px' }) => {
   const [preview, setPreview] = useState();
   const onDrop = (acceptedFiles) => {
     const theFile = acceptedFiles[0];
@@ -73,7 +80,12 @@ const ImageSelector = () => {
   useEffect(() => console.log(preview), [preview]);
 
   return (
-    <DropzoneWrapper {...getRootProps({ className: 'dropzone' })}>
+    <DropzoneWrapper
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+      {...getRootProps({ className: 'dropzone' })}
+    >
       <input {...getInputProps()} />
       {preview ? (
         <PreviewWrapper src={preview} alt={'thumb'} />

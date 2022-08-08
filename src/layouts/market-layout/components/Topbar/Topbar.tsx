@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LogoIcon from '../../../full-layout/logo/LogoIcon';
@@ -29,6 +29,8 @@ import AppsIcon from '@mui/icons-material/Apps';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { Logout, PersonAdd, Settings } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
+import WalletDialog from '../../../../components/WalletDialog';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -70,13 +72,19 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const theme = useTheme();
+  const navigate = useNavigate();
   const { user } = useSelector((state: StoreTypes) => state.auth);
   const { pathname } = useLocation();
   const context = useWeb3React();
   const { connector, activate, deactivate, account } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
+  const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
 
   const openProfile = Boolean(anchorProfileEl);
+
+  const handleCloseModal = async () => {
+    setIsOpenConnectModal(false);
+  };
 
   const handleClickProfile = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorProfileEl(event.currentTarget);
@@ -85,6 +93,9 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
     setAnchorProfileEl(null);
   };
 
+  const moveToPage = (path: string) => {
+    navigate(path);
+  };
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
       <LogoIcon />
@@ -193,13 +204,13 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             transformOrigin={{ horizontal: 'center', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
           >
-            <StyledMenuItem>
+            <StyledMenuItem onClick={() => moveToPage('/market/profile')}>
               <ListItemIcon>
                 <AccountCircleOutlinedIcon />
               </ListItemIcon>
               Profile
             </StyledMenuItem>
-            <StyledMenuItem>
+            <StyledMenuItem onClick={() => moveToPage('/market/mycollection')}>
               <ListItemIcon>
                 <AppsIcon />
               </ListItemIcon>
@@ -220,12 +231,18 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
           </Menu>
 
           <AccountBalanceWalletOutlinedIcon
+            onClick={() => setIsOpenConnectModal(true)}
             sx={{
               color: 'text.secondary',
               fontSize: '2rem',
               cursor: 'pointer',
               '&:hover': { color: 'text.primary' },
             }}
+          />
+          <WalletDialog
+            isOpenConnectModal={isOpenConnectModal}
+            handleCloseModal={handleCloseModal}
+            activate={activate}
           />
         </Box>
         {/*<Box>*/}
