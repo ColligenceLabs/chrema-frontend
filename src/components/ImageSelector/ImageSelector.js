@@ -19,8 +19,8 @@ const DropzoneWrapper = styled('div')`
 const PreviewWrapper = styled('img')`
   padding: 3px 5px;
   border-radius: ${(props) => props.borderRadius};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   &:hover {
     opacity: 0.5;
@@ -62,7 +62,6 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
     const theFile = acceptedFiles[0];
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
-      console.log(finishedEvent);
       const {
         currentTarget: { result },
       } = finishedEvent;
@@ -76,8 +75,6 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
     accept: 'image/*',
     onDrop,
   });
-
-  useEffect(() => console.log(preview), [preview]);
 
   return (
     <DropzoneWrapper
