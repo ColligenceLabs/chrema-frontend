@@ -3,9 +3,9 @@ import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container, Typography } from '@mui/material';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
-import CustomSelect from '../../components/forms/custom-elements/CustomSelect';
 import CustomTextField from '../../components/forms/custom-elements/CustomTextField';
 import CustomTextarea from '../../components/forms/custom-elements/CustomTextarea';
+import { Formik } from 'formik';
 
 interface FiledTitleProps {
   required?: boolean;
@@ -56,50 +56,94 @@ const FieldSubscription = styled('span')`
 const CreateNewCollection = () => {
   return (
     <MarketLayout>
-      <MyCollectionContainer>
-        <TitleWrapper>Create a Collection</TitleWrapper>
+      <Formik
+        initialValues={{ logoImage: null, bannerImage: null, name: '', url: '', description: '' }}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
+      >
+        {({ values, handleSubmit, setFieldValue, handleChange }) => (
+          <form onSubmit={handleSubmit}>
+            <MyCollectionContainer>
+              <TitleWrapper>Create a Collection</TitleWrapper>
 
-        <FieldWrapper>
-          <FiledTitle required={true}>Logo image</FiledTitle>
-          <FieldSubscription>
-            This image will also be used for navigation. 350 x 350 recommended.
-          </FieldSubscription>
-          <ImageSelector width="160px" height="160px" />
-        </FieldWrapper>
+              <FieldWrapper>
+                <FiledTitle required={true}>Logo image</FiledTitle>
+                <FieldSubscription>
+                  This image will also be used for navigation. 350 x 350 recommended.
+                </FieldSubscription>
+                <ImageSelector
+                  image={values.logoImage}
+                  handleImageSelect={(image: any) => setFieldValue('logoImage', image)}
+                  width="160px"
+                  height="160px"
+                />
+              </FieldWrapper>
 
-        <FieldWrapper>
-          <FiledTitle required={true}>Banner image</FiledTitle>
-          <FieldSubscription>
-            This image will appear at the top of your collection page. Avoid including too much text
-            in this banner image, as the dimensions change on different devices. 1400 x 350
-            recommended.
-          </FieldSubscription>
-          <ImageSelector width="600px" height="200px" />
-        </FieldWrapper>
+              <FieldWrapper>
+                <FiledTitle required={true}>Banner image</FiledTitle>
+                <FieldSubscription>
+                  This image will appear at the top of your collection page. Avoid including too
+                  much text in this banner image, as the dimensions change on different devices.
+                  1400 x 350 recommended.
+                </FieldSubscription>
+                <ImageSelector
+                  image={values.bannerImage}
+                  handleImageSelect={(image: any) => setFieldValue('bannerImage', image)}
+                  width="600px"
+                  height="200px"
+                />
+              </FieldWrapper>
 
-        <FieldWrapper>
-          <FiledTitle required={true}>Name</FiledTitle>
-          <CustomTextField variant="outlined" fullWidth size="small" />
-        </FieldWrapper>
-        <FieldWrapper>
-          <FiledTitle>Url</FiledTitle>
-          <FieldSubscription>
-            Customize your URL on OpenSea. Must only contain lowercase letters, numbers, and
-            hyphens.
-          </FieldSubscription>
-          <CustomTextField variant="outlined" fullWidth size="small" />
-        </FieldWrapper>
-        <FieldWrapper>
-          <FiledTitle>Description</FiledTitle>
-          <FieldSubscription>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, necessitatibus?
-          </FieldSubscription>
-          <CustomTextarea maxRows={5} minRows={5} />
-        </FieldWrapper>
-        <FieldWrapper>
-          <Button variant="contained">Create</Button>
-        </FieldWrapper>
-      </MyCollectionContainer>
+              <FieldWrapper>
+                <FiledTitle required={true}>Name</FiledTitle>
+                <CustomTextField
+                  value={values.name}
+                  name="name"
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                />
+              </FieldWrapper>
+
+              <FieldWrapper>
+                <FiledTitle>Url</FiledTitle>
+                <FieldSubscription>
+                  Customize your URL on OpenSea. Must only contain lowercase letters, numbers, and
+                  hyphens.
+                </FieldSubscription>
+                <CustomTextField
+                  name="url"
+                  value={values.url}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                />
+              </FieldWrapper>
+              <FieldWrapper>
+                <FiledTitle>Description</FiledTitle>
+                <FieldSubscription>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, necessitatibus?
+                </FieldSubscription>
+                <CustomTextarea
+                  name="description"
+                  value={values.description}
+                  onChange={handleChange}
+                  maxRows={5}
+                  minRows={5}
+                />
+              </FieldWrapper>
+              <FieldWrapper>
+                <Button type="submit" variant="contained">
+                  Create
+                </Button>
+              </FieldWrapper>
+            </MyCollectionContainer>
+          </form>
+        )}
+      </Formik>
     </MarketLayout>
   );
 };

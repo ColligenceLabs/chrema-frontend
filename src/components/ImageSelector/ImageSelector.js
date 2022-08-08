@@ -65,7 +65,7 @@ const SelectImage = styled(ImageOutlinedIcon)`
   }
 `;
 
-const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px' }) => {
+const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '250px' }) => {
   const [preview, setPreview] = useState();
   const [previewType, setPreviewType] = useState('image/jpeg');
 
@@ -78,6 +78,7 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
       } = finishedEvent;
       setPreviewType(theFile.type);
       setPreview(result);
+      handleImageSelect(theFile);
     };
     reader.readAsDataURL(theFile);
     // setPreview(acceptedFiles[0]);
@@ -93,12 +94,7 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
   });
 
   return (
-    <DropzoneWrapper
-      width={width}
-      height={height}
-      borderRadius={borderRadius}
-      {...getRootProps({ className: 'dropzone' })}
-    >
+    <DropzoneWrapper width={width} height={height} {...getRootProps({ className: 'dropzone' })}>
       <input {...getInputProps()} />
       {preview ? (
         previewType === 'video/mp4' ? (
