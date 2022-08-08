@@ -16,7 +16,7 @@ const DropzoneWrapper = styled('div')`
   cursor: pointer;
 `;
 
-const PreviewWrapper = styled('img')`
+const PreviewImage = styled('img')`
   padding: 3px 5px;
   border-radius: ${(props) => props.borderRadius};
   width: 100%;
@@ -28,6 +28,15 @@ const PreviewWrapper = styled('img')`
       content: 'asdfasdfasdf';
     }
   }
+`;
+
+const PreviewVideo = styled('video')`
+  padding: 3px 5px;
+  borderradius: 16px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-top: 0;
 `;
 
 const SelectWrapper = styled('div')`
@@ -58,6 +67,8 @@ const SelectImage = styled(ImageOutlinedIcon)`
 
 const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px' }) => {
   const [preview, setPreview] = useState();
+  const [previewType, setPreviewType] = useState('image/jpeg');
+
   const onDrop = (acceptedFiles) => {
     const theFile = acceptedFiles[0];
     const reader = new FileReader();
@@ -65,6 +76,7 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
       const {
         currentTarget: { result },
       } = finishedEvent;
+      setPreviewType(theFile.type);
       setPreview(result);
     };
     reader.readAsDataURL(theFile);
@@ -89,7 +101,13 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
     >
       <input {...getInputProps()} />
       {preview ? (
-        <PreviewWrapper src={preview} alt={'thumb'} />
+        previewType === 'video/mp4' ? (
+          <PreviewVideo autoPlay controls>
+            <source src={preview}></source>
+          </PreviewVideo>
+        ) : (
+          <PreviewImage src={preview} alt={'thumb'} />
+        )
       ) : (
         <SelectWrapper>
           <SelectImage />
