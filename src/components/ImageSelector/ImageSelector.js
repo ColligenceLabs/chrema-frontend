@@ -71,9 +71,13 @@ const ImageSelector = ({ width = '400px', height = '250px', borderRadius = '16px
     // setPreview(acceptedFiles[0]);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop,
+    accept: {
+      'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+      'video/mp4': ['.mp4'],
+    },
+    // validator: fileSizeValidator,
   });
 
   return (
