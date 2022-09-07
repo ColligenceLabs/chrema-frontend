@@ -430,9 +430,7 @@ const CreateNewCollection = () => {
               </FieldWrapper>
               <FieldWrapper>
                 <FiledTitle>Description</FiledTitle>
-                <FieldSubscription>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, necessitatibus?
-                </FieldSubscription>
+                <FieldSubscription>Enter a description of your collection.</FieldSubscription>
                 <CustomTextarea
                   name="description"
                   value={values.description}

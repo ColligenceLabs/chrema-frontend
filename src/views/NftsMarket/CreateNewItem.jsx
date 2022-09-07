@@ -184,9 +184,9 @@ const CreateNewItem = () => {
     <MarketLayout>
       <Formik
         initialValues={{
-          title: '',
+          name: '',
           description: '',
-          collection: collections[0].name,
+          collection: '',
           nftItem: null,
           // category: categories[0].value,
           price: '',
@@ -245,8 +245,8 @@ const CreateNewItem = () => {
                     },
                   }}
                 >
-                  {collections.map((collection) => (
-                    <StyledMenuItem key={collection.id} value={collection.name}>
+                  {collectionList.map((collection) => (
+                    <StyledMenuItem key={collection._id} value={collection.name}>
                       {collection.name}
                     </StyledMenuItem>
                   ))}
@@ -256,8 +256,8 @@ const CreateNewItem = () => {
               <FieldWrapper>
                 <FiledTitle required={true}>Title</FiledTitle>
                 <CustomTextField
-                  name="title"
-                  value={values.title}
+                  name="name"
+                  value={values.name}
                   onChange={handleChange}
                   variant="outlined"
                   fullWidth
@@ -284,32 +284,40 @@ const CreateNewItem = () => {
                 <FieldSubscription variant="h6">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 </FieldSubscription>
-                <CustomSelect
+                <CustomTextField
                   name="category"
                   value={values.category}
                   onChange={handleChange}
+                  variant="outlined"
                   fullWidth
                   size="small"
-                  disabled
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      minWidth: '250px',
-                      overflow: 'visible',
-                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                      mt: 2.2,
-                      '& .MuiMenu-list': {
-                        p: 0,
-                      },
-                    },
-                  }}
-                >
-                  {categories.map((category) => (
-                    <StyledMenuItem key={category.id} value={category.value}>
-                      {category.caption}
-                    </StyledMenuItem>
-                  ))}
-                </CustomSelect>
+                />
+                {/*<CustomSelect*/}
+                {/*  name="category"*/}
+                {/*  value={values.category}*/}
+                {/*  onChange={handleChange}*/}
+                {/*  fullWidth*/}
+                {/*  size="small"*/}
+                {/*  disabled*/}
+                {/*  PaperProps={{*/}
+                {/*    elevation: 0,*/}
+                {/*    sx: {*/}
+                {/*      minWidth: '250px',*/}
+                {/*      overflow: 'visible',*/}
+                {/*      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',*/}
+                {/*      mt: 2.2,*/}
+                {/*      '& .MuiMenu-list': {*/}
+                {/*        p: 0,*/}
+                {/*      },*/}
+                {/*    },*/}
+                {/*  }}*/}
+                {/*>*/}
+                {/*  {categories.map((category) => (*/}
+                {/*    <StyledMenuItem key={category.id} value={category.value}>*/}
+                {/*      {category.caption}*/}
+                {/*    </StyledMenuItem>*/}
+                {/*  ))}*/}
+                {/*</CustomSelect>*/}
               </FieldWrapper>
 
               <FieldWrapper>

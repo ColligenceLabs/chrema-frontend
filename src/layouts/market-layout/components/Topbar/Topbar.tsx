@@ -103,16 +103,13 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   const userCheck = async () => {
     const res = await login.login(account, '11111111');
-    console.log(res);
     return res.data;
   };
   useEffect(() => {
     const authProcess = async () => {
       if (account) {
         const result = await userCheck();
-        console.log(result);
         if (result === null) {
-          console.log('new account');
           const formData = new FormData();
           formData.append('full_name', 'undefined');
           formData.append('email', account);
@@ -123,14 +120,13 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
           formData.append('description', 'undefined');
           // formData.append('password', '');
           const res = await register(formData);
-          console.log(res);
         } else {
           await login.login(account, '11111111');
         }
       }
     };
 
-    if (!isLoggedIn && account) authProcess();
+    if (account) authProcess();
   }, [account]);
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
