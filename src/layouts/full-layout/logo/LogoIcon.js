@@ -1,9 +1,8 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import ntal_logo from '../../../assets/images/logos/ntal_logo.png';
 
 const LogoWrapper = styled(Link)`
@@ -14,23 +13,20 @@ const LogoWrapper = styled(Link)`
   gap: 10px;
 `;
 const LogoIcon = () => {
-  const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
-    defaultMatches: true,
-  });
-  const customizer = useSelector((state) => state.CustomizerReducer);
+  const mdDown = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  useEffect(() => {
+    console.log(mdDown);
+  }, [mdDown]);
   return (
     <>
       <LogoWrapper to="/">
-        {/*<Box sx={{ padding: 1, display: 'flex', alignItems: 'center', gap: 1 }}>*/}
-        {/*{customizer.activeMode === 'dark' ? (*/}
-        {/*  <img src={marketLogo} width={smDown ? '130' : '150'} alt="logo" />*/}
-        {/*) : (*/}
-        {/*  <img src={marketLogo} width={smDown ? '130' : '150'} alt="logo" />*/}
-        {/*)}*/}
         <img src={ntal_logo} width="40px" alt="logo" />
-        <Typography style={{ fontSize: '33px' }} fontWeight={700} color={'primary'}>
-          N-Tal
+        <Typography
+          style={{ fontSize: mdDown ? '20px:' : '33px' }}
+          fontWeight={700}
+          color={'primary'}
+        >
+          NTal
         </Typography>
         {/*</Box>*/}
       </LogoWrapper>
