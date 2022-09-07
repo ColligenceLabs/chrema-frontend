@@ -24,6 +24,7 @@ import metamaskIcon from '../assets/images/wallet_icons/wallet_icon_metamask.png
 import walletconnectIcon from '../assets/images/wallet_icons/wallet_icon_walletconnect.png';
 import useActiveWeb3React from '../hooks/useActiveWeb3React';
 import { logout } from '../redux/slices/auth';
+import splitAddress from '../utils/splitAddress';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -191,17 +192,21 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
         </DialogTitle>
         {account ? (
           <DialogContent>
-            {account}
-            <Button
-              variant={'contained'}
-              onClick={() => {
-                deactivate();
-                dispatch(logout());
-                handleCloseModal();
-              }}
+            <Box
+              sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
-              Logout
-            </Button>
+              <span>{splitAddress(account, 10)}</span>
+              <Button
+                variant={'contained'}
+                onClick={() => {
+                  deactivate();
+                  dispatch(logout());
+                  handleCloseModal();
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
           </DialogContent>
         ) : (
           <DialogContent>
