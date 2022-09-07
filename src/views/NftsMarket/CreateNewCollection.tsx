@@ -264,6 +264,7 @@ const CreateNewCollection = () => {
           formData.append('description', values.description);
           formData.append('name', values.name);
           formData.append('symbol', values.symbol);
+          formData.append('creator_id', id);
           // values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
           // formData.append('url', values.url)
