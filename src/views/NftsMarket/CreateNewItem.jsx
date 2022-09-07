@@ -12,6 +12,18 @@ import * as yup from 'yup';
 import { getCollectionsByCreatorId } from '../../services/collections.service';
 import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import useUserInfo from '../../hooks/useUserInfo';
+import {
+  batchRegisterNFT,
+  cancelCreateNft,
+  cancelCreateNfts,
+  registerNFT,
+  registerSolanaNFT,
+  setNftOnchain,
+} from '../../services/nft.service';
+import { FAILURE, SUCCESS } from '../../config/constants/consts';
+import { getChainId } from '../../utils/commonUtils';
+import { targetNetworkMsg } from '../../config';
+import { setupNetwork } from '../../utils/wallet';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -149,7 +161,7 @@ const nftItemCreateSchema = yup.object({
 const CreateNewItem = () => {
   const navigate = useNavigate();
   const { level, id, full_name } = useUserInfo();
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const [collectionList, setCollectionList] = useState([]);
   const [nftItem, setNftItem] = useState(null);
   const [collection, setCollection] = useState(null);
@@ -157,6 +169,8 @@ const CreateNewItem = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState(0);
   const [price, setPrice] = useState('');
+  const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
+  const [targetNetwork, setTargetNetwork] = useState('klaytn');
 
   const moveToPage = () => {
     navigate('/market/mycollection');
@@ -191,9 +205,121 @@ const CreateNewItem = () => {
           // category: categories[0].value,
           price: '',
         }}
-        onSubmit={(values, actions) => {
+        onSubmit={async (values, actions) => {
           console.log('Mint start!');
           console.log({ values });
+          if (account === undefined) {
+            setIsOpenConnectModal(true);
+            return;
+          }
+
+          let formData = new FormData();
+          for (let value in values) {
+            if (
+              [
+                'name',
+                'price',
+                'contract_type',
+                'auto',
+                'type',
+                'description',
+                'quote',
+                'batch',
+              ].includes(value)
+            ) {
+              formData.append(value, values[value]);
+            }
+          }
+
+          formData.append('quantity', '1');
+          formData.append('collection_id', values['collection']);
+          formData.append('file', values['nftItem']);
+          if (values['thumbnail'] === null) {
+            formData.append('thumbnail', values['nftItem']);
+          } else {
+            formData.append('thumbnail', values['thumbnail']);
+          }
+
+          formData.append('category', values['category']);
+          // formData.append('external_url', values['externalURL']);
+
+          let result = SUCCESS;
+          // console.log(ethereum, klaytn, solana, binance);
+          if (
+            (targetNetwork === 'binance' && binance.address === undefined) ||
+            (targetNetwork === 'klaytn' && klaytn.address === undefined) ||
+            (targetNetwork === 'ethereum' && ethereum.address === undefined)
+          ) {
+            // todo 지갑연결 창을 targetNetowrk 선택 상태로 띄워 준다.
+            console.log('지갑을 연결하시오.');
+          }
+          const targetChainId = getChainId(targetNetwork);
+          if (chainId !== targetChainId) {
+            if (targetNetwork === 'klaytn' && klaytn.wallet === 'kaikas') {
+              // setErrorMessage(targetNetworkMsg);
+              // setSuccessRegister(false);
+            } else await setupNetwork(targetChainId);
+          }
+          // check minter
+          // const isKaikas =
+          //   library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+          //
+          // let test;
+          // if (!isKaikas) test = await kipContract.isMinter(account);
+          // else test = await kasContract.methods.isMinter(account).call();
+          // if (!test) {
+          //   setErrorMessage(account + ' is not a Minter');
+          //   setSuccessRegister(false);
+          //   return;
+          // }
+
+          // if (isBatchMint) {
+          //   console.log(`batch count :  ${values.batch}`);
+          //   for (var pair of formData.entries()) {
+          //     console.log(pair[0] + ', ' + pair[1]);
+          //   }
+          // }
+
+          console.log('------------>', formData);
+          await registerNFT(formData)
+            .then(async (res) => {
+              if (res.data.status === 1) {
+                const nftId = res.data.data._id;
+                const tokenId = res.data.data.metadata.tokenId;
+                const tokenUri = res.data.data.ipfs_link;
+                const quantity = res.data.data.quantity;
+
+                // Actual NFT Minting here
+                // if (contractType === 'KIP17') {
+                // if (isKaikas) {
+                //   result = await mintNFT17WithKaikas(tokenId, tokenUri, nftId);
+                // } else {
+                result = await mintNFT17(tokenId, tokenUri, nftId);
+                // }
+                // } else {
+                //   if (isKaikas) {
+                //     result = await mintNFT37WithKaikas(tokenId, quantity, tokenUri, nftId);
+                //   } else {
+                //     result = await mintNFT37(tokenId, quantity, tokenUri, nftId);
+                //   }
+                // }
+                if (result === FAILURE) {
+                  // delete nft and serials
+                  await cancelCreateNft(nftId);
+                  // setErrorMessage('Transaction failed or cancelled.');
+                  // setSuccessRegister(false);
+                  // } else {
+                  //   setErrorMessage(null);
+                  //   setSuccessRegister(true);
+                }
+                // } else {
+                //   setErrorMessage(res.data.message);
+                //   setSuccessRegister(false);
+              }
+            })
+            .catch((error) => console.log(error));
+
+          // setSubmitting(false);
         }}
       >
         {({
@@ -229,7 +355,12 @@ const CreateNewItem = () => {
                 <CustomSelect
                   name="collection"
                   value={values.collection}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    collectionList.filter((collection) => {
+                      console.log('=====>', collection, event.target.value);
+                      setFieldValue('collection', event.target.value);
+                    });
+                  }}
                   fullWidth
                   size="small"
                   PaperProps={{
