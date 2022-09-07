@@ -54,7 +54,7 @@ const Hero = (): JSX.Element => {
             <Box data-aos={isMd ? 'fade-right' : 'fade-up'}>
               <Box marginBottom={2} sx={{ textAlign: 'left' }}>
                 <Typography fontSize={'40px'} color="text.primary" sx={{ fontWeight: 700 }}>
-                  NFTs with DeFi…
+                  Global First Rental NFT
                   <br />
                   <Typography
                     color={'primary'}
@@ -73,8 +73,8 @@ const Hero = (): JSX.Element => {
               </Box>
               <Box marginBottom={3} sx={{ textAlign: 'left' }}>
                 <Typography variant="h2" component="p" color="text.secondary">
-                  Create and trade NFTs on the TaalSwap Marketplace or generate additional revenue
-                  through TaalSwap&apos;s DeFi service.
+                  Create and trade NFTs on our Rentable Marketplace or Generate additional revenue
+                  through N-Tal service.
                 </Typography>
               </Box>
               <Box
