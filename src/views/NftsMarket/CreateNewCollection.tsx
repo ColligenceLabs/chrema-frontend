@@ -59,6 +59,7 @@ const CreateNewCollection = () => {
       <Formik
         initialValues={{ logoImage: null, bannerImage: null, name: '', url: '', description: '' }}
         onSubmit={(values) => {
+          console.log('Collection create start!');
           console.log(values);
         }}
       >

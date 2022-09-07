@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import { Box, Button, Container, Menu, MenuItem, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -9,6 +9,8 @@ import CustomSelect from '../../components/forms/custom-elements/CustomSelect';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { getCollectionsByCreatorId } from '../../services/collections.service';
+import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -145,7 +147,8 @@ const nftItemCreateSchema = yup.object({
 
 const CreateNewItem = () => {
   const navigate = useNavigate();
-
+  const { account } = useActiveWeb3React();
+  const [collectionList, setCollectionList] = useState([]);
   const [nftItem, setNftItem] = useState(null);
   const [collection, setCollection] = useState(null);
   const [title, setTitle] = useState('');
@@ -157,7 +160,22 @@ const CreateNewItem = () => {
     navigate('/market/mycollection');
   };
 
-  const onClickCreate = () => {};
+  const getCollectionList = async () => {
+    await getCollectionsByCreatorId(account)
+      .then(({ data }) => {
+        console.log(data);
+        setCollectionList(data.filter((row) => row.status === 'active'));
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    console.log(collectionList);
+  }, [collectionList]);
+
+  useEffect(() => {
+    // getCollectionList();
+  }, []);
 
   return (
     <MarketLayout>
@@ -171,6 +189,7 @@ const CreateNewItem = () => {
           price: '',
         }}
         onSubmit={(values, actions) => {
+          console.log('Mint start!');
           console.log({ values });
         }}
       >
