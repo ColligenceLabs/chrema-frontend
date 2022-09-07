@@ -247,7 +247,7 @@ const CreateNewCollection = () => {
           symbol: '',
         }}
         onSubmit={async (values, { setSubmitting }) => {
-          console.log('click');
+          console.log('create collection');
           setSubmitting(true);
 
           if (account === undefined && useKAS === 'false') {
@@ -263,6 +263,7 @@ const CreateNewCollection = () => {
           formData.append('image', values.bannerImage);
           formData.append('description', values.description);
           formData.append('name', values.name);
+          formData.append('symbol', values.symbol);
           // values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
           // formData.append('url', values.url)
@@ -501,9 +502,15 @@ const CreateNewCollection = () => {
                 </RadioGroup>
               </FieldWrapper>
               <FieldWrapper>
-                <LoadingButton type="submit" loading={isSubmitting} variant="contained">
-                  Create
-                </LoadingButton>
+                {account ? (
+                  <LoadingButton type="submit" loading={isSubmitting} variant="contained">
+                    Create
+                  </LoadingButton>
+                ) : (
+                  <Button variant="contained" onClick={() => setIsOpenConnectModal(true)}>
+                    Connect Wallet
+                  </Button>
+                )}
               </FieldWrapper>
             </MyCollectionContainer>
           </form>

@@ -1,5 +1,14 @@
 import React from 'react';
-import { Box, Card, Chip, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Chip,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from '@mui/material';
 
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
@@ -13,6 +22,8 @@ import decntIcon from '../assets/images/wallet_icons/wallet_icon_dcent.png';
 import kaikasIcon from '../assets/images/wallet_icons/wallet_icon_kaikas.png';
 import metamaskIcon from '../assets/images/wallet_icons/wallet_icon_metamask.png';
 import walletconnectIcon from '../assets/images/wallet_icons/wallet_icon_walletconnect.png';
+import useActiveWeb3React from '../hooks/useActiveWeb3React';
+import { logout } from '../redux/slices/auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -135,6 +146,7 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { account, deactivate } = useActiveWeb3React();
 
   const onClickWallet = async (wallet) => {
     try {
@@ -177,136 +189,73 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
             {t('Connect Wallet')}
           </Box>
         </DialogTitle>
-        <DialogContent>
-          {/*{walletAllList.map((wallet, index) => (*/}
-          {/*  <Card*/}
-          {/*    key={index}*/}
-          {/*    className={classes.walletBoxWrapper}*/}
-          {/*    onClick={() => onClickWallet(wallet)}*/}
-          {/*  >*/}
-          {/*    <Box className={classes.chipWrapper}>*/}
-          {/*      <AllChip />*/}
-          {/*    </Box>*/}
-          {/*    <Box*/}
-          {/*      component="img"*/}
-          {/*      alt="logo"*/}
-          {/*      src={wallet.icons}*/}
-          {/*      height={30}*/}
-          {/*      className={classes.walletBoxIcon}*/}
-          {/*      id="logo_icon"*/}
-          {/*    />*/}
-          {/*    <Box className={classes.walletBoxContent}>*/}
-          {/*      <Typography>{wallet.name}</Typography>*/}
-          {/*    </Box>*/}
-          {/*    <ArrowForwardIosIcon />*/}
-          {/*  </Card>*/}
-          {/*))}*/}
-
-          {walletEBHList.map((wallet, index) => (
-            <Card
-              key={index}
-              className={classes.walletBoxWrapper}
-              onClick={() => onClickWallet(wallet)}
+        {account ? (
+          <DialogContent>
+            {account}
+            <Button
+              variant={'contained'}
+              onClick={() => {
+                deactivate();
+                dispatch(logout());
+                handleCloseModal();
+              }}
             >
-              <Box className={classes.chipWrapper}>
-                <EthChip />
-                {/*<BscChip />*/}
-                {/*<HecoChip />*/}
-              </Box>
-              <Box
-                component="img"
-                alt="logo"
-                src={wallet.icons}
-                height={30}
-                className={classes.walletBoxIcon}
-                id="logo_icon"
-              />
-              <Box className={classes.walletBoxContent}>
-                <Typography>{wallet.name}</Typography>
-              </Box>
-              <ArrowForwardIosIcon />
-            </Card>
-          ))}
+              Logout
+            </Button>
+          </DialogContent>
+        ) : (
+          <DialogContent>
+            {walletEBHList.map((wallet, index) => (
+              <Card
+                key={index}
+                className={classes.walletBoxWrapper}
+                onClick={() => onClickWallet(wallet)}
+              >
+                <Box className={classes.chipWrapper}>
+                  <EthChip />
+                  {/*<BscChip />*/}
+                  {/*<HecoChip />*/}
+                </Box>
+                <Box
+                  component="img"
+                  alt="logo"
+                  src={wallet.icons}
+                  height={30}
+                  className={classes.walletBoxIcon}
+                  id="logo_icon"
+                />
+                <Box className={classes.walletBoxContent}>
+                  <Typography>{wallet.name}</Typography>
+                </Box>
+                <ArrowForwardIosIcon />
+              </Card>
+            ))}
 
-          {walletETHList.map((wallet, index) => (
-            <Card
-              key={index}
-              className={classes.walletBoxWrapper}
-              onClick={() => onClickWallet(wallet)}
-            >
-              <Box className={classes.chipWrapper}>
-                <EthChip />
-              </Box>
-              <Box
-                component="img"
-                alt="logo"
-                src={wallet.icons}
-                height={30}
-                className={classes.walletBoxIcon}
-                id="logo_icon"
-              />
-              <Box className={classes.walletBoxContent}>
-                <Typography>{wallet.name}</Typography>
-              </Box>
-              <ArrowForwardIosIcon />
-            </Card>
-          ))}
-
-          {/*{walletBSCList.map((wallet, index) => (*/}
-          {/*  <Card*/}
-          {/*    key={index}*/}
-          {/*    className={classes.walletBoxWrapper}*/}
-          {/*    onClick={() => onClickWallet(wallet)}*/}
-          {/*  >*/}
-          {/*    <Box className={classes.chipWrapper}>*/}
-          {/*      <BscChip />*/}
-          {/*    </Box>*/}
-          {/*    <Box*/}
-          {/*      component="img"*/}
-          {/*      alt="logo"*/}
-          {/*      src={wallet.icons}*/}
-          {/*      height={30}*/}
-          {/*      className={classes.walletBoxIcon}*/}
-          {/*      id="logo_icon"*/}
-          {/*    />*/}
-          {/*    <Box className={classes.walletBoxContent}>*/}
-          {/*      <Typography>{wallet.name}</Typography>*/}
-          {/*    </Box>*/}
-          {/*    <ArrowForwardIosIcon />*/}
-          {/*  </Card>*/}
-          {/*))}*/}
-
-          {/*{walletKlaytnList.map((wallet, index) => (*/}
-          {/*  <Card*/}
-          {/*    key={index}*/}
-          {/*    className={classes.walletBoxWrapper}*/}
-          {/*    onClick={() => onClickWallet(wallet)}*/}
-          {/*  >*/}
-          {/*    <Box*/}
-          {/*      style={{*/}
-          {/*        display: 'flex',*/}
-          {/*        flexDirection: 'column',*/}
-          {/*        marginRight: '1.5rem',*/}
-          {/*        gap: '0.15rem',*/}
-          {/*      }}*/}
-          {/*    >*/}
-          {/*      <KlayChip />*/}
-          {/*    </Box>*/}
-          {/*    <Box*/}
-          {/*      component="img"*/}
-          {/*      alt="logo"*/}
-          {/*      src={wallet.icons}*/}
-          {/*      height={30}*/}
-          {/*      className={classes.walletBoxIcon}*/}
-          {/*      id="logo_icon"*/}
-          {/*    />*/}
-          {/*    <Box className={classes.walletBoxContent}>*/}
-          {/*      <Typography>{wallet.name}</Typography>*/}
-          {/*    </Box>*/}
-          {/*    <ArrowForwardIosIcon />*/}
-          {/*  </Card>*/}
-          {/*))}*/}
-        </DialogContent>
+            {walletETHList.map((wallet, index) => (
+              <Card
+                key={index}
+                className={classes.walletBoxWrapper}
+                onClick={() => onClickWallet(wallet)}
+              >
+                <Box className={classes.chipWrapper}>
+                  <EthChip />
+                </Box>
+                <Box
+                  component="img"
+                  alt="logo"
+                  src={wallet.icons}
+                  height={30}
+                  className={classes.walletBoxIcon}
+                  id="logo_icon"
+                />
+                <Box className={classes.walletBoxContent}>
+                  <Typography>{wallet.name}</Typography>
+                </Box>
+                <ArrowForwardIosIcon />
+              </Card>
+            ))}
+          </DialogContent>
+        )}
       </Dialog>
     </React.Fragment>
   );

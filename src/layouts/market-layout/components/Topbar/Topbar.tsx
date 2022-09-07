@@ -101,7 +101,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
     navigate(path);
   };
 
-  const useCheck = async () => {
+  const userCheck = async () => {
     const res = await login.login(account, '11111111');
     console.log(res);
     return res.data;
@@ -109,7 +109,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   useEffect(() => {
     const authProcess = async () => {
       if (account) {
-        const result = await useCheck();
+        const result = await userCheck();
         console.log(result);
         if (result === null) {
           console.log('new account');
@@ -125,13 +125,11 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
           const res = await register(formData);
           console.log(res);
         } else {
-          console.log('exist account');
           await login.login(account, '11111111');
         }
       }
     };
 
-    console.log(account);
     if (!isLoggedIn && account) authProcess();
   }, [account]);
   return (
