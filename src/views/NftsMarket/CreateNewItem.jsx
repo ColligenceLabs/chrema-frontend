@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { getCollectionsByCreatorId } from '../../services/collections.service';
 import useActiveWeb3React from '../../hooks/useActiveWeb3React';
+import useUserInfo from '../../hooks/useUserInfo';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -147,6 +148,7 @@ const nftItemCreateSchema = yup.object({
 
 const CreateNewItem = () => {
   const navigate = useNavigate();
+  const { level, id, full_name } = useUserInfo();
   const { account } = useActiveWeb3React();
   const [collectionList, setCollectionList] = useState([]);
   const [nftItem, setNftItem] = useState(null);
@@ -161,7 +163,8 @@ const CreateNewItem = () => {
   };
 
   const getCollectionList = async () => {
-    await getCollectionsByCreatorId(account)
+    console.log(id);
+    await getCollectionsByCreatorId(id)
       .then(({ data }) => {
         console.log(data);
         setCollectionList(data.filter((row) => row.status === 'active'));
@@ -174,7 +177,7 @@ const CreateNewItem = () => {
   }, [collectionList]);
 
   useEffect(() => {
-    // getCollectionList();
+    getCollectionList();
   }, []);
 
   return (
@@ -185,7 +188,7 @@ const CreateNewItem = () => {
           description: '',
           collection: collections[0].name,
           nftItem: null,
-          category: categories[0].value,
+          // category: categories[0].value,
           price: '',
         }}
         onSubmit={(values, actions) => {
@@ -287,6 +290,7 @@ const CreateNewItem = () => {
                   onChange={handleChange}
                   fullWidth
                   size="small"
+                  disabled
                   PaperProps={{
                     elevation: 0,
                     sx: {
