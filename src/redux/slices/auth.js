@@ -56,6 +56,7 @@ export const loginWithAddress = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk('auth/logout', async () => {
+  console.log('logout');
   await AuthService.logout();
 });
 

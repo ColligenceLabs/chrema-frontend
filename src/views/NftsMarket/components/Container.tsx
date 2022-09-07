@@ -14,7 +14,7 @@ const Container = ({ children, ...rest }: Props): JSX.Element => (
     width={1}
     margin={'0 auto'}
     paddingX={5}
-    paddingY={{ xs: 4, sm: 6, md: 6 }}
+    paddingY={{ xs: 4, sm: 6, md: 8 }}
     {...rest}
   >
     {children}

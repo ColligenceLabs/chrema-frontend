@@ -178,29 +178,29 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
           </Box>
         </DialogTitle>
         <DialogContent>
-          {walletAllList.map((wallet, index) => (
-            <Card
-              key={index}
-              className={classes.walletBoxWrapper}
-              onClick={() => onClickWallet(wallet)}
-            >
-              <Box className={classes.chipWrapper}>
-                <AllChip />
-              </Box>
-              <Box
-                component="img"
-                alt="logo"
-                src={wallet.icons}
-                height={30}
-                className={classes.walletBoxIcon}
-                id="logo_icon"
-              />
-              <Box className={classes.walletBoxContent}>
-                <Typography>{wallet.name}</Typography>
-              </Box>
-              <ArrowForwardIosIcon />
-            </Card>
-          ))}
+          {/*{walletAllList.map((wallet, index) => (*/}
+          {/*  <Card*/}
+          {/*    key={index}*/}
+          {/*    className={classes.walletBoxWrapper}*/}
+          {/*    onClick={() => onClickWallet(wallet)}*/}
+          {/*  >*/}
+          {/*    <Box className={classes.chipWrapper}>*/}
+          {/*      <AllChip />*/}
+          {/*    </Box>*/}
+          {/*    <Box*/}
+          {/*      component="img"*/}
+          {/*      alt="logo"*/}
+          {/*      src={wallet.icons}*/}
+          {/*      height={30}*/}
+          {/*      className={classes.walletBoxIcon}*/}
+          {/*      id="logo_icon"*/}
+          {/*    />*/}
+          {/*    <Box className={classes.walletBoxContent}>*/}
+          {/*      <Typography>{wallet.name}</Typography>*/}
+          {/*    </Box>*/}
+          {/*    <ArrowForwardIosIcon />*/}
+          {/*  </Card>*/}
+          {/*))}*/}
 
           {walletEBHList.map((wallet, index) => (
             <Card
@@ -210,8 +210,8 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
             >
               <Box className={classes.chipWrapper}>
                 <EthChip />
-                <BscChip />
-                <HecoChip />
+                {/*<BscChip />*/}
+                {/*<HecoChip />*/}
               </Box>
               <Box
                 component="img"
@@ -252,60 +252,60 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
             </Card>
           ))}
 
-          {walletBSCList.map((wallet, index) => (
-            <Card
-              key={index}
-              className={classes.walletBoxWrapper}
-              onClick={() => onClickWallet(wallet)}
-            >
-              <Box className={classes.chipWrapper}>
-                <BscChip />
-              </Box>
-              <Box
-                component="img"
-                alt="logo"
-                src={wallet.icons}
-                height={30}
-                className={classes.walletBoxIcon}
-                id="logo_icon"
-              />
-              <Box className={classes.walletBoxContent}>
-                <Typography>{wallet.name}</Typography>
-              </Box>
-              <ArrowForwardIosIcon />
-            </Card>
-          ))}
+          {/*{walletBSCList.map((wallet, index) => (*/}
+          {/*  <Card*/}
+          {/*    key={index}*/}
+          {/*    className={classes.walletBoxWrapper}*/}
+          {/*    onClick={() => onClickWallet(wallet)}*/}
+          {/*  >*/}
+          {/*    <Box className={classes.chipWrapper}>*/}
+          {/*      <BscChip />*/}
+          {/*    </Box>*/}
+          {/*    <Box*/}
+          {/*      component="img"*/}
+          {/*      alt="logo"*/}
+          {/*      src={wallet.icons}*/}
+          {/*      height={30}*/}
+          {/*      className={classes.walletBoxIcon}*/}
+          {/*      id="logo_icon"*/}
+          {/*    />*/}
+          {/*    <Box className={classes.walletBoxContent}>*/}
+          {/*      <Typography>{wallet.name}</Typography>*/}
+          {/*    </Box>*/}
+          {/*    <ArrowForwardIosIcon />*/}
+          {/*  </Card>*/}
+          {/*))}*/}
 
-          {walletKlaytnList.map((wallet, index) => (
-            <Card
-              key={index}
-              className={classes.walletBoxWrapper}
-              onClick={() => onClickWallet(wallet)}
-            >
-              <Box
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  marginRight: '1.5rem',
-                  gap: '0.15rem',
-                }}
-              >
-                <KlayChip />
-              </Box>
-              <Box
-                component="img"
-                alt="logo"
-                src={wallet.icons}
-                height={30}
-                className={classes.walletBoxIcon}
-                id="logo_icon"
-              />
-              <Box className={classes.walletBoxContent}>
-                <Typography>{wallet.name}</Typography>
-              </Box>
-              <ArrowForwardIosIcon />
-            </Card>
-          ))}
+          {/*{walletKlaytnList.map((wallet, index) => (*/}
+          {/*  <Card*/}
+          {/*    key={index}*/}
+          {/*    className={classes.walletBoxWrapper}*/}
+          {/*    onClick={() => onClickWallet(wallet)}*/}
+          {/*  >*/}
+          {/*    <Box*/}
+          {/*      style={{*/}
+          {/*        display: 'flex',*/}
+          {/*        flexDirection: 'column',*/}
+          {/*        marginRight: '1.5rem',*/}
+          {/*        gap: '0.15rem',*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      <KlayChip />*/}
+          {/*    </Box>*/}
+          {/*    <Box*/}
+          {/*      component="img"*/}
+          {/*      alt="logo"*/}
+          {/*      src={wallet.icons}*/}
+          {/*      height={30}*/}
+          {/*      className={classes.walletBoxIcon}*/}
+          {/*      id="logo_icon"*/}
+          {/*    />*/}
+          {/*    <Box className={classes.walletBoxContent}>*/}
+          {/*      <Typography>{wallet.name}</Typography>*/}
+          {/*    </Box>*/}
+          {/*    <ArrowForwardIosIcon />*/}
+          {/*  </Card>*/}
+          {/*))}*/}
         </DialogContent>
       </Dialog>
     </React.Fragment>

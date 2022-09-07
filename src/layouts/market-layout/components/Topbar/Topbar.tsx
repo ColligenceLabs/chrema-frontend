@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LogoIcon from '../../../full-layout/logo/LogoIcon';
@@ -6,6 +6,7 @@ import {
   Avatar,
   Divider,
   Drawer,
+  Icon,
   IconButton,
   ListItemIcon,
   Menu,
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import ProfileButton from '../../../../components/ProfileButton/ProfileButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '../../../../views/NftsMarket/types';
 import { styled, useTheme } from '@mui/material/styles';
 import LoginIcon from '@mui/icons-material/Login';
@@ -31,6 +32,8 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import { Logout, PersonAdd, Settings } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import WalletDialog from '../../../../components/WalletDialog';
+import login, { register } from '../../../../services/auth.service';
+import { logout } from '../../../../redux/slices/auth';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -72,11 +75,12 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const theme = useTheme();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state: StoreTypes) => state.auth);
+  const { user, isLoggedIn } = useSelector((state: StoreTypes) => state.auth);
   const { pathname } = useLocation();
   const context = useWeb3React();
-  const { connector, activate, deactivate, account } = context;
+  const { activate, deactivate, account } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
 
@@ -96,6 +100,40 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const moveToPage = (path: string) => {
     navigate(path);
   };
+
+  const useCheck = async () => {
+    const res = await login.login(account, '11111111');
+    console.log(res);
+    return res.data;
+  };
+  useEffect(() => {
+    const authProcess = async () => {
+      if (account) {
+        const result = await useCheck();
+        console.log(result);
+        if (result === null) {
+          console.log('new account');
+          const formData = new FormData();
+          formData.append('full_name', 'undefined');
+          formData.append('email', account);
+          formData.append('password', '11111111');
+          formData.append('repeatPassword', '11111111');
+          formData.append('level', 'Creator');
+          // formData.append('image', '');
+          formData.append('description', 'undefined');
+          // formData.append('password', '');
+          const res = await register(formData);
+          console.log(res);
+        } else {
+          console.log('exist account');
+          await login.login(account, '11111111');
+        }
+      }
+    };
+
+    console.log(account);
+    if (!isLoggedIn && account) authProcess();
+  }, [account]);
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
       <LogoIcon />
@@ -176,10 +214,10 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             {/*<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>*/}
             <AccountCircleOutlinedIcon
               sx={{
-                color: 'text.secondary',
+                color: account ? `${theme.palette.primary.main}` : 'text.secondary',
                 fontSize: '2rem',
 
-                '&:hover': { color: 'text.primary' },
+                '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
               }}
             />
           </IconButton>
@@ -222,14 +260,18 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               </ListItemIcon>
               Settings
             </StyledMenuItem>
-            <StyledMenuItem>
+            <StyledMenuItem
+              onClick={() => {
+                deactivate();
+                dispatch(logout());
+              }}
+            >
               <ListItemIcon>
                 <Logout />
               </ListItemIcon>
               Logout
             </StyledMenuItem>
           </Menu>
-
           <AccountBalanceWalletOutlinedIcon
             onClick={() => setIsOpenConnectModal(true)}
             sx={{
@@ -239,6 +281,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               '&:hover': { color: 'text.primary' },
             }}
           />
+
           <WalletDialog
             isOpenConnectModal={isOpenConnectModal}
             handleCloseModal={handleCloseModal}

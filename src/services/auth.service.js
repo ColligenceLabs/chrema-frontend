@@ -50,8 +50,7 @@ export const changePassword = (id, old_password, password) => {
 
 // Todo logout
 const logout = () => {
-  localStorage.removeItem('user');
-  window.location.href = '/';
+  // localStorage.removeItem('user');
 };
 
 const authService = {
