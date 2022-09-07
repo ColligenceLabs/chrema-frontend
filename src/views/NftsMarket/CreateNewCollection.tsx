@@ -261,6 +261,8 @@ const CreateNewCollection = () => {
 
           const formData: any = new FormData();
           formData.append('image', values.bannerImage);
+          formData.append('logo', values.logoImage);
+          formData.append('url', values.url);
           formData.append('description', values.description);
           formData.append('name', values.name);
           formData.append('symbol', values.symbol);
