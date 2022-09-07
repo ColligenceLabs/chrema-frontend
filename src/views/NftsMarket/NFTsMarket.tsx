@@ -8,12 +8,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 const categories = [
   { id: 0, value: 'all', category: 'All' },
   // { id: 1, value: 'talken', category: 'Talken' },
-  { id: 2, value: 'art', category: 'Art' },
-  { id: 3, value: 'collectibles', category: 'Collectibles' },
-  { id: 4, value: 'membership', category: 'Membership' },
-  { id: 5, value: 'pieces', category: 'Pieces' },
-  { id: 6, value: 'games', category: 'Games' },
-  { id: 7, value: 'virtual', category: 'Virtual Worlds' },
+  { id: 2, value: 'picture', category: 'Picture' },
+  { id: 3, value: 'painting', category: 'Painting' },
+  { id: 4, value: 'illustrate', category: 'Illustrate' },
+  { id: 5, value: 'design', category: 'Design' },
+  { id: 6, value: 'character', category: 'Character' },
 ];
 
 const NFTsMarket = () => {
