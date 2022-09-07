@@ -184,9 +184,9 @@ const CreateNewItem = () => {
     <MarketLayout>
       <Formik
         initialValues={{
-          title: '',
+          name: '',
           description: '',
-          collection: collections[0].name,
+          collection: '',
           nftItem: null,
           // category: categories[0].value,
           price: '',
@@ -256,8 +256,8 @@ const CreateNewItem = () => {
               <FieldWrapper>
                 <FiledTitle required={true}>Title</FiledTitle>
                 <CustomTextField
-                  name="title"
-                  value={values.title}
+                  name="name"
+                  value={values.name}
                   onChange={handleChange}
                   variant="outlined"
                   fullWidth
