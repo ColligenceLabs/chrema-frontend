@@ -24,6 +24,9 @@ import { FAILURE, SUCCESS } from '../../config/constants/consts';
 import { getChainId } from '../../utils/commonUtils';
 import { targetNetworkMsg } from '../../config';
 import { setupNetwork } from '../../utils/wallet';
+import { useKipContract, useKipContractWithKaikas } from '../../hooks/useContract';
+import useNFT from '../../hooks/useNFT';
+import contracts from '../../config/constants/contracts';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -171,6 +174,18 @@ const CreateNewItem = () => {
   const [price, setPrice] = useState('');
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [targetNetwork, setTargetNetwork] = useState('klaytn');
+  const [contractAddr, setContractAddr] = useState(contracts.kip17[1001]);
+  const [contractType, setContractType] = useState('');
+  const kipContract = useKipContract(contractAddr, contractType);
+  const kasContract = useKipContractWithKaikas(contractAddr, contractType);
+  const {
+    mintNFT17,
+    mintNFT17WithKaikas,
+    mintNFT37,
+    mintNFT37WithKaikas,
+    isMinting,
+    mintNFTBatch,
+  } = useNFT(kipContract, kasContract, account);
 
   const moveToPage = () => {
     navigate('/market/mycollection');
@@ -202,8 +217,10 @@ const CreateNewItem = () => {
           description: '',
           collection: '',
           nftItem: null,
+          contract_type: '',
           // category: categories[0].value,
           price: '',
+          type: '0',
         }}
         onSubmit={async (values, actions) => {
           console.log('Mint start!');
@@ -231,9 +248,10 @@ const CreateNewItem = () => {
             }
           }
 
-          formData.append('quantity', '1');
+          formData.append('quantity', values['amount']);
           formData.append('collection_id', values['collection']);
           formData.append('file', values['nftItem']);
+          formData.append('quote', 'klay');
           if (values['thumbnail'] === null) {
             formData.append('thumbnail', values['nftItem']);
           } else {
@@ -357,8 +375,12 @@ const CreateNewItem = () => {
                   value={values.collection}
                   onChange={(event) => {
                     collectionList.filter((collection) => {
-                      console.log('=====>', collection, event.target.value);
                       setFieldValue('collection', event.target.value);
+                      setFieldValue('category', collection.category.toString());
+                      setFieldValue('amount', '1');
+                      setFieldValue('contract_type', collection.contract_type);
+                      setContractAddr(collection.contract_address);
+                      setContractType(collection.contract_type);
                     });
                   }}
                   fullWidth
@@ -377,7 +399,7 @@ const CreateNewItem = () => {
                   }}
                 >
                   {collectionList.map((collection) => (
-                    <StyledMenuItem key={collection._id} value={collection.name}>
+                    <StyledMenuItem key={collection._id} value={collection._id}>
                       {collection.name}
                     </StyledMenuItem>
                   ))}
