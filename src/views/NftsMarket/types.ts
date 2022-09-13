@@ -27,6 +27,7 @@ export interface CollectionDetailResponse {
   contract_type: string;
   path: string;
   image_link: string;
+  logo_image: string;
   createdAt: Date;
   updatedAt: Date;
   fee_percentage: number;
@@ -56,6 +57,7 @@ export interface CollectionResponse {
         };
         path: string;
         image_link: string;
+        logo_image: string;
       },
     ];
   };

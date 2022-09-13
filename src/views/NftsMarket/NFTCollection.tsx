@@ -81,13 +81,14 @@ const NFTCollection = () => {
               />
             </Box>
             <CollectionLogo>
-              <img
-                src={data?.creator_id?.image?.replace(
-                  'https://nftbedev.talken.io/taalNft/uploads',
-                  'http://localhost:4000/taalNft',
-                )}
-                alt={data?.creator_id?.full_name}
-              />
+              {/*<img*/}
+              {/*  src={data?.creator_id?.image?.replace(*/}
+              {/*    'https://nftbedev.talken.io/taalNft/uploads',*/}
+              {/*    'http://localhost:4000/taalNft',*/}
+              {/*  )}*/}
+              {/*  alt={data?.creator_id?.full_name}*/}
+              {/*/>*/}
+              <img src={data?.logo_image} />
             </CollectionLogo>
             <CollectionName>
               <Typography
