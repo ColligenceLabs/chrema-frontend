@@ -9,7 +9,6 @@ import {
   DialogTitle,
   Typography,
 } from '@mui/material';
-
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -67,12 +66,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const walletAllList = [
-  {
-    name: 'Talken',
-    icons: talkenIcon,
-  },
-];
 const walletEBHList = [
   {
     name: 'MetaMask',
@@ -85,59 +78,11 @@ const walletETHList = [
     icons: walletconnectIcon,
   },
 ];
-const walletBSCList = [
-  {
-    name: 'Binance Wallet',
-    icons: bibanceIcon,
-  },
-];
-const walletKlaytnList = [
-  {
-    name: 'Kaikas',
-    icons: kaikasIcon,
-  },
-  {
-    name: "d'Cent",
-    icons: decntIcon,
-  },
-];
 
-const AllChip = () => (
-  <Chip
-    label="All"
-    color="primary"
-    size="string"
-    style={{ height: '15px', width: '55px', fontSize: '8px' }}
-  />
-);
 const EthChip = () => (
   <Chip
     label="ETH"
     color="warning"
-    size="string"
-    style={{ height: '15px', width: '55px', fontSize: '8px' }}
-  />
-);
-const BscChip = () => (
-  <Chip
-    label="BSC"
-    color="error"
-    size="string"
-    style={{ height: '15px', width: '55px', fontSize: '8px' }}
-  />
-);
-const HecoChip = () => (
-  <Chip
-    label="HECO"
-    color="secondary"
-    size="string"
-    style={{ height: '15px', width: '55px', fontSize: '8px', padding: '0' }}
-  />
-);
-const KlayChip = () => (
-  <Chip
-    label="Klaytn"
-    color="success"
     size="string"
     style={{ height: '15px', width: '55px', fontSize: '8px' }}
   />

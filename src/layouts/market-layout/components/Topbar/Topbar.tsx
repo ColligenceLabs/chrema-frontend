@@ -1,39 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import LogoIcon from '../../../full-layout/logo/LogoIcon';
-import {
-  Avatar,
-  Divider,
-  Drawer,
-  Icon,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { IconButton, ListItemIcon, Menu, MenuItem, Typography, useMediaQuery } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-import ProfileButton from '../../../../components/ProfileButton/ProfileButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '../../../../views/NftsMarket/types';
 import { styled, useTheme } from '@mui/material/styles';
-import LoginIcon from '@mui/icons-material/Login';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
-import WalletConnector from '../../../../components/WalletConnector';
 import { useWeb3React } from '@web3-react/core';
 import AppsIcon from '@mui/icons-material/Apps';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
 import { Logout, PersonAdd, Settings } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import WalletDialog from '../../../../components/WalletDialog';
-import login, { register } from '../../../../services/auth.service';
 import { logout } from '../../../../redux/slices/auth';
+import marketService from '../../../../services/market.service';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -86,7 +69,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   const openProfile = Boolean(anchorProfileEl);
 
-  const handleCloseModal = async () => {
+  const handleCloseModal = () => {
     setIsOpenConnectModal(false);
   };
 
@@ -101,28 +84,15 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
     navigate(path);
   };
 
-  const userCheck = async () => {
-    const res = await login.login(account, '11111111');
-    return res.data;
-  };
   useEffect(() => {
     const authProcess = async () => {
+      console.log(account);
       if (account) {
-        const result = await userCheck();
-        if (result === null) {
-          const formData = new FormData();
-          formData.append('full_name', 'undefined');
-          formData.append('email', account);
-          formData.append('password', '11111111');
-          formData.append('repeatPassword', '11111111');
-          formData.append('level', 'Creator');
-          // formData.append('image', '');
-          formData.append('description', 'undefined');
-          // formData.append('password', '');
-          const res = await register(formData);
-        } else {
-          await login.login(account, '11111111');
-        }
+        const result = await marketService.loginWidthAddress(
+          account,
+          process.env.REACT_APP_CHAIN_ID,
+        );
+        console.log(result);
       }
     };
 
