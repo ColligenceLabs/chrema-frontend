@@ -187,7 +187,7 @@ const UserProfileSetting = () => {
                       )}
                     </Box>
                     <Box>
-                      <CustomFormLabel htmlFor="email">Email Address</CustomFormLabel>
+                      <CustomFormLabel htmlFor="email">Wallet Address</CustomFormLabel>
                       <CustomTextField
                         id="email"
                         name="email"
