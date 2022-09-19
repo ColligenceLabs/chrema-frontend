@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
-import { useDispatch, useSelector } from 'react-redux';
 import Container from '../../layouts/market-layout/components/Container';
 import { Alert, Box, Grid, IconButton, Snackbar, Typography } from '@mui/material';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import useUserInfo from '../../hooks/useUserInfo';
 import klayLogo from '../../assets/images/network_icon/klaytn-klay-logo.png';
 import { Link } from 'react-router-dom';
 import useCopyToClipBoard from '../../hooks/useCopyToClipBoard';
@@ -19,17 +17,14 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import marketService from '../../services/market.service';
 
 const UserProfile = () => {
-  // const { user } = useSelector((state: any) => state?.auth);
-  const userStr = window.localStorage.getItem('user');
-  const user = JSON.parse(userStr!);
-  const [userInfor, setUserInfor] = useState({
-    image: '',
-    full_name: '',
-    description: '',
-    level: '',
-    banner: '',
+  const [userInfor, setUserInfor] = useState(() => {
+    const userStr = window.localStorage.getItem('user');
+    const user = JSON.parse(userStr!);
+
+    return user.infor;
   });
 
   const { copyToClipBoard, copyResult, copyMessage, copyDone, setCopyDone } = useCopyToClipBoard();
@@ -37,8 +32,6 @@ const UserProfile = () => {
   const { activate, account } = context;
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [userimg, setUserimg] = useState('');
-  const [bannerimg, setBannerimg] = useState('');
   const [showAll, setShowAll] = useState(false);
 
   const theme = useTheme();
@@ -56,7 +49,6 @@ const UserProfile = () => {
       setIsLoading(true);
       if (!account) return;
       const nfts = await getUserNFTs(account, 100);
-      console.log(nfts);
       if (nfts !== undefined) setMyNfts(nfts.data.nfts);
       setIsLoading(false);
     };
@@ -65,52 +57,21 @@ const UserProfile = () => {
   }, [getUserNFTs, account]);
 
   useEffect(() => {
-    if (user) {
-      setUserInfor({
-        image: user.infor?.image || '',
-        full_name: user.infor?.full_name || '',
-        description: user.infor?.description || '',
-        level: user.infor?.level || '',
-        banner: user.infor?.banner || '',
-      });
-      if (
-        user.infor?.image === undefined ||
-        user.infor?.image === null ||
-        user.infor?.image === ''
-      ) {
-        setUserimg(userImage);
-      } else {
-        setUserimg(
-          user.infor.image?.replace(
-            'https://nftbedev.talken.io/taalNft/uploads',
-            'http://localhost:4000/taalNft',
-          ),
-        );
-      }
-      console.log(user);
-      if (
-        user.infor?.banner === undefined ||
-        user.infor?.banner === null ||
-        user.infor?.banner === ''
-      ) {
-        setBannerimg(bannerImage);
-      } else {
-        setBannerimg(
-          user.infor?.banner?.replace(
-            'https://nftbedev.talken.io/taalNft/uploads',
-            'http://localhost:4000/taalNft',
-          ),
-        );
-      }
-    }
-  }, []);
+    const authProcess = async () => {
+      const res = await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
+
+      if (res.status === 1) setUserInfor(res.data.infor);
+    };
+
+    if (account) authProcess();
+  }, [account]);
 
   return (
     <MarketLayout>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Box sx={{ width: 1, height: '350px' }}>
           <img
-            src={bannerimg}
+            src={userInfor.banner ? userInfor.banner : bannerImage}
             alt={userInfor.full_name}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
@@ -126,7 +87,7 @@ const UserProfile = () => {
           }}
         >
           <img
-            src={userimg}
+            src={userInfor.image ? userInfor.image : userImage}
             alt={userInfor.full_name}
             style={{
               width: '150px',
@@ -207,8 +168,8 @@ const UserProfile = () => {
             color="text.secondary"
           >
             {showAll && userInfor?.description !== null
-              ? userInfor?.description
-              : `${userInfor?.description.slice(0, smDown ? 150 : 300)}`}
+              ? `${userInfor?.description.slice(0, smDown ? 150 : 300)}`
+              : userInfor?.description}
           </Typography>
           <IconButton onClick={() => setShowAll((curr) => !curr)}>
             {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}

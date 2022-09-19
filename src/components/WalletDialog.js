@@ -24,6 +24,7 @@ import walletconnectIcon from '../assets/images/wallet_icons/wallet_icon_walletc
 import useActiveWeb3React from '../hooks/useActiveWeb3React';
 import { logout } from '../redux/slices/auth';
 import splitAddress from '../utils/splitAddress';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -92,6 +93,7 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { account, deactivate } = useActiveWeb3React();
 
   const onClickWallet = async (wallet) => {
@@ -143,10 +145,11 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
               <span>{splitAddress(account, 10)}</span>
               <Button
                 variant={'contained'}
-                onClick={() => {
-                  deactivate();
-                  dispatch(logout());
+                onClick={async () => {
+                  await deactivate();
+                  await dispatch(logout());
                   handleCloseModal();
+                  navigate('/');
                 }}
               >
                 Logout

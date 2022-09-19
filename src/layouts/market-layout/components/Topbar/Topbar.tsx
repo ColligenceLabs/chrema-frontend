@@ -93,14 +93,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   useEffect(() => {
     const authProcess = async () => {
-      console.log(account);
-      if (account) {
-        const result = await marketService.loginWidthAddress(
-          account,
-          process.env.REACT_APP_CHAIN_ID,
-        );
-        console.log(result);
-      }
+      await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
     };
 
     if (account) authProcess();
@@ -232,9 +225,10 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               Settings
             </StyledMenuItem>
             <StyledMenuItem
-              onClick={() => {
-                deactivate();
-                dispatch(logout());
+              onClick={async () => {
+                await deactivate();
+                await dispatch(logout());
+                navigate('/');
               }}
             >
               <ListItemIcon>
