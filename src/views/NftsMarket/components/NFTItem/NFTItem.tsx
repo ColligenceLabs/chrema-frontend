@@ -6,7 +6,6 @@ import { NFTType } from '../../types';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
-
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
 import ImageViewer from '../../../../components/ImageViewer';
@@ -28,8 +27,6 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
   const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
     defaultMatches: true,
   });
-
-  console.log(item);
 
   return (
     <>
