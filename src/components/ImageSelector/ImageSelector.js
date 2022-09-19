@@ -66,8 +66,10 @@ const SelectImage = styled(ImageOutlinedIcon)`
 `;
 
 const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '250px' }) => {
-  const [preview, setPreview] = useState();
+  const [preview, setPreview] = useState(image ? image : null);
   const [previewType, setPreviewType] = useState('image/jpeg');
+
+  console.log(image);
 
   const onDrop = (acceptedFiles) => {
     const theFile = acceptedFiles[0];

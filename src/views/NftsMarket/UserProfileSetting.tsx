@@ -18,60 +18,36 @@ import { useNavigate } from 'react-router';
 import defaultUserImage from '../../assets/images/users/user.png';
 import defaultBannerImage from '../../assets/images/users/banner.png';
 import { loginWithAddress } from '../../redux/slices/auth';
+import marketService from '../../services/market.service';
 import { useWeb3React } from '@web3-react/core';
 import { useDispatch } from 'react-redux';
 import { signMessage } from '../../utils/signMessage';
 import { verifyMessage } from '../../utils/verifyMessage';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
+import { styled } from '@mui/material/styles';
+
+const ProfileContainer = styled(Container)`
+  max-width: 646px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 10rem;
+`;
 
 const UserProfileSetting = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const context = useWeb3React();
   const { library, account, chainId } = context;
-  const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
-    defaultMatches: true,
-  });
+
   const [errorMessage, setErrorMessage] = useState<any>();
   const [successRegister, setSuccessRegister] = useState(false);
   const { t } = useTranslation();
   const { full_name, email, description, image: userImage, id, banner } = useUserInfo();
-  const [userInfo, setUserInfo] = useState<RegisterForm>({});
 
   useEffect(() => {
-    setUserInfo({
-      id: id,
-      full_name,
-      image: userImage === null ? '' : userImage,
-      imageSrc: userImage === null ? defaultUserImage : userImage,
-      banner: banner === null ? '' : banner,
-      bannerSrc: banner === null ? defaultBannerImage : banner,
-      description,
-      email,
-      password: '',
-      repeatPassword: '',
-      level: 'user',
-    });
-  }, [full_name, email, description, userImage, id]);
+    console.log(userImage);
+  }, [userImage]);
 
-  const encodeFileToBase64 = (fileBlob: Blob, type: string) => {
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL(fileBlob);
-      return new Promise<void>((resolve) => {
-        reader.onload = () => {
-          if (type === 'image') setUserInfo({ ...userInfo, imageSrc: reader.result });
-          else setUserInfo({ ...userInfo, bannerSrc: reader.result });
-          resolve();
-        };
-      });
-    } catch (error) {
-      console.log(error);
-      return '';
-    }
-  };
-  // @ts-ignore
   return (
     <MarketLayout>
       <Container>
@@ -81,10 +57,8 @@ const UserProfileSetting = () => {
             initialValues={{
               id: id,
               full_name: full_name,
-              image: '',
-              imageSrc: userImage,
-              banner: '',
-              bannerImageSrc: banner,
+              image: userImage,
+              banner: banner,
               description: description,
               email: email,
               password: '',
@@ -125,10 +99,9 @@ const UserProfileSetting = () => {
               formData.append('signedMessage', signedMessage);
 
               const res = await updater(formData);
-
               if (res?.data.status === 1) {
-                // localStorage.setItem('user', JSON.stringify(res.data || null));
-                dispatch(loginWithAddress({ address: account, chainId }));
+                const res = await marketService.loginWidthAddress(account, chainId);
+                console.log(res);
                 setErrorMessage(null);
                 setSuccessRegister(true);
               } else {
@@ -148,69 +121,31 @@ const UserProfileSetting = () => {
               setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Typography variant={'h1'} sx={{ pl: mdDown ? '0px' : '180px' }}>
-                  Profile Settings
-                </Typography>
-                <Box
+                <ProfileContainer
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     gap: '1rem',
-                    flexDirection: mdDown ? 'column' : 'rows',
+                    // flexDirection: mdDown ? 'column' : 'rows',
+                    flexDirection: 'column',
                   }}
                 >
+                  <Typography
+                    variant={'h1'}
+                    // sx={{ pl: mdDown ? '0px' : '180px', textAlign: 'left' }}
+                  >
+                    Profile Settings
+                  </Typography>
                   <Box>
                     <Box>
                       <CustomFormLabel htmlFor="image">{t('Image')}</CustomFormLabel>
                       <ImageSelector
                         image={values.image}
-                        handleImageSelect={(image: any) => setFieldValue('logoImage', image)}
+                        handleImageSelect={(image: any) => setFieldValue('image', image)}
                         width="200px"
                         height="200px"
                       />
-                      {/*<CustomTextField*/}
-                      {/*  id="imageFiled"*/}
-                      {/*  name="imageFiled"*/}
-                      {/*  variant="outlined"*/}
-                      {/*  fullWidth*/}
-                      {/*  size="small"*/}
-                      {/*  // value={values.image!.name !== undefined ? values.image.name : ''}*/}
-                      {/*  InputProps={{*/}
-                      {/*    startAdornment: (*/}
-                      {/*      <Button*/}
-                      {/*        component="label"*/}
-                      {/*        variant="contained"*/}
-                      {/*        size="small"*/}
-                      {/*        style={{ marginRight: '1rem' }}*/}
-                      {/*      >*/}
-                      {/*        <DriveFileMoveOutlinedIcon fontSize="small" />*/}
-                      {/*        <input*/}
-                      {/*          id="image"*/}
-                      {/*          style={{ display: 'none' }}*/}
-                      {/*          type="file"*/}
-                      {/*          name="image"*/}
-                      {/*          onChange={(event: React.ChangeEvent<HTMLInputElement | null>) => {*/}
-                      {/*            setFieldValue('image', event!.currentTarget!.files[0]);*/}
-                      {/*            encodeFileToBase64(event.currentTarget.files[0], 'image');*/}
-                      {/*          }}*/}
-                      {/*        />*/}
-                      {/*      </Button>*/}
-                      {/*    ),*/}
-                      {/*  }}*/}
-                      {/*/>*/}
-                      {/*<Box sx={{ width: '100%', textAlign: 'center' }}>*/}
-                      {/*  <img*/}
-                      {/*    src={userInfo.imageSrc}*/}
-                      {/*    alt="logo"*/}
-                      {/*    style={{*/}
-                      {/*      objectFit: 'cover',*/}
-                      {/*      width: '200px',*/}
-                      {/*      height: '200px',*/}
-                      {/*      borderRadius: '50%',*/}
-                      {/*      marginTop: '20px',*/}
-                      {/*    }}*/}
-                      {/*  />*/}
-                      {/*</Box>*/}
+
                       {touched.image && errors.image && (
                         <Typography variant={'caption'} color={'red'}>
                           {errors.image}
@@ -221,53 +156,11 @@ const UserProfileSetting = () => {
                       <CustomFormLabel htmlFor="banner">{t('Banner')}</CustomFormLabel>
                       <ImageSelector
                         image={values.banner}
-                        handleImageSelect={(image: any) => setFieldValue('bannerImage', image)}
-                        width="200px"
+                        handleImageSelect={(image: any) => setFieldValue('banner', image)}
+                        width="500px"
                         height="200px"
                       />
-                      {/*<CustomTextField*/}
-                      {/*  id="bannerImageField"*/}
-                      {/*  name="bannerImageField"*/}
-                      {/*  variant="outlined"*/}
-                      {/*  fullWidth*/}
-                      {/*  size="small"*/}
-                      {/*  // value={values.banner!.name || ''}*/}
-                      {/*  InputProps={{*/}
-                      {/*    startAdornment: (*/}
-                      {/*      <Button*/}
-                      {/*        component="label"*/}
-                      {/*        variant="contained"*/}
-                      {/*        size="small"*/}
-                      {/*        style={{ marginRight: '1rem' }}*/}
-                      {/*      >*/}
-                      {/*        <DriveFileMoveOutlinedIcon fontSize="small" />*/}
-                      {/*        <input*/}
-                      {/*          id="banner"*/}
-                      {/*          style={{ display: 'none' }}*/}
-                      {/*          type="file"*/}
-                      {/*          name="banner"*/}
-                      {/*          onChange={(event: React.ChangeEvent<HTMLInputElement | null>) => {*/}
-                      {/*            setFieldValue('banner', event!.currentTarget!.files[0]);*/}
-                      {/*            encodeFileToBase64(event.currentTarget.files[0], 'banner');*/}
-                      {/*          }}*/}
-                      {/*        />*/}
-                      {/*      </Button>*/}
-                      {/*    ),*/}
-                      {/*  }}*/}
-                      {/*/>*/}
-                      {/*<Box sx={{ width: '100%', textAlign: 'center' }}>*/}
-                      {/*  <img*/}
-                      {/*    src={userInfo.bannerSrc}*/}
-                      {/*    alt="banner"*/}
-                      {/*    style={{*/}
-                      {/*      objectFit: 'cover',*/}
-                      {/*      width: '200px',*/}
-                      {/*      height: '200px',*/}
-                      {/*      borderRadius: '50%',*/}
-                      {/*      marginTop: '20px',*/}
-                      {/*    }}*/}
-                      {/*  />*/}
-                      {/*</Box>*/}
+
                       {touched.banner && errors.banner && (
                         <Typography variant={'caption'} color={'red'}>
                           {errors.banner}
@@ -367,7 +260,7 @@ const UserProfileSetting = () => {
                       </LoadingButton>
                     </Box>
                   </Box>
-                </Box>
+                </ProfileContainer>
               </form>
             )}
           </Formik>

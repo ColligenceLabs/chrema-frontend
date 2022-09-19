@@ -21,7 +21,9 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const UserProfile = () => {
-  const { user } = useSelector((state: any) => state?.auth);
+  // const { user } = useSelector((state: any) => state?.auth);
+  const userStr = window.localStorage.getItem('user');
+  const user = JSON.parse(userStr!);
   const [userInfor, setUserInfor] = useState({
     image: '',
     full_name: '',
@@ -54,6 +56,7 @@ const UserProfile = () => {
       setIsLoading(true);
       if (!account) return;
       const nfts = await getUserNFTs(account, 100);
+      console.log(nfts);
       if (nfts !== undefined) setMyNfts(nfts.data.nfts);
       setIsLoading(false);
     };
@@ -84,6 +87,7 @@ const UserProfile = () => {
           ),
         );
       }
+      console.log(user);
       if (
         user.infor?.banner === undefined ||
         user.infor?.banner === null ||
@@ -99,7 +103,7 @@ const UserProfile = () => {
         );
       }
     }
-  }, [user]);
+  }, []);
 
   return (
     <MarketLayout>
