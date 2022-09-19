@@ -29,6 +29,8 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
     defaultMatches: true,
   });
 
+  console.log(item);
+
   return (
     <>
       <Link to={`/market/detail/${item._id}`} style={{ textDecoration: 'none' }}>
@@ -99,7 +101,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <ImageViewer
-                src={item?.metadata?.thumbnail ? item?.metadata?.thumbnail : item?.metadata?.image}
+                src={item?.metadata?.alt_url ? item?.metadata?.alt_url : item?.metadata?.image}
                 alt={item?.metadata?.name}
                 style={{
                   marginTop: '-52px',
