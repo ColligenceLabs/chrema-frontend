@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import * as React from 'react';
-import PLACE_HOLDER from '../../assets/images/landing_icon/introduction_taal.svg';
+import PLACE_HOLDER from '../../assets/images/logos/ntal_logo.png';
 import { CardMedia } from '@mui/material';
 
 interface IProps {
@@ -40,7 +40,7 @@ function ImageViewer({ src, alt, style, height }: IProps) {
       component={'img'}
       src={isLoad ? src : PLACE_HOLDER}
       alt={alt}
-      style={style}
+      style={{ ...style }}
       height={height}
     />
   );
