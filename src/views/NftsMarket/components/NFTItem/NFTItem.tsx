@@ -6,7 +6,6 @@ import { NFTType } from '../../types';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
-
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
 import ImageViewer from '../../../../components/ImageViewer';
@@ -99,7 +98,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <ImageViewer
-                src={item?.metadata?.thumbnail ? item?.metadata?.thumbnail : item?.metadata?.image}
+                src={item?.metadata?.alt_url ? item?.metadata?.alt_url : item?.metadata?.image}
                 alt={item?.metadata?.name}
                 style={{
                   marginTop: '-52px',
