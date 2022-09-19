@@ -147,7 +147,7 @@ const MyCollection = () => {
         <Grid container>
           {collectionList &&
             collectionList.map((item: any) => (
-              <Grid item xs={12} sm={6} md={6} lg={6} key={item.contract_address}>
+              <Grid item xs={6} sm={6} md={6} lg={6} key={item.contract_address}>
                 <Collection
                   id={item._id}
                   name={item.name}
