@@ -27,6 +27,7 @@ import { setupNetwork } from '../../utils/wallet';
 import { useKipContract, useKipContractWithKaikas } from '../../hooks/useContract';
 import useNFT from '../../hooks/useNFT';
 import contracts from '../../config/constants/contracts';
+import { LoadingButton } from '@mui/lab';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -301,6 +302,7 @@ const CreateNewItem = () => {
           console.log('------------>', formData);
           await registerNFT(formData)
             .then(async (res) => {
+              console.log(res);
               if (res.data.status === 1) {
                 const nftId = res.data.data._id;
                 const tokenId = res.data.data.metadata.tokenId;
@@ -488,9 +490,15 @@ const CreateNewItem = () => {
               </FieldWrapper>
 
               <FieldWrapper>
-                <Button type={'submit'} variant="contained">
-                  Create
-                </Button>
+                {account ? (
+                  <LoadingButton type="submit" loading={isSubmitting} variant="contained">
+                    Create
+                  </LoadingButton>
+                ) : (
+                  <Button variant="contained" onClick={() => setIsOpenConnectModal(true)}>
+                    Connect Wallet
+                  </Button>
+                )}
               </FieldWrapper>
             </CreateNewItemContainer>
           </form>
