@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import LogoIcon from '../../../full-layout/logo/LogoIcon';
-import { IconButton, ListItemIcon, Menu, MenuItem, Typography, useMediaQuery } from '@mui/material';
+import {
+  Avatar,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '../../../../views/NftsMarket/types';
@@ -18,6 +26,7 @@ import WalletDialog from '../../../../components/WalletDialog';
 import { logout } from '../../../../redux/slices/auth';
 import marketService from '../../../../services/market.service';
 import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
+import useUserInfo from '../../../../hooks/useUserInfo';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -58,10 +67,12 @@ const StyledMenuItem = styled(MenuItem)`
 const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const { image: userImage } = useUserInfo();
+
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isLoggedIn } = useSelector((state: StoreTypes) => state.auth);
+
   const { pathname } = useLocation();
   const context = useWeb3React();
   const { activate, deactivate, account } = context;
@@ -176,14 +187,18 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             aria-expanded={openProfile ? 'true' : undefined}
           >
             {/*<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>*/}
-            <AccountCircleOutlinedIcon
-              sx={{
-                color: account ? `${theme.palette.primary.main}` : 'text.secondary',
-                fontSize: '2rem',
+            {userImage ? (
+              <Avatar src={userImage} sx={{ width: 32, height: 32 }} />
+            ) : (
+              <AccountCircleOutlinedIcon
+                sx={{
+                  color: account ? `${theme.palette.primary.main}` : 'text.secondary',
+                  fontSize: '2rem',
 
-                '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
-              }}
-            />
+                  '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
+                }}
+              />
+            )}
           </IconButton>
           <Menu
             anchorEl={anchorProfileEl}
@@ -228,6 +243,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               onClick={async () => {
                 await deactivate();
                 await dispatch(logout());
+                window.localStorage.removeItem('user');
                 navigate('/');
               }}
             >

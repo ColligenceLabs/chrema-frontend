@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 const useUserInfo = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
 
   useEffect(() => {
-    if (user.user) setUser(user.user);
+    if (user && user.user) setUser(user.user);
   }, [user]);
 
-  if (user.infor) {
+  if (user) {
     return {
       id: user.infor.id,
       full_name: user.infor.full_name,
