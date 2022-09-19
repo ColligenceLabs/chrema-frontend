@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router';
 import WalletDialog from '../../../../components/WalletDialog';
 import { logout } from '../../../../redux/slices/auth';
 import marketService from '../../../../services/market.service';
+import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -66,8 +67,14 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const { activate, deactivate, account } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
+  const { activatingConnector } = useSelector((state) => state.wallet);
 
   const openProfile = Boolean(anchorProfileEl);
+
+  // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
+  const triedEager = useEagerConnect();
+  // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
+  useInactiveListener(!triedEager || !!activatingConnector);
 
   const handleCloseModal = () => {
     setIsOpenConnectModal(false);
