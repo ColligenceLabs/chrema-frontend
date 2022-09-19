@@ -15,15 +15,49 @@ import userImage from '../../assets/images/users/user.png';
 import bannerImage from '../../assets/images/users/banner.png';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import marketService from '../../services/market.service';
+
+const UserProfileWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const UserProfileLogo = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  margin-top: -130px;
+  margin-left: 30px;
+
+  & img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    borderr-adius: 100%;
+    border: 5px solid white;
+    box-sizing: border-box;
+  }
+`;
+
+const UserProfileName = styled(Box)`
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 16px;
+  //margin-left: 30px;
+`;
 
 const UserProfile = () => {
   const [userInfor, setUserInfor] = useState(() => {
     const userStr = window.localStorage.getItem('user');
     const user = JSON.parse(userStr!);
-
     return user.infor;
   });
 
@@ -68,7 +102,7 @@ const UserProfile = () => {
 
   return (
     <MarketLayout>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <UserProfileWrapper>
         <Box sx={{ width: 1, height: '350px' }}>
           <img
             src={userInfor.banner ? userInfor.banner : bannerImage}
@@ -76,29 +110,9 @@ const UserProfile = () => {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '150px',
-            height: '150px',
-            marginTop: '-75px',
-          }}
-        >
-          <img
-            src={userInfor.image ? userInfor.image : userImage}
-            alt={userInfor.full_name}
-            style={{
-              width: '150px',
-              height: '150px',
-              objectFit: 'cover',
-              borderRadius: '100%',
-              border: '5px solid white',
-              boxSizing: 'border-box',
-            }}
-          />
-        </Box>
+        <UserProfileLogo>
+          <img src={userInfor.image ? userInfor.image : userImage} alt={userInfor.full_name} />
+        </UserProfileLogo>
 
         <Box
           sx={{
@@ -106,17 +120,17 @@ const UserProfile = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            width: '100%',
             mt: 2,
+            px: 5,
           }}
         >
-          <Box
-            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
-          >
+          <UserProfileName>
             <Typography variant={'h1'}>{userInfor.full_name}</Typography>
             <IconButton component={Link} to="/market/profile/setting">
               <SettingsOutlinedIcon fontSize={'medium'} />
             </IconButton>
-          </Box>
+          </UserProfileName>
           {account !== undefined && account !== null ? (
             <Box
               sx={{
@@ -127,7 +141,7 @@ const UserProfile = () => {
                 borderRadius: '50px',
                 py: '5px',
                 px: '10px',
-                my: '10px',
+                my: '5px',
                 cursor: 'pointer',
               }}
               onClick={() => copyToClipBoard(account)}
@@ -156,8 +170,6 @@ const UserProfile = () => {
 
           <Typography
             sx={{
-              px: 3,
-              textAlign: 'center',
               background: showAll
                 ? 'none'
                 : `linear-gradient(to bottom, ${theme.palette.text.secondary}, #fff)`,
@@ -176,7 +188,7 @@ const UserProfile = () => {
           </IconButton>
           {/*<Typography variant={'body1'}>{userInfor.description}</Typography>*/}
         </Box>
-      </Box>
+      </UserProfileWrapper>
       <Container>
         <Box
           sx={{
