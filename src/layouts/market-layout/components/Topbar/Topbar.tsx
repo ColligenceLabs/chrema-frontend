@@ -28,6 +28,7 @@ import marketService from '../../../../services/market.service';
 import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
 import useUserInfo from '../../../../hooks/useUserInfo';
 import { setupNetwork } from '../../../../utils/wallet';
+import { targetNetwork } from '../../../../config';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -105,13 +106,12 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   useEffect(() => {
     const authProcess = async () => {
-      await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
+      await marketService.loginWidthAddress(account, parseInt(targetNetwork));
     };
 
     if (account) authProcess();
 
-    if (chainId !== process.env.REACT_APP_CHAIN_ID)
-      setupNetwork(parseInt(process.env.REACT_APP_CHAIN_ID, 10));
+    if (chainId !== parseInt(targetNetwork)) setupNetwork(parseInt(targetNetwork));
   }, [account]);
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
