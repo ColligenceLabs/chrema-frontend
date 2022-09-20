@@ -5,6 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import useSWR from 'swr';
 import { TrendingCategoryItem, TrendingCategoryResponse } from '../../types';
+import ntal_logo from '../../../../assets/images/logos/ntal_logo.png';
 import taal_logo from '../../../../assets/images/landing_icon/introduction_taal.svg';
 import talk_icon from '../../../../assets/images/logos/talken_icon.png';
 import klay_icon from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
@@ -253,7 +254,7 @@ const TopCollections = () => {
                   -
                 </Typography>
               </Box>
-              <Avatar src={taal_logo} />
+              <Avatar src={ntal_logo} />
               <Box sx={{ flex: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography fontSize={'13px'} fontWeight={700}>
