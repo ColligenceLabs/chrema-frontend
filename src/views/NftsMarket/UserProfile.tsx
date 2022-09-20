@@ -94,7 +94,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     const authProcess = async () => {
-      const res = await marketService.loginWidthAddress(account, parseInt(targetNetwork));
+      const res = await marketService.loginWidthAddress(account, parseInt(targetNetwork!));
 
       if (res.status === 1) setUserInfor(res.data.infor);
     };

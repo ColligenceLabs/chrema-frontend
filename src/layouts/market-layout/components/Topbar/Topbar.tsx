@@ -80,7 +80,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const { activate, deactivate, account, chainId } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
-  const [userImage, setUserImage] = useState();
+  const [userImage, setUserImage] = useState<string | null>();
   const { activatingConnector } = useSelector((state: any) => state.wallet);
 
   const openProfile = Boolean(anchorProfileEl);
@@ -107,7 +107,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   useEffect(() => {
     const authProcess = async () => {
-      const res = await marketService.loginWidthAddress(account, parseInt(targetNetwork));
+      const res = await marketService.loginWidthAddress(account, parseInt(targetNetwork!));
       if (res.status === 1) {
         setUserImage(res.data.infor.image);
       }
@@ -116,7 +116,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
     if (account) authProcess();
     else setUserImage(null);
 
-    if (chainId !== parseInt(targetNetwork)) setupNetwork(parseInt(targetNetwork));
+    if (chainId !== parseInt(targetNetwork!)) setupNetwork(parseInt(targetNetwork!));
   }, [account]);
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
