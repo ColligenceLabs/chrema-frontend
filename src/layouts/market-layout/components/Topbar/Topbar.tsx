@@ -79,7 +79,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const { activate, deactivate, account, chainId } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
-  const { activatingConnector } = useSelector((state) => state.wallet);
+  const { activatingConnector } = useSelector((state: any) => state.wallet);
 
   const openProfile = Boolean(anchorProfileEl);
 
@@ -196,9 +196,9 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             ) : (
               <AccountCircleOutlinedIcon
                 sx={{
-                  // color: account ? `${theme.palette.primary.main}` : 'text.secondary',
+                  color: account ? `${theme.palette.primary.main}` : 'text.secondary',
                   fontSize: '2rem',
-                  // '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
+                  '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
                 }}
               />
             )}
@@ -236,12 +236,12 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               </ListItemIcon>
               My Collections
             </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <Settings />
-              </ListItemIcon>
-              Settings
-            </StyledMenuItem>
+            {/*<StyledMenuItem>*/}
+            {/*  <ListItemIcon>*/}
+            {/*    <Settings />*/}
+            {/*  </ListItemIcon>*/}
+            {/*  Settings*/}
+            {/*</StyledMenuItem>*/}
             <StyledMenuItem
               onClick={async () => {
                 await deactivate();
