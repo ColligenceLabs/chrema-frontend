@@ -8,6 +8,7 @@ import {
   Menu,
   MenuItem,
   Paper,
+  Select,
   Snackbar,
   Typography,
 } from '@mui/material';
@@ -99,6 +100,8 @@ const StyledMenuItem = styled(MenuItem)`
     border-bottom: none;
   }
 `;
+
+const QUOTE_TOKEN = [{ value: 'klay', caption: 'KLAY' }];
 
 const categories = [
   {
@@ -222,6 +225,8 @@ const CreateNewItem = () => {
           // category: categories[0].value,
           price: '',
           type: '0',
+          quote: 'klay',
+          externalURL: '',
         }}
         onSubmit={async (values, actions) => {
           console.log('Mint start!');
@@ -249,10 +254,10 @@ const CreateNewItem = () => {
             }
           }
 
-          formData.append('quantity', values['amount']);
+          formData.append('quantity', '1');
           formData.append('collection_id', values['collection']);
           formData.append('file', values['nftItem']);
-          formData.append('quote', 'klay');
+          // formData.append('quote', 'klay');
           if (values['thumbnail'] === null) {
             formData.append('thumbnail', values['nftItem']);
           } else {
@@ -260,7 +265,7 @@ const CreateNewItem = () => {
           }
 
           formData.append('category', values['category']);
-          // formData.append('external_url', values['externalURL']);
+          formData.append('external_url', values['externalURL']);
 
           let result = SUCCESS;
           // console.log(ethereum, klaytn, solana, binance);
@@ -435,6 +440,18 @@ const CreateNewItem = () => {
               </FieldWrapper>
 
               <FieldWrapper>
+                <FiledTitle>External URL</FiledTitle>
+                <CustomTextField
+                  name="externalURL"
+                  value={values.externalURL}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                />
+              </FieldWrapper>
+
+              <FieldWrapper>
                 <FiledTitle>Category</FiledTitle>
                 <FieldSubscription variant="h6">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -447,46 +464,41 @@ const CreateNewItem = () => {
                   fullWidth
                   size="small"
                 />
-                {/*<CustomSelect*/}
-                {/*  name="category"*/}
-                {/*  value={values.category}*/}
-                {/*  onChange={handleChange}*/}
-                {/*  fullWidth*/}
-                {/*  size="small"*/}
-                {/*  disabled*/}
-                {/*  PaperProps={{*/}
-                {/*    elevation: 0,*/}
-                {/*    sx: {*/}
-                {/*      minWidth: '250px',*/}
-                {/*      overflow: 'visible',*/}
-                {/*      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',*/}
-                {/*      mt: 2.2,*/}
-                {/*      '& .MuiMenu-list': {*/}
-                {/*        p: 0,*/}
-                {/*      },*/}
-                {/*    },*/}
-                {/*  }}*/}
-                {/*>*/}
-                {/*  {categories.map((category) => (*/}
-                {/*    <StyledMenuItem key={category.id} value={category.value}>*/}
-                {/*      {category.caption}*/}
-                {/*    </StyledMenuItem>*/}
-                {/*  ))}*/}
-                {/*</CustomSelect>*/}
               </FieldWrapper>
 
               <FieldWrapper>
                 <FiledTitle>Price</FiledTitle>
                 <FieldSubscription variant="h6">Lorem ipsum dolor sit amet.</FieldSubscription>
-                <CustomTextField
-                  name="price"
-                  type="number"
-                  value={values.price}
-                  onChange={handleChange}
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                />
+                <Box sx={{ display: 'flex' }}>
+                  <Select
+                    sx={{
+                      minWidth: 90,
+                      borderColor: 'rgba(255, 255, 255, 0.12)',
+                      opacity: '1',
+                      marginRight: '10px',
+                    }}
+                    value={values.quote}
+                    size="small"
+                    onChange={(event) => {
+                      setFieldValue('quote', event.target.value);
+                    }}
+                  >
+                    {QUOTE_TOKEN.map((item, index) => (
+                      <MenuItem key={index} value={item.value}>
+                        {item.caption}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <CustomTextField
+                    name="price"
+                    type="number"
+                    value={values.price}
+                    onChange={handleChange}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                  />
+                </Box>
               </FieldWrapper>
 
               <FieldWrapper>
