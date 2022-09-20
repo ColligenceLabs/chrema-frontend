@@ -247,7 +247,7 @@ const CreateNewCollection = () => {
           url: '',
           description: '',
           category: [],
-          network: 'ethereum',
+          network: 'klaytn',
           contractAddress: undefined,
           type: 'KIP17',
           symbol: '',
@@ -273,6 +273,9 @@ const CreateNewCollection = () => {
           formData.append('name', values.name);
           formData.append('symbol', values.symbol);
           formData.append('creator_id', id);
+          formData.append('fee_payout', account);
+          formData.append('fee_percentage', '2');
+
           // values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
           // formData.append('url', values.url)
