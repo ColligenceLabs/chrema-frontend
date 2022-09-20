@@ -69,7 +69,7 @@ const StyledMenuItem = styled(MenuItem)`
 const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { image: userImage } = useUserInfo();
+  // const { image: userImage } = useUserInfo();
 
   const theme = useTheme();
   const dispatch = useDispatch();
