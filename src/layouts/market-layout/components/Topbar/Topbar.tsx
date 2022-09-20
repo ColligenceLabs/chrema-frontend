@@ -28,6 +28,7 @@ import marketService from '../../../../services/market.service';
 import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
 import useUserInfo from '../../../../hooks/useUserInfo';
 import { setupNetwork } from '../../../../utils/wallet';
+import { targetNetwork } from '../../../../config';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -68,7 +69,7 @@ const StyledMenuItem = styled(MenuItem)`
 const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  // const { image: userImage } = useUserInfo();
+  const { image: userImage } = useUserInfo();
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   useEffect(() => {
     const authProcess = async () => {
-      const res = await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
+      const res = await marketService.loginWidthAddress(account, parseInt(targetNetwork));
       if (res.status === 1) {
         setUserImage(res.data.infor.image);
       }
@@ -115,8 +116,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
     if (account) authProcess();
     else setUserImage(null);
 
-    if (chainId !== process.env.REACT_APP_CHAIN_ID)
-      setupNetwork(parseInt(process.env.REACT_APP_CHAIN_ID, 10));
+    if (chainId !== parseInt(targetNetwork)) setupNetwork(parseInt(targetNetwork));
   }, [account]);
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>

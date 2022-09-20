@@ -18,6 +18,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import marketService from '../../services/market.service';
+import { targetNetwork } from '../../config';
 
 const UserProfileWrapper = styled(Box)`
   display: flex;
@@ -93,7 +94,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     const authProcess = async () => {
-      const res = await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
+      const res = await marketService.loginWidthAddress(account, parseInt(targetNetwork));
 
       if (res.status === 1) setUserInfor(res.data.infor);
     };
