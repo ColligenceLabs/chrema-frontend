@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -12,11 +12,10 @@ const LogoWrapper = styled(Link)`
   align-items: center;
   gap: 10px;
 `;
+
 const LogoIcon = () => {
   const mdDown = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  useEffect(() => {
-    console.log(mdDown);
-  }, [mdDown]);
+
   return (
     <>
       <LogoWrapper to="/">
@@ -28,7 +27,6 @@ const LogoIcon = () => {
         >
           NTal
         </Typography>
-        {/*</Box>*/}
       </LogoWrapper>
     </>
   );
