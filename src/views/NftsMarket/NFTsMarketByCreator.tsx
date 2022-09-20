@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
 import Container from './components/Container';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
@@ -8,8 +8,10 @@ import useSWRInfinite from 'swr/infinite';
 import CollectionItem from './components/CollectionItem';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import userImage from '../../assets/images/users/user.png';
+import bannerImage from '../../assets/images/users/banner.png';
 import useSWR from 'swr';
 
 interface CreatorInfoType {
@@ -17,6 +19,25 @@ interface CreatorInfoType {
   image: string;
   description: string;
 }
+const UserProfileLogo = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  margin-top: -130px;
+  margin-left: 30px;
+
+  & img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    borderr-adius: 100%;
+    border: 5px solid white;
+    box-sizing: border-box;
+  }
+`;
+
 const PAGE_SIZE = 20;
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -27,14 +48,9 @@ const NFTsMarketByCreator = () => {
     defaultMatches: true,
   });
   const [showAll, setShowAll] = useState(false);
-  const [creatorInfo, setCreatorInfo] = useState<CreatorInfoType>({
-    full_name: '',
-    image: '',
-    description: '',
-  });
 
   const { data: creatorData, error: creatorDataError } = useSWR(
-    `${process.env.REACT_APP_API_SERVER}/admin-api/admin/detail/${id}`,
+    `${process.env.REACT_APP_API_SERVER}/market/profile/${id}`,
     fetcher,
   );
 
@@ -62,34 +78,25 @@ const NFTsMarketByCreator = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Box sx={{ width: 1, height: '350px' }}>
               <img
-                src={creatorData?.data?.image}
+                src={creatorData?.data?.banner ? creatorData?.data?.banner : bannerImage}
                 alt={creatorData?.data?.full_name}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '150px',
-                height: '150px',
-                marginTop: '-75px',
-              }}
-            >
+            <UserProfileLogo>
               <img
-                src={creatorData?.data?.image}
-                alt={creatorData?.data?.full_name}
+                src={creatorData?.data?.image ? creatorData?.data?.image : userImage}
+                alt={creatorData?.data?.name}
                 style={{
                   width: '150px',
                   height: '150px',
                   objectFit: 'cover',
-                  borderRadius: '100%',
+                  // borderRadius: '100%',
                   border: '5px solid white',
                   boxSizing: 'border-box',
                 }}
               />
-            </Box>
+            </UserProfileLogo>
 
             <Box
               sx={{
@@ -102,7 +109,7 @@ const NFTsMarketByCreator = () => {
             >
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
                 <Typography variant={'h1'} color={'primary'}>
-                  {creatorData?.data?.full_name}
+                  {creatorData?.data?.name}
                 </Typography>
               </Box>
 
@@ -119,9 +126,9 @@ const NFTsMarketByCreator = () => {
                 variant={'body1'}
                 color="text.secondary"
               >
-                {showAll
-                  ? creatorData?.data?.description
-                  : `${creatorData?.data?.description.slice(0, smDown ? 150 : 300)}`}
+                {showAll && creatorData?.data?.description !== null
+                  ? `${creatorData?.data?.description.slice(0, smDown ? 150 : 300)}`
+                  : creatorData?.data?.description}
               </Typography>
               <IconButton onClick={() => setShowAll((curr) => !curr)}>
                 {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
