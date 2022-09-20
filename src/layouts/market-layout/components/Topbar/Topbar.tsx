@@ -68,7 +68,7 @@ const StyledMenuItem = styled(MenuItem)`
 const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   // @ts-ignore
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { image: userImage } = useUserInfo();
+  // const { image: userImage } = useUserInfo();
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -79,6 +79,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const { activate, deactivate, account, chainId } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
+  const [userImage, setUserImage] = useState();
   const { activatingConnector } = useSelector((state: any) => state.wallet);
 
   const openProfile = Boolean(anchorProfileEl);
@@ -105,10 +106,14 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   useEffect(() => {
     const authProcess = async () => {
-      await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
+      const res = await marketService.loginWidthAddress(account, process.env.REACT_APP_CHAIN_ID);
+      if (res.status === 1) {
+        setUserImage(res.data.infor.image);
+      }
     };
 
     if (account) authProcess();
+    else setUserImage(null);
 
     if (chainId !== process.env.REACT_APP_CHAIN_ID)
       setupNetwork(parseInt(process.env.REACT_APP_CHAIN_ID, 10));
@@ -191,7 +196,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             aria-expanded={openProfile ? 'true' : undefined}
           >
             {/*<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>*/}
-            {userImage ? (
+            {account && userImage ? (
               <Avatar src={userImage} sx={{ width: 32, height: 32 }} />
             ) : (
               <AccountCircleOutlinedIcon
