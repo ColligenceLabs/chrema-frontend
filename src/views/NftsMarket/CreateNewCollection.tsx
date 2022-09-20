@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import { styled } from '@mui/material/styles';
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -9,6 +10,7 @@ import {
   Grid,
   MenuItem,
   RadioGroup,
+  Snackbar,
   Typography,
 } from '@mui/material';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
@@ -114,13 +116,17 @@ const CreateNewCollection = () => {
   const { endpoint } = useConnectionConfig();
   const useKAS = process.env.REACT_APP_USE_KAS ?? 'false';
   // const { ethereum, klaytn, solana, binance } = useSelector((state) => state.wallets);
-  const [errorMessage, setErrorMessage] = useState<string | null>('');
-  const [successRegister, setSuccessRegister] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [selectedNetworkIndex, setSelectedNetworkIndex] = useState(0);
   const [cost, setCost] = useState(0);
   const [nftCreateProgress, setNFTcreateProgress] = useState(0);
   const [collection, setCollection] = useState<any>(undefined);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   const handleCloseModal = async () => {
     setIsOpenConnectModal(false);
@@ -338,7 +344,7 @@ const CreateNewCollection = () => {
 
           if (!newContract) {
             setErrorMessage('contract deploy fail.');
-            setSuccessRegister(false);
+            setOpenSnackbar(true);
             setSubmitting(false);
             return;
           }
@@ -357,10 +363,10 @@ const CreateNewCollection = () => {
               console.log(res);
               if (res.data.status === 1) {
                 setErrorMessage(null);
-                setSuccessRegister(true);
+                setOpenSnackbar(true);
               } else {
                 setErrorMessage(res.data.message);
-                setSuccessRegister(false);
+                setOpenSnackbar(true);
               }
             })
             .catch((error) => console.log(error));
@@ -522,6 +528,32 @@ const CreateNewCollection = () => {
         handleCloseModal={handleCloseModal}
         activate={activate}
       />
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        {errorMessage ? (
+          <Alert
+            onClose={handleCloseSnackbar}
+            variant="filled"
+            severity="error"
+            sx={{ width: '100%' }}
+          >
+            Failed create collection.
+          </Alert>
+        ) : (
+          <Alert
+            onClose={handleCloseSnackbar}
+            variant="filled"
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Success create collection.
+          </Alert>
+        )}
+      </Snackbar>
     </MarketLayout>
   );
 };

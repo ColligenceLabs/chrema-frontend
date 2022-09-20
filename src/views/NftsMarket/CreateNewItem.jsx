@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
-import { Box, Button, Container, Menu, MenuItem, Paper, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Menu,
+  MenuItem,
+  Paper,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
 import CustomTextField from '../../components/forms/custom-elements/CustomTextField';
@@ -89,24 +99,6 @@ const StyledMenuItem = styled(MenuItem)`
     border-bottom: none;
   }
 `;
-const collections = [
-  {
-    id: 0,
-    name: 'test1',
-  },
-  {
-    id: 1,
-    name: 'test2',
-  },
-  {
-    id: 2,
-    name: 'test3',
-  },
-  {
-    id: 3,
-    name: 'test4',
-  },
-];
 
 const categories = [
   {
@@ -166,6 +158,7 @@ const CreateNewItem = () => {
   const navigate = useNavigate();
   const { level, id, full_name } = useUserInfo();
   const { account, chainId } = useActiveWeb3React();
+
   const [collectionList, setCollectionList] = useState([]);
   const [nftItem, setNftItem] = useState(null);
   const [collection, setCollection] = useState(null);
@@ -179,6 +172,9 @@ const CreateNewItem = () => {
   const [contractType, setContractType] = useState('');
   const kipContract = useKipContract(contractAddr, contractType);
   const kasContract = useKipContractWithKaikas(contractAddr, contractType);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const {
     mintNFT17,
     mintNFT17WithKaikas,
@@ -187,6 +183,10 @@ const CreateNewItem = () => {
     isMinting,
     mintNFTBatch,
   } = useNFT(kipContract, kasContract, account);
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   const moveToPage = () => {
     navigate('/market/mycollection');
@@ -326,19 +326,19 @@ const CreateNewItem = () => {
                 if (result === FAILURE) {
                   // delete nft and serials
                   await cancelCreateNft(nftId);
-                  // setErrorMessage('Transaction failed or cancelled.');
-                  // setSuccessRegister(false);
-                  // } else {
-                  //   setErrorMessage(null);
-                  //   setSuccessRegister(true);
+
+                  setErrorMessage('Transaction failed or cancelled.');
+                  setOpenSnackbar(true);
+                } else {
+                  setOpenSnackbar(true);
                 }
-                // } else {
-                //   setErrorMessage(res.data.message);
-                //   setSuccessRegister(false);
               }
             })
-            .catch((error) => console.log(error));
-
+            .catch((error) => {
+              console.log(error);
+              setErrorMessage('Failed NFT mint.');
+              setOpenSnackbar(true);
+            });
           // setSubmitting(false);
         }}
       >
@@ -504,6 +504,32 @@ const CreateNewItem = () => {
           </form>
         )}
       </Formik>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        {errorMessage ? (
+          <Alert
+            onClose={handleCloseSnackbar}
+            variant="filled"
+            severity="error"
+            sx={{ width: '100%' }}
+          >
+            Failed create collection.
+          </Alert>
+        ) : (
+          <Alert
+            onClose={handleCloseSnackbar}
+            variant="filled"
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Success create collection.
+          </Alert>
+        )}
+      </Snackbar>
     </MarketLayout>
   );
 };
