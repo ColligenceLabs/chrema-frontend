@@ -192,10 +192,9 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             ) : (
               <AccountCircleOutlinedIcon
                 sx={{
-                  color: account ? `${theme.palette.primary.main}` : 'text.secondary',
+                  // color: account ? `${theme.palette.primary.main}` : 'text.secondary',
                   fontSize: '2rem',
-
-                  '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
+                  // '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
                 }}
               />
             )}
