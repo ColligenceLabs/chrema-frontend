@@ -27,6 +27,7 @@ import { logout } from '../../../../redux/slices/auth';
 import marketService from '../../../../services/market.service';
 import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
 import useUserInfo from '../../../../hooks/useUserInfo';
+import { setupNetwork } from '../../../../utils/wallet';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -75,7 +76,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   const { pathname } = useLocation();
   const context = useWeb3React();
-  const { activate, deactivate, account } = context;
+  const { activate, deactivate, account, chainId } = context;
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const { activatingConnector } = useSelector((state) => state.wallet);
@@ -108,6 +109,9 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
     };
 
     if (account) authProcess();
+
+    if (chainId !== process.env.REACT_APP_CHAIN_ID)
+      setupNetwork(parseInt(process.env.REACT_APP_CHAIN_ID, 10));
   }, [account]);
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
