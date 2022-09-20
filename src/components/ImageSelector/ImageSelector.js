@@ -69,8 +69,6 @@ const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '25
   const [preview, setPreview] = useState(image ? image : null);
   const [previewType, setPreviewType] = useState('image/jpeg');
 
-  console.log(image);
-
   const onDrop = (acceptedFiles) => {
     const theFile = acceptedFiles[0];
     const reader = new FileReader();
