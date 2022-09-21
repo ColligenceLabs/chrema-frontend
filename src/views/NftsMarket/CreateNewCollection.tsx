@@ -276,7 +276,7 @@ const CreateNewCollection = () => {
           formData.append('fee_payout', account);
           formData.append('fee_percentage', '2');
 
-          // values['category'].forEach((category) => formData.append('category', category));
+          values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
           // formData.append('url', values.url)
 
