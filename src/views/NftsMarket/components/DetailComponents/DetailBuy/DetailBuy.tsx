@@ -104,6 +104,10 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
     defaultMatches: true,
   });
 
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
+    defaultMatches: true,
+  });
+
   // dapp route
   let API_URL;
   if (params.state === null) {
@@ -236,39 +240,106 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       }
       // icon={<StorefrontOutlinedIcon />}
     >
-      <>
-        <Box sx={{ pt: 2, px: 2 }}>
-          <Typography variant={'subtitle2'} color={'primary'}>
-            Selling Quantity
-          </Typography>
-          <Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'} gap={'0.5rem'}>
-            <Typography variant={'h1'}>{sellingQuantity}</Typography>
+      <Box sx={{ maxWidth: mdDown ? '100%' : '70%' }}>
+        <Box
+          sx={{
+            pt: 2,
+            px: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 2,
+            }}
+          >
+            <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
+              Selling Quantity
+            </Typography>
+            <Box
+              display={'flex'}
+              justifyContent={'flex-start'}
+              alignItems={'center'}
+              gap={'0.5rem'}
+            >
+              <Typography variant={'h3'}>{sellingQuantity}</Typography>
+            </Box>
           </Box>
         </Box>
         <Box sx={{ py: 1, px: 2 }}>
-          <Typography variant={'subtitle2'} color={'primary'}>
-            {sellingQuantity === 0 ? 'Current Price' : 'Price'}
-          </Typography>
-          <Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'} gap={'0.5rem'}>
-            {data?.data?.quote === 'klay' && <img src={klayLogo} alt="klay" height="24px" />}
-            {data?.data?.quote === 'talk' && <img src={talkLogo} alt="talk" height="24px" />}
-            {data?.data?.quote === 'bnb' && <img src={bnbLogo} alt="bnb" height="24px" />}
-            {data?.data?.quote === 'krw' && (
-              <Typography variant={'h1'} color={'text.primary'}>
-                ￦
-              </Typography>
-            )}
-            <Typography variant={'h1'}>
-              {sellingQuantity === 0 && !buyFlag
-                ? getNftPrice(
-                    data?.data?.price,
-                    data?.data?.floor_price,
-                    data?.data?.user_quantity_selling,
-                    data?.data?.quantity_selling,
-                    data?.data?.last_price,
-                  )
-                : sliceFloatNumber(data?.data?.price.toString())}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 2,
+            }}
+          >
+            <Typography variant={'subtitle2'} color={'primary'}>
+              {sellingQuantity === 0 ? 'Current Price' : 'Price'}
             </Typography>
+            <Box
+              display={'flex'}
+              justifyContent={'flex-start'}
+              alignItems={'center'}
+              gap={'0.5rem'}
+            >
+              {data?.data?.quote === 'klay' && <img src={klayLogo} alt="klay" height="18px" />}
+              {data?.data?.quote === 'talk' && <img src={talkLogo} alt="talk" height="18px" />}
+              {data?.data?.quote === 'bnb' && <img src={bnbLogo} alt="bnb" height="18px" />}
+              {data?.data?.quote === 'krw' && (
+                <Typography variant={'h3'} color={'text.primary'}>
+                  ￦
+                </Typography>
+              )}
+              <Typography variant={'h3'}>
+                {sellingQuantity === 0 && !buyFlag
+                  ? getNftPrice(
+                      data?.data?.price,
+                      data?.data?.floor_price,
+                      data?.data?.user_quantity_selling,
+                      data?.data?.quantity_selling,
+                      data?.data?.last_price,
+                    )
+                  : sliceFloatNumber(data?.data?.price.toString())}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 4,
+            }}
+          >
+            <Typography variant={'subtitle2'} color={'primary'}>
+              Amount 또는 Rental Duration (in Days)
+            </Typography>
+            <CustomTextField
+              id="days"
+              name="days"
+              variant="outlined"
+              type="number"
+              size="small"
+              value={days}
+              inputProps={{ min: 1, step: 1 }}
+              sx={{ textAlign: 'right' }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const validated = e.target.value.match(/^(\s*|\d+)$/);
+                if (validated && parseInt(e.target.value) <= 0) {
+                  setDays('1');
+                } else {
+                  setDays(e.target.value);
+                }
+              }}
+              onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+                parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)
+              }
+            />
           </Box>
 
           {account !== undefined || data?.data?.quote === 'krw' ? (
@@ -341,48 +412,33 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                   </Box>
                 </Box>
               ) : (
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <CustomTextField
-                    id="days"
-                    name="days"
-                    variant="outlined"
-                    type="number"
-                    size="small"
-                    value={days}
-                    inputProps={{ min: 1, step: 1 }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      const validated = e.target.value.match(/^(\s*|\d+)$/);
-                      if (validated && parseInt(e.target.value) <= 0) {
-                        setDays('1');
-                      } else {
-                        setDays(e.target.value);
-                      }
-                    }}
-                    onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)
-                    }
-                    sx={{ marginRight: 2 }}
-                  />
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   <LoadingButton
                     // fullWidth
                     onClick={buy}
                     disabled={sellingQuantity === 0}
                     loading={buyFlag}
                     variant="contained"
-                    sx={{ width: smDown ? '50px' : '120px', height: '40px' }}
+                    sx={{ width: smDown ? '50px' : '120px', height: '40px', marginRight: 5 }}
                   >
                     {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
                   </LoadingButton>
+                  <LoadingButton
+                    onClick={handleOpenOffer}
+                    // loading={buyFlag}
+                    variant="contained"
+                    sx={{ width: smDown ? '50px' : '120px', height: '40px' }}
+                  >
+                    Offer
+                  </LoadingButton>
                 </Box>
               )}
-              <LoadingButton
-                onClick={handleOpenOffer}
-                // loading={buyFlag}
-                variant="contained"
-                sx={{ width: smDown ? '50px' : '120px', height: '40px' }}
-              >
-                Offer
-              </LoadingButton>
             </Box>
           ) : (
             <Button variant="contained" onClick={() => setIsOpenConnectModal(true)} fullWidth>
@@ -390,7 +446,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
             </Button>
           )}
         </Box>
-      </>
+      </Box>
       <WalletConnectorDialog
         selectedNetworkIndex={selectedNetworkId}
         isOpenConnectModal={isOpenConnectModal}
