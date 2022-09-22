@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
@@ -25,6 +26,7 @@ import useActiveWeb3React from '../hooks/useActiveWeb3React';
 import { logout } from '../redux/slices/auth';
 import splitAddress from '../utils/splitAddress';
 import { useNavigate } from 'react-router-dom';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -62,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   chipWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    marginRight: '1.5rem',
+    marginRight: '1rem',
     gap: '0.15rem',
   },
 }));
@@ -85,16 +87,20 @@ const EthChip = () => (
     label="ETH"
     color="warning"
     size="string"
-    style={{ height: '15px', width: '55px', fontSize: '8px' }}
+    style={{ height: '15px', width: '45px', fontSize: '8px' }}
   />
 );
 
 const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
+  const theme = useTheme();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { account, deactivate } = useActiveWeb3React();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+    defaultMatches: true,
+  });
 
   const onClickWallet = async (wallet) => {
     try {
@@ -140,7 +146,14 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
         {account ? (
           <DialogContent>
             <Box
-              sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: smDown ? 'column' : 'rows',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 2,
+              }}
             >
               <span>{splitAddress(account, 10)}</span>
               <Button
