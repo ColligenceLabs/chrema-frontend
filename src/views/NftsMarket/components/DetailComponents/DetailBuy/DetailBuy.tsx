@@ -130,6 +130,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   const [sellingQuantity, setSellingQuantity] = useState(0);
   const [buyFlag, setBuyFlag] = useState(false);
   const [amount, setAmount] = useState('1');
+  const [days, setDays] = useState('1');
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [krwMessage, setKrwMessage] = useState({
     open: false,
@@ -140,6 +141,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   const { vertical, horizontal, open } = krwMessage;
 
   const buy = async () => {
+    console.log(`days: : ${days}`);
     if (data?.data?.quote === 'krw') {
       // setKrwMessage({ ...krwMessage, open: true });
       window.open('https://forms.gle/oFfSPSnWYR1xVoxD6');
@@ -339,13 +341,35 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                   </Box>
                 </Box>
               ) : (
-                <Box sx={{ flex: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                  <CustomTextField
+                    id="days"
+                    name="days"
+                    variant="outlined"
+                    type="number"
+                    size="small"
+                    value={days}
+                    inputProps={{ min: 1, step: 1 }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const validated = e.target.value.match(/^(\s*|\d+)$/);
+                      if (validated && parseInt(e.target.value) <= 0) {
+                        setDays('1');
+                      } else {
+                        setDays(e.target.value);
+                      }
+                    }}
+                    onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)
+                    }
+                    sx={{ marginRight: 2 }}
+                  />
                   <LoadingButton
-                    fullWidth
+                    // fullWidth
                     onClick={buy}
                     disabled={sellingQuantity === 0}
                     loading={buyFlag}
                     variant="contained"
+                    sx={{ width: smDown ? '50px' : '120px', height: '40px' }}
                   >
                     {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
                   </LoadingButton>
