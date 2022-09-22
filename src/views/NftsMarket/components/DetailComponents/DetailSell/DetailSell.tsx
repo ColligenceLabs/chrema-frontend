@@ -12,6 +12,7 @@ import SectionWrapper from '../SectionWrapper';
 import useMarket from '../../../../../hooks/useMarket';
 import { getNftContract } from '../../../../../utils/contract';
 import { getChainId } from '../../../../../utils/commonUtils';
+import ScheduleDialog from '../../../../NFTs/ScheduleDialog';
 
 interface DetailSellProps {
   id: string;
@@ -47,14 +48,14 @@ const DetailSell: React.FC<DetailSellProps> = ({
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [minPriceCheck, setMinPriceCheck] = useState(false);
+  const [openScheduleModal, setOpenScheduleModal] = useState(false);
+  const [selected, setSelected] = React.useState('');
 
   let API_URL;
 
   // dapp route
   if (params.state === null) {
     API_URL = `${process.env.REACT_APP_API_SERVER}/admin-api/nft/detail/${id}`;
-  } else {
-    console.log('from talken app');
   }
 
   const { data, error, mutate } = useSWR(API_URL, () => nftDetail(id));
@@ -66,9 +67,19 @@ const DetailSell: React.FC<DetailSellProps> = ({
     getUserNftSerialsData(id, account),
   );
 
+  const openSchedule = () => {
+    setOpenScheduleModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenScheduleModal(false);
+    mutate();
+    myNftMutate();
+  };
+
   const sell = async () => {
     setSellStatus(true);
-    // console.log(myNftData, myNftData.data.length, sellAmount);
+
     if (parseFloat(sellPrice) < 0.000001) {
       setMinPriceCheck(true);
       setSellStatus(false);
@@ -90,6 +101,10 @@ const DetailSell: React.FC<DetailSellProps> = ({
       const payout =
         data?.data?.collection_id?.fee_payout ?? '0x0000000000000000000000000000000000000000';
       const rate = data?.data?.collection_id?.fee_percentage ?? 0;
+
+      // here
+      setOpenScheduleModal(true);
+
       await sellNFT(
         nftContract,
         nftType,
@@ -103,9 +118,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
       );
 
       const sellSerials = myNftData.data.slice(0, sellAmount);
-      // console.log(sellSerials);
       const serialIds = sellSerials.map((serial: { _id: any }) => serial._id);
-      // console.log(serialIds);
       // 사용자 판매 내역을 등록 api 호출 (sale collection 에 등록, serials 의 상태를 판매상태로 변경, nft 컬렉션에 user_selling_quantity 추가)
       const result = await sellUserNft(
         account,
@@ -117,7 +130,6 @@ const DetailSell: React.FC<DetailSellProps> = ({
         myNftData.data[0].token_id,
         serialIds,
       );
-      // console.log(result);
       if (result.status === 0) {
         // error
         console.log(result.message);
@@ -213,44 +225,54 @@ const DetailSell: React.FC<DetailSellProps> = ({
                 />
               </Box>
             )}
-            <Box sx={{ flex: 2 }}>
-              <Typography variant={'subtitle2'} color={'primary'}>
-                {`Unit Price (${data?.data?.quote.toUpperCase()})`}
-              </Typography>
+            {data?.data?.seller ? (
+              <>
+                <Box sx={{ flex: 2 }}>
+                  <Typography variant={'subtitle2'} color={'primary'}>
+                    {`Unit Price (${data?.data?.quote.toUpperCase()})`}
+                  </Typography>
 
-              <CustomTextField
-                id="price"
-                name="price"
-                variant="outlined"
-                type="number"
-                size="small"
-                value={sellPrice}
-                inputProps={{ min: 0, maxLength: 8 }}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  const validated = event.target.value.match(/^(\d*\.{0,1}\d{0,6}$)/);
-                  if (validated) {
-                    setSellPrice(event.target.value);
-                  }
-                }}
-                fullWidth
-              />
-            </Box>
-            <Box sx={{ flex: 1, width: smDown ? '50px' : '100px' }}>
-              <LoadingButton
-                disabled={
-                  totalPrice === 0 ||
-                  isNaN(totalPrice) ||
-                  myNFTCount < sellAmount ||
-                  data?.data?.quote === 'krw'
-                }
-                loading={sellStatus}
-                onClick={sell}
-                fullWidth
-                variant="contained"
-              >
-                Sell
-              </LoadingButton>
-            </Box>
+                  <CustomTextField
+                    id="price"
+                    name="price"
+                    variant="outlined"
+                    type="number"
+                    size="small"
+                    value={sellPrice}
+                    inputProps={{ min: 0, maxLength: 8 }}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      const validated = event.target.value.match(/^(\d*\.{0,1}\d{0,6}$)/);
+                      if (validated) {
+                        setSellPrice(event.target.value);
+                      }
+                    }}
+                    fullWidth
+                  />
+                </Box>
+                <Box sx={{ flex: 1, width: smDown ? '50px' : '100px' }}>
+                  <LoadingButton
+                    disabled={
+                      totalPrice === 0 ||
+                      isNaN(totalPrice) ||
+                      myNFTCount < sellAmount ||
+                      data?.data?.quote === 'krw'
+                    }
+                    loading={sellStatus}
+                    onClick={sell}
+                    fullWidth
+                    variant="contained"
+                  >
+                    Sell
+                  </LoadingButton>
+                </Box>
+              </>
+            ) : (
+              <>
+                <LoadingButton loading={loading} variant="contained" onClick={openSchedule}>
+                  Add Schedule
+                </LoadingButton>
+              </>
+            )}
           </Box>
 
           <Box>
@@ -319,6 +341,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
           {errorMessage === '' ? 'Success' : `Fail (${errorMessage})`}
         </Alert>
       </Snackbar>
+      <ScheduleDialog open={openScheduleModal} handleCloseModal={handleCloseModal} selected={id} />
     </>
   );
 };
