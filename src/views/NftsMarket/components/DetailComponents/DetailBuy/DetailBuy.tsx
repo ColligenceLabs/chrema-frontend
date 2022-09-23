@@ -183,7 +183,9 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
         attributes: [],
       };
 
-      const uri = await rentalMetadata(reqBody);
+      const vault = await rentalMetadata(reqBody);
+      const uri = vault?.data?.data?.result.metaLink;
+      console.log('presigned url : ', uri);
 
       const result = await buyNFT(
         isKaikas ? nftContractWithKaikas : nftContract,
