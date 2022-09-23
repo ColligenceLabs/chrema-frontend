@@ -21,9 +21,27 @@ export const getNFTData = (type, page, rowsPerPage, searchKeyword, collectionId,
     });
 };
 
+export const rentalMetadata = (request) => {
+  return axios
+    .post(`${API_URL}/metadata-rental`, request, { headers: authHeader() })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => (error.response.status === 401 ? authService.logout() : console.log(error)));
+};
+
 export const registerNFT = (formData) => {
   return axios
     .post(`${API_URL}/create`, formData, { headers: authHeader() })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => (error.response.status === 401 ? authService.logout() : console.log(error)));
+};
+
+export const registerRentalNFT = (formData) => {
+  return axios
+    .post(`${API_URL}/create-rental`, formData, { headers: authHeader() })
     .then((res) => {
       return res;
     })
@@ -98,19 +116,15 @@ export const setNftTransferData = (nft_id, to_address, amount, transactionHash) 
 };
 
 export const cancelCreateNft = (nftId) => {
-    return axios
-      .delete(`${API_URL}/cancel-create/${nftId}`, { headers: authHeader() })
-      .catch((error) =>
-        error.response.status === 401 ? authService.logout() : console.log(error),
-      );
+  return axios
+    .delete(`${API_URL}/cancel-create/${nftId}`, { headers: authHeader() })
+    .catch((error) => (error.response.status === 401 ? authService.logout() : console.log(error)));
 };
 
 export const cancelCreateNfts = (nftIds) => {
   return axios
-    .put(`${API_URL}/cancel-creates`, {nftIds}, { headers: authHeader() })
-    .catch((error) =>
-      error.response.status === 401 ? authService.logout() : console.log(error),
-    );
+    .put(`${API_URL}/cancel-creates`, { nftIds }, { headers: authHeader() })
+    .catch((error) => (error.response.status === 401 ? authService.logout() : console.log(error)));
 };
 
 export const deleteNft = (nfts) => {
@@ -137,7 +151,7 @@ export const deleteNft = (nfts) => {
 
 export const setMintNFT37 = (nftId, amount) => {
   return axios
-    .get(`${API_URL}/mint/${nftId}?amount=${amount}` , { headers: authHeader() })
+    .get(`${API_URL}/mint/${nftId}?amount=${amount}`, { headers: authHeader() })
     .then((res) => {
       return res;
     })

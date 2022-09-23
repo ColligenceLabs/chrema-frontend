@@ -11,6 +11,7 @@ import { LoadingButton } from '@mui/lab';
 import {
   cancelBuy,
   getUserNftSerialsData,
+  rentalMetadata,
   selectSerials,
 } from '../../../../../services/nft.service';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
@@ -172,6 +173,18 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       // V3 : function buyToken(address _nft, uint256 _tokenId, uint256 _maximumPrice) external;
       // V4 : function buyToken(address _nft, uint256 _tokenId, address _seller, uint256 _quantity, uint256 _maximumPrice, address _quote) external;
 
+      const reqBody = {
+        filename: data?.data?.filename,
+        expires: amount,
+        vault_name: 'nfts',
+        name: data?.data?.metadata.name,
+        description: data?.data?.metadata.description,
+        external_url: '',
+        attributes: [],
+      };
+
+      const uri = await rentalMetadata(reqBody);
+
       const result = await buyNFT(
         isKaikas ? nftContractWithKaikas : nftContract,
         parseInt(serials.data[0].token_id, 16),
@@ -184,6 +197,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
         price,
         quote,
         getChainId(data?.data?.collection_id?.network),
+        uri,
       );
     } catch (e) {
       // 실패인 경우 원복.
@@ -317,7 +331,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
             }}
           >
             <Typography variant={'subtitle2'} color={'primary'}>
-              Amount 또는 Rental Duration (in Days)
+              Rental Duration (in Days)
             </Typography>
             <CustomTextField
               id="days"
@@ -325,19 +339,19 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
               variant="outlined"
               type="number"
               size="small"
-              value={days}
+              value={amount}
               inputProps={{ min: 1, step: 1 }}
               sx={{ textAlign: 'right' }}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const validated = e.target.value.match(/^(\s*|\d+)$/);
                 if (validated && parseInt(e.target.value) <= 0) {
-                  setDays('1');
+                  setAmount('1'); // Default Rental Duration at least
                 } else {
-                  setDays(e.target.value);
+                  setAmount(e.target.value);
                 }
               }}
               onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)
+                parseInt(e.target.value) <= 0 ? '1' : setAmount(e.target.value)
               }
             />
           </Box>

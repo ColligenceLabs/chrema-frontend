@@ -142,7 +142,7 @@ const TopCollections = () => {
           alignItems: 'center',
         }}
       >
-        {data?.data.map((item: TrendingCategoryItem, index: number) => (
+        {data?.data?.map((item: TrendingCategoryItem, index: number) => (
           <Link
             key={index}
             to={`/market/collection/${item._id}`}

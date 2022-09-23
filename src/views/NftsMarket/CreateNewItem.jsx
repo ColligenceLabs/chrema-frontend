@@ -28,6 +28,7 @@ import {
   cancelCreateNft,
   cancelCreateNfts,
   registerNFT,
+  registerRentalNFT,
   registerSolanaNFT,
   setNftOnchain,
 } from '../../services/nft.service';
@@ -304,8 +305,8 @@ const CreateNewItem = () => {
           //   }
           // }
 
-          console.log('------------>', formData);
-          await registerNFT(formData)
+          // await registerNFT(formData)
+          await registerRentalNFT(formData)
             .then(async (res) => {
               console.log(res);
               if (res.data.status === 1) {
