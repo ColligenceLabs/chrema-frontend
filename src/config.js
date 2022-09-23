@@ -1,6 +1,6 @@
 export const mapConfig = {
   apiGoogle: process.env.REACT_APP_MAP_GOOGLE,
-  apiMapBox: process.env.REACT_APP_MAP_MAPBOX
+  apiMapBox: process.env.REACT_APP_MAP_MAPBOX,
 };
 
 export const firebaseConfig = {
@@ -11,13 +11,13 @@ export const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APPID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 export const cloudinaryConfig = {
   cloudinaryKey: process.env.REACT_APP_CLOUDINARY_KEY,
   cloudinaryPreset: process.env.REACT_APP_CLOUDINARY_PRESET,
-  cloudinaryUrl: process.env.REACT_APP_CLOUDINARY_URL
+  cloudinaryUrl: process.env.REACT_APP_CLOUDINARY_URL,
 };
 
 export const infuraApiKey = process.env.REACT_APP_INFURA_API_KEY;
@@ -32,7 +32,10 @@ export const bnbTargetNetworkMsg = process.env.REACT_APP_BINANCE_TARGET_NETWORK_
 export const jsonServerUrl = process.env.REACT_APP_JSON_SERVER_URL;
 
 export const admin = {
-  addresses: process.env.REACT_APP_ADMIN_ADDRESSES
+  addresses: process.env.REACT_APP_ADMIN_ADDRESSES,
 };
 
 export const googleAnalyticsConfig = process.env.REACT_APP_GA_MEASUREMENT_ID;
+
+export const SUCCESS = 1;
+export const FAILURE = 0;
