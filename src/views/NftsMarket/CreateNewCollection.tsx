@@ -47,6 +47,9 @@ import { Uses } from '@metaplex-foundation/mpl-token-metadata';
 import { LoadingButton } from '@mui/lab';
 import { COLLECTION_CATEGORY } from '../Collection/catetories';
 
+import { addMinter } from '../../utils/transactions';
+import { targetNetwork } from '../../config';
+
 type metadataTypes = {
   name: string;
   symbol: string;
@@ -340,6 +343,15 @@ const CreateNewCollection = () => {
                 newContract = res?.data.data.address;
               });
             }
+
+            console.log('add market contract as a minter');
+            await addMinter(
+              newContract,
+              values.type,
+              account,
+              library,
+              chainId ?? parseInt(targetNetwork ?? '1001'), // TODO : check for multiple chains support
+            );
           } else {
             newContract = values.contractAddress;
             formData.append('typed_contract', 'true');
