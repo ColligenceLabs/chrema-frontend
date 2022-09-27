@@ -146,7 +146,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   const { vertical, horizontal, open } = krwMessage;
 
   const buy = async () => {
-    console.log(`days: : ${days}`);
+    console.log(`days: ${days}`);
     if (data?.data?.quote === 'krw') {
       // setKrwMessage({ ...krwMessage, open: true });
       window.open('https://forms.gle/oFfSPSnWYR1xVoxD6');
@@ -175,7 +175,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
 
       const reqBody = {
         filename: data?.data?.filename,
-        expires: amount,
+        expires: days,
         vault_name: 'nfts',
         name: data?.data?.metadata.name,
         description: data?.data?.metadata.description,
@@ -195,7 +195,9 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
         // TODO : KIP17 = 1, KIP37 = GUI에서 입력 받은 구입할 수량 (구입할 수량은 잔여 수량보다 작아야 함.)
         // quantity_selling이 아마도 팔리면 팔린만큼 증가하는 수이고 촐 판매수량은 quantity 일 듯
         // GUI에서 입력받은 amount + quantity_selling > quantity 이면 GUI에 우류 표시하면 될 듯...
-        amount,
+        // TODO : Rental Duration
+        // amount,
+        days,
         price,
         quote,
         getChainId(data?.data?.collection_id?.network),
@@ -341,19 +343,19 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
               variant="outlined"
               type="number"
               size="small"
-              value={amount}
+              value={days}
               inputProps={{ min: 1, step: 1 }}
               sx={{ textAlign: 'right' }}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const validated = e.target.value.match(/^(\s*|\d+)$/);
                 if (validated && parseInt(e.target.value) <= 0) {
-                  setAmount('1'); // Default Rental Duration at least
+                  setDays('1'); // Default Rental Duration at least
                 } else {
-                  setAmount(e.target.value);
+                  setDays(e.target.value);
                 }
               }}
               onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                parseInt(e.target.value) <= 0 ? '1' : setAmount(e.target.value)
+                parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)
               }
             />
           </Box>
