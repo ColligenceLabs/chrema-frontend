@@ -106,33 +106,33 @@ const QUOTE_TOKEN = [{ value: 'klay', caption: 'KLAY' }];
 const categories = [
   {
     id: 0,
-    value: 'picture',
-    caption: 'Picture',
+    value: 'art',
+    caption: 'Art',
   },
   {
     id: 1,
-    value: 'painting',
-    caption: 'Painting',
+    value: 'gameItem',
+    caption: 'Game Item',
   },
   {
     id: 2,
-    value: 'illustrate',
-    caption: 'Illustrate',
+    value: 'music',
+    caption: 'Music',
   },
   {
     id: 3,
-    value: 'design',
-    caption: 'Design',
+    value: 'car',
+    caption: 'Car',
   },
   {
     id: 4,
-    value: 'character',
-    caption: 'Character',
+    value: 'house',
+    caption: 'House',
   },
   {
     id: 5,
-    value: 'other',
-    caption: 'Other',
+    value: 'nftProject',
+    caption: 'NFT Project',
   },
 ];
 

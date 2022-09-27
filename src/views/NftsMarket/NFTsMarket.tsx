@@ -6,13 +6,13 @@ import { Box, useTheme, Typography, Select, MenuItem } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const categories = [
-  { id: 0, value: 'all', category: 'All' },
-  // { id: 1, value: 'talken', category: 'Talken' },
-  { id: 2, value: 'picture', category: 'Picture' },
-  { id: 3, value: 'painting', category: 'Painting' },
-  { id: 4, value: 'illustrate', category: 'Illustrate' },
-  { id: 5, value: 'design', category: 'Design' },
-  { id: 6, value: 'character', category: 'Character' },
+  { id: 0, value: 'all', category: 'ALL' },
+  { id: 1, value: 'art', category: 'Art' },
+  { id: 2, value: 'gameItem', category: 'Game Item' },
+  { id: 3, value: 'music', category: 'Music' },
+  { id: 4, value: 'car', category: 'Car' },
+  { id: 5, value: 'house', category: 'House' },
+  { id: 6, value: 'nftProject', category: 'NFT Project' },
 ];
 
 const NFTsMarket = () => {
@@ -25,8 +25,8 @@ const NFTsMarket = () => {
   });
   const [selectedCategory, setSelectedCategory] = useState({
     id: 0,
-    category: 'All',
     value: 'all',
+    category: 'All',
   });
 
   const handleChange = (e: any) => {
