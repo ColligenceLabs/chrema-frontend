@@ -129,7 +129,9 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
 
       await sellNFT(
         nftContract,
-        nftInfo.data.collection_id.contract_type === 'KIP17' ? 721 : 1155,
+        // TODO : Rental NFT Type ?
+        // nftInfo.data.collection_id.contract_type === 'KIP17' ? 721 : 1155,
+        nftInfo.data.collection_id.contract_type === 'KIP17' ? 4907 : 1155,
         parseInt(tokenId, 16),
         quantity,
         // TODO : NFT 개당 가격
@@ -137,7 +139,7 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
         nftInfo.data.quote,
         nftInfo.data.collection_id.fee_payout,
         nftInfo.data.collection_id.fee_percentage,
-        getChainId(nftInfo.data.collection_id.network)
+        getChainId(nftInfo.data.collection_id.network),
       );
       return SUCCESS;
     } catch (e) {
@@ -160,7 +162,7 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
 
     try {
       let result = SUCCESS;
-      if (useKAS !== 'true' ) {
+      if (useKAS !== 'true') {
         const nftInfo = await nftDetail(selected);
         if (nftInfo.data.quote !== 'krw') {
           // 선택된 nft들을 market contract readyToSell 호출

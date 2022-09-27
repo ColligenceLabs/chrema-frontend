@@ -97,7 +97,9 @@ const DetailSell: React.FC<DetailSellProps> = ({
         myNftData.data[0].contract_address,
         data?.data?.collection_id?.contract_type,
       );
-      const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 721 : 1155;
+      // TODO : Rental NFT Type ?
+      // const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 721 : 1155;
+      const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 4907 : 1155;
       const payout =
         data?.data?.collection_id?.fee_payout ?? '0x0000000000000000000000000000000000000000';
       const rate = data?.data?.collection_id?.fee_percentage ?? 0;
@@ -269,7 +271,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
             ) : (
               <>
                 <LoadingButton loading={loading} variant="contained" onClick={openSchedule}>
-                  Add Schedule
+                  Sell as Rental NFT
                 </LoadingButton>
               </>
             )}
