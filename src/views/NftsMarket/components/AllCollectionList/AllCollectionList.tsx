@@ -28,7 +28,6 @@ const AllCollectionList = () => {
     fetcher,
   );
 
-  console.log(data);
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
     isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');

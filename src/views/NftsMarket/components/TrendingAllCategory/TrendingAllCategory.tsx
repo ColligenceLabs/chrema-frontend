@@ -53,7 +53,6 @@ const TrendingAllCategory = () => {
   // const url = `${process.env.REACT_APP_API_SERVER}/admin-api/market/indexsR?count=5`
   const { data, error } = useSWR<CollectionResponse>(url, fetcher);
 
-  console.log(data);
   const settings = {
     dots: true,
     infinite: true,

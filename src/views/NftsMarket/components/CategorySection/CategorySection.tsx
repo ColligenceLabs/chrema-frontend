@@ -29,7 +29,6 @@ const CategorySection: React.FC<CategorySectionProps> = ({ title, category }) =>
   const { data, mutate, error } = useSWR(url, fetcher);
 
   const isEmpty = data?.data?.items.length === 0;
-  console.log(isEmpty);
   useEffect(() => {
     mutate();
   }, []);
