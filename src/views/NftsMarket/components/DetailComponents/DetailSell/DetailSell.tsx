@@ -270,9 +270,11 @@ const DetailSell: React.FC<DetailSellProps> = ({
               </>
             ) : (
               <>
-                <LoadingButton loading={loading} variant="contained" onClick={openSchedule}>
-                  Sell as Rental NFT
-                </LoadingButton>
+                {myNFT[0].status !== 'suspend' && (
+                  <LoadingButton loading={loading} variant="contained" onClick={openSchedule}>
+                    Sell as Rental NFT
+                  </LoadingButton>
+                )}
               </>
             )}
           </Box>
