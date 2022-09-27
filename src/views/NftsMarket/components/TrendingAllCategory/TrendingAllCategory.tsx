@@ -49,11 +49,11 @@ const TrendingAllCategory = () => {
   const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
     defaultMatches: true,
   });
-  const { data, error } = useSWR<CollectionResponse>(
-    `${process.env.REACT_APP_API_SERVER}/admin-api/market/indexsR?count=5`,
-    fetcher,
-  );
+  const url = `${process.env.REACT_APP_API_SERVER}/admin-api/home/indexs?page=1&perPage=5`;
+  // const url = `${process.env.REACT_APP_API_SERVER}/admin-api/market/indexsR?count=5`
+  const { data, error } = useSWR<CollectionResponse>(url, fetcher);
 
+  console.log(data);
   const settings = {
     dots: true,
     infinite: true,
@@ -81,11 +81,11 @@ const TrendingAllCategory = () => {
               mb: '50px',
             }}
           >
-            <Typography variant={smDown ? 'h3' : 'h1'} fontWeight={'700'}>
-              Trending in
-            </Typography>
             <Typography variant={smDown ? 'h3' : 'h1'} fontWeight={'700'} color={'primary'}>
-              all collections
+              Top Collection
+            </Typography>
+            <Typography variant={smDown ? 'h3' : 'h1'} fontWeight={'700'}>
+              for you
             </Typography>
           </Box>
 
