@@ -58,6 +58,10 @@ const DetailSell: React.FC<DetailSellProps> = ({
     API_URL = `${process.env.REACT_APP_API_SERVER}/admin-api/nft/detail/${id}`;
   }
 
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
+    defaultMatches: true,
+  });
+
   const { data, error, mutate } = useSWR(API_URL, () => nftDetail(id));
   const {
     data: myNftData,
@@ -176,22 +180,33 @@ const DetailSell: React.FC<DetailSellProps> = ({
     <>
       {myNFT !== null && (
         <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
-          <Box sx={{ pt: 2, px: 2 }}>
-            <Typography variant={'subtitle2'} color={'primary'}>
-              My NFT Count
-            </Typography>
-            {loading ? (
-              <CircularProgress size={'small'} />
-            ) : (
+          <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
+            <Box sx={{ pt: 2, px: 2 }}>
               <Box
-                display={'flex'}
-                justifyContent={'flex-start'}
-                alignItems={'center'}
-                gap={'0.5rem'}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: 2,
+                }}
               >
-                <Typography variant={'h1'}>{myNFTCount}</Typography>
+                <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
+                  My NFT Count
+                </Typography>
+                {loading ? (
+                  <CircularProgress size={'small'} />
+                ) : (
+                  <Box
+                    display={'flex'}
+                    justifyContent={'flex-start'}
+                    alignItems={'center'}
+                    gap={'0.5rem'}
+                  >
+                    <Typography variant={'h3'}>{myNFTCount}</Typography>
+                  </Box>
+                )}
               </Box>
-            )}
+            </Box>
           </Box>
           <Box
             sx={{

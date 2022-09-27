@@ -258,7 +258,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       }
       // icon={<StorefrontOutlinedIcon />}
     >
-      <Box sx={{ maxWidth: mdDown ? '100%' : '70%' }}>
+      <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
         <Box
           sx={{
             pt: 2,
