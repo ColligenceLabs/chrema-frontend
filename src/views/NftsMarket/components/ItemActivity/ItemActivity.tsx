@@ -285,7 +285,7 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
                           </Box>
                         </TableCell>
                         <TableCell>
-                          {row.type !== 1 ? (
+                          {row.type !== 1 && row.type !== 0 ? (
                             <Box sx={{ display: 'flex', gap: 0.7, alignItems: 'center' }}>
                               {row.quote === 'klay' && (
                                 <img src={klayLogo} alt="klay" height="16px" />
