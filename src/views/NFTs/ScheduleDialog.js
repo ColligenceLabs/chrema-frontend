@@ -10,6 +10,7 @@ import {
   Divider,
   Snackbar,
   TextField,
+  useMediaQuery,
 } from '@mui/material';
 import { setSchedule } from '../../services/nft.service';
 import { makeStyles } from '@mui/styles';
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
   const classes = useStyles();
-
+  const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(
     new Date(new Date().setDate(new Date().getDate() + 1)),
@@ -197,7 +198,7 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
   return (
     <React.Fragment>
       <Dialog
-        maxWidth="xs"
+        maxWidth="sm"
         fullWidth
         open={open}
         onClose={handleCloseModal}
@@ -220,9 +221,9 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
                 display: 'flex',
                 marginTop: '50px',
                 marginBottom: '20px',
-
+                flexDirection: smDown ? 'column' : 'row',
                 justifyContent: 'space-around',
-                gap: '0.5rem',
+                gap: smDown ? '2rem' : '0.5rem',
               }}
             >
               <DateTimePicker

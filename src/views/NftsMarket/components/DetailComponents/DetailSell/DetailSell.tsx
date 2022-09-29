@@ -39,7 +39,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
 
   const { sellNFT } = useMarket();
 
-  const [myNFT, setMyNFT] = useState(null);
+  const [myNFT, setMyNFT] = useState<any>(null);
   const [myNFTCount, setMyNFTCount] = useState('0');
   const [sellAmount, setSellAmount] = useState('1');
   const [sellPrice, setSellPrice] = useState('0');
@@ -49,7 +49,8 @@ const DetailSell: React.FC<DetailSellProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [minPriceCheck, setMinPriceCheck] = useState(false);
   const [openScheduleModal, setOpenScheduleModal] = useState(false);
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   let API_URL;
 
@@ -62,7 +63,9 @@ const DetailSell: React.FC<DetailSellProps> = ({
     defaultMatches: true,
   });
 
-  const { data, error, mutate } = useSWR(API_URL, () => nftDetail(id));
+  const { data, error, mutate, isValidating } = useSWR(API_URL, () => nftDetail(id));
+  // const isLoading = (!data && !error) || isValidating;
+
   const {
     data: myNftData,
     error: myNftError,
@@ -159,6 +162,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
   }, [data.data]);
 
   useEffect(() => {
+    setIsLoading(true);
     setTimeout(() => {
       myNftMutate().then((res) => {
         if (myNftData && myNftData?.data !== null) {
@@ -168,6 +172,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
           setMyNFT(null);
           setMyNFTCount('0');
         }
+        setIsLoading(false);
       });
     }, 2000);
   }, [myNftMutateHandler, myNftData?.data]);
@@ -176,9 +181,13 @@ const DetailSell: React.FC<DetailSellProps> = ({
     setTotalPrice(parseInt(sellAmount) * parseFloat(sellPrice));
   }, [sellAmount, sellPrice]);
 
+  useEffect(() => {
+    console.log(`isLoading : ${isLoading}`);
+    console.log(`myNFT : ${myNFT}`);
+  }, [isLoading, myNFT]);
   return (
     <>
-      {myNFT !== null && (
+      {myNFT !== null && !isLoading ? (
         <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
           <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
             <Box sx={{ pt: 2, px: 2 }}>
@@ -338,7 +347,33 @@ const DetailSell: React.FC<DetailSellProps> = ({
             )}
           </Box>
         </SectionWrapper>
-      )}
+      ) : isLoading ? (
+        <Box
+          sx={{
+            mt: 2,
+            border: '0.5px solid #d6d6d6',
+            borderRadius: 2,
+          }}
+        >
+          <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
+            <Box sx={{ pt: 2, px: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  marginBottom: 2,
+                }}
+              >
+                <CircularProgress size={20} />
+                <Typography variant={'subtitle2'} color={'primary'} sx={{ marginLeft: 1.5 }}>
+                  Checking your NFT
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      ) : null}
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={listingMutateHandler}
