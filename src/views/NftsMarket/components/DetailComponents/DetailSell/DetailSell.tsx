@@ -367,7 +367,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
               >
                 <CircularProgress size={20} />
                 <Typography variant={'subtitle2'} color={'primary'} sx={{ marginLeft: 1.5 }}>
-                  Checking your NFT
+                  Checking My NFT..
                 </Typography>
               </Box>
             </Box>
