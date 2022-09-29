@@ -49,8 +49,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [minPriceCheck, setMinPriceCheck] = useState(false);
   const [openScheduleModal, setOpenScheduleModal] = useState(false);
-  const [selected, setSelected] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingMyNFT, setIsCheckingMyNFT] = useState(false);
 
   let API_URL;
 
@@ -63,15 +62,11 @@ const DetailSell: React.FC<DetailSellProps> = ({
     defaultMatches: true,
   });
 
-  const { data, error, mutate, isValidating } = useSWR(API_URL, () => nftDetail(id));
-  // const isLoading = (!data && !error) || isValidating;
+  const { data, mutate } = useSWR(API_URL, () => nftDetail(id));
 
-  const {
-    data: myNftData,
-    error: myNftError,
-    mutate: myNftMutate,
-  } = useSWR(`${API_URL}/user-serials?nft_id=${id}&owner_id=${account}`, () =>
-    getUserNftSerialsData(id, account),
+  const { data: myNftData, mutate: myNftMutate } = useSWR(
+    `${API_URL}/user-serials?nft_id=${id}&owner_id=${account}`,
+    () => getUserNftSerialsData(id, account),
   );
 
   const openSchedule = () => {
@@ -162,7 +157,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
   }, [data.data]);
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsCheckingMyNFT(true);
     setTimeout(() => {
       myNftMutate().then((res) => {
         if (myNftData && myNftData?.data !== null) {
@@ -172,7 +167,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
           setMyNFT(null);
           setMyNFTCount('0');
         }
-        setIsLoading(false);
+        setIsCheckingMyNFT(false);
       });
     }, 2000);
   }, [myNftMutateHandler, myNftData?.data]);
@@ -181,13 +176,9 @@ const DetailSell: React.FC<DetailSellProps> = ({
     setTotalPrice(parseInt(sellAmount) * parseFloat(sellPrice));
   }, [sellAmount, sellPrice]);
 
-  useEffect(() => {
-    console.log(`isLoading : ${isLoading}`);
-    console.log(`myNFT : ${myNFT}`);
-  }, [isLoading, myNFT]);
   return (
     <>
-      {myNFT !== null && !isLoading ? (
+      {myNFT !== null && !isCheckingMyNFT ? (
         <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
           <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
             <Box sx={{ pt: 2, px: 2 }}>
@@ -347,7 +338,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
             )}
           </Box>
         </SectionWrapper>
-      ) : isLoading ? (
+      ) : isCheckingMyNFT ? (
         <Box
           sx={{
             mt: 2,
