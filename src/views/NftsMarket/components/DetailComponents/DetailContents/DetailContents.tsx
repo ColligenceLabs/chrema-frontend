@@ -5,7 +5,6 @@ import ReactPlayer from 'react-player';
 import FsLightbox from 'fslightbox-react';
 import ImageViewer from '../../../../../components/ImageViewer';
 import { NFTType } from '../../../types';
-import FilePlayer from 'react-player/file';
 
 interface DetailContentsProps {
   nft: NFTType;

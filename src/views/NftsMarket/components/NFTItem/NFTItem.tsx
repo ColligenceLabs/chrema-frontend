@@ -6,7 +6,6 @@ import { NFTType } from '../../types';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
-import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
 import ImageViewer from '../../../../components/ImageViewer';
@@ -37,7 +36,6 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
     defaultMatches: true,
   });
 
-  console.log(item.metadata);
   return (
     <>
       <Link to={`/market/detail/${item._id}`} style={{ textDecoration: 'none' }}>
