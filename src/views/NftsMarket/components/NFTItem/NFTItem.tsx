@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Card, CardContent, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import { NFTType } from '../../types';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
+import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
 import ImageViewer from '../../../../components/ImageViewer';
@@ -18,6 +19,14 @@ interface NFTItemProp {
   item: NFTType;
   showLarge?: boolean;
 }
+
+const CChip = styled(Chip)`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border: 1px solid white;
+`;
+
 const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
   const theme = useTheme();
 
@@ -33,6 +42,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
       <Link to={`/market/detail/${item._id}`} style={{ textDecoration: 'none' }}>
         <Card
           sx={{
+            position: 'relative',
             p: 0,
             textDecoration: 'none',
             transition: 'all .2s ease-in-out',
@@ -45,32 +55,37 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
             m: smDown ? '5px' : '10px',
           }}
         >
+          {item.quantity_selling === 0 ? (
+            <CChip size="small" label="Sold out" color="error" />
+          ) : (
+            <CChip size="small" label="On Sale" color="primary" />
+          )}
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'flex-end',
               width: '100%',
               zIndex: 1000,
-              pt: 1.5,
+              // pt: 1.5,
               pr: 2,
             }}
           >
-            <Box
-              sx={{
-                border: '3px solid white',
-                borderRadius: '50%',
-                backgroundColor: 'gray',
-                opacity: item?.metadata?.content_Type === 'mp4' ? 0.6 : 0,
-                width: '40px',
-                height: '40px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              boxShadow={3}
-            >
-              <FeatherIcon icon="video" height="24" color={'white'} />
-            </Box>
+            {/*<Box*/}
+            {/*  sx={{*/}
+            {/*    border: '3px solid white',*/}
+            {/*    borderRadius: '50%',*/}
+            {/*    backgroundColor: 'gray',*/}
+            {/*    opacity: item?.metadata?.content_Type === 'mp4' ? 0.6 : 0,*/}
+            {/*    width: '40px',*/}
+            {/*    height: '40px',*/}
+            {/*    display: 'flex',*/}
+            {/*    justifyContent: 'center',*/}
+            {/*    alignItems: 'center',*/}
+            {/*  }}*/}
+            {/*  boxShadow={3}*/}
+            {/*>*/}
+            {/*  <FeatherIcon icon="video" height="24" color={'white'} />*/}
+            {/*</Box>*/}
           </Box>
 
           {(item?.metadata?.thumbnail !== undefined && item?.metadata?.thumbnail.indexOf('.mp4')) >
@@ -80,10 +95,27 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
           item?.collection_id._id === '62b274452fb89e40a2bca0bc' ? (
             <Box
               className={'player-wrapper'}
-              sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+              }}
             >
+              <VideocamOutlinedIcon
+                sx={{
+                  position: 'absolute',
+                  left: '15px',
+                  top: '5px',
+                  zIndex: 1000,
+                  color: 'white',
+                }}
+                fontSize={'large'}
+              />
               <ReactPlayer
                 className="react-player"
+                style={{ zIndex: -1 }}
                 config={{ file: { attributes: { controlsList: 'nodownload' } } }}
                 url={item?.metadata?.thumbnail || item?.metadata?.image}
                 width="100%"
@@ -92,8 +124,17 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 controls={true}
                 light={false}
                 pip={true}
+                playing={true}
+                muted={true}
                 playIcon={<button>Play</button>}
               />
+              {/*<video*/}
+              {/*  height={mdDown ? (showLarge ? '218px' : '170px') : showLarge ? '218px' : '118px'}*/}
+              {/*  controls*/}
+              {/*  autoPlay*/}
+              {/*>*/}
+              {/*  <source src={item?.metadata?.thumbnail || item?.metadata?.image} type="video/mp4" />*/}
+              {/*</video>*/}
             </Box>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
