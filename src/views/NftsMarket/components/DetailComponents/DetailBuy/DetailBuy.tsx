@@ -434,7 +434,8 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                   sx={{
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'center',
+                    // justifyContent: 'center',
+                    justifyContent: 'left',
                   }}
                 >
                   <LoadingButton
@@ -443,18 +444,19 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                     disabled={sellingQuantity === 0}
                     loading={buyFlag}
                     variant="contained"
-                    sx={{ width: smDown ? '50px' : '120px', height: '40px', marginRight: 5 }}
+                    // sx={{ width: smDown ? '50px' : '120px', height: '40px', marginRight: 5 }}
+                    sx={{ width: smDown ? '50px' : '160px', height: '40px' }}
                   >
                     {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
                   </LoadingButton>
-                  <LoadingButton
-                    onClick={handleOpenOffer}
-                    // loading={buyFlag}
-                    variant="contained"
-                    sx={{ width: smDown ? '50px' : '120px', height: '40px' }}
-                  >
-                    Offer
-                  </LoadingButton>
+                  {/*<LoadingButton*/}
+                  {/*  onClick={handleOpenOffer}*/}
+                  {/*  // loading={buyFlag}*/}
+                  {/*  variant="contained"*/}
+                  {/*  sx={{ width: smDown ? '50px' : '120px', height: '40px' }}*/}
+                  {/*>*/}
+                  {/*  Offer*/}
+                  {/*</LoadingButton>*/}
                 </Box>
               )}
             </Box>
