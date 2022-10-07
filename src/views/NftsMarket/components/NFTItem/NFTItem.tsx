@@ -37,6 +37,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
     defaultMatches: true,
   });
 
+  console.log(item.metadata);
   return (
     <>
       <Link to={`/market/detail/${item._id}`} style={{ textDecoration: 'none' }}>
@@ -103,16 +104,18 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 width: '100%',
               }}
             >
-              <VideocamOutlinedIcon
-                sx={{
-                  position: 'absolute',
-                  left: '15px',
-                  top: '5px',
-                  zIndex: 1000,
-                  color: 'white',
-                }}
-                fontSize={'large'}
-              />
+              {/*<VideocamOutlinedIcon*/}
+              {/*  sx={{*/}
+              {/*    position: 'absolute',*/}
+              {/*    left: '15px',*/}
+              {/*    top: '5px',*/}
+              {/*    zIndex: 1000,*/}
+              {/*    color: 'gray',*/}
+              {/*    // border: '1px solid gray',*/}
+              {/*    // borderRadius: '15px',*/}
+              {/*  }}*/}
+              {/*  fontSize={'large'}*/}
+              {/*/>*/}
               <ReactPlayer
                 className="react-player"
                 style={{ zIndex: -1 }}
@@ -121,11 +124,12 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 width="100%"
                 // height="100%"
                 height={mdDown ? (showLarge ? '218px' : '170px') : showLarge ? '218px' : '118px'}
-                controls={true}
+                // controls={true}
                 light={false}
                 pip={true}
                 playing={true}
                 muted={true}
+                loop={true}
                 playIcon={<button>Play</button>}
               />
               {/*<video*/}

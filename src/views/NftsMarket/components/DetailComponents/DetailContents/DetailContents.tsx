@@ -33,9 +33,12 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             url={nft.metadata.alt_url || nft?.metadata?.image}
             width="100%"
             height="100%"
-            controls={true}
+            // controls={true}
             light={false}
             pip={true}
+            playing={true}
+            muted={true}
+            loop={true}
             playIcon={<button>Play</button>}
           />
         </Card>
