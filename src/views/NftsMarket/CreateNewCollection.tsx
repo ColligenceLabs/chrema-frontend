@@ -252,7 +252,7 @@ const CreateNewCollection = () => {
           category: [],
           network: 'klaytn',
           contractAddress: undefined,
-          type: 'KIP17',
+          type: 'KIP37',
           symbol: '',
         }}
         onSubmit={async (values, { setSubmitting }) => {
@@ -485,44 +485,44 @@ const CreateNewCollection = () => {
                   ))}
                 </CustomTextField>
               </FieldWrapper>
-              <FieldWrapper>
-                <FiledTitle>Symbol</FiledTitle>
-                <FieldSubscription>symbol</FieldSubscription>
-                <CustomTextField
-                  name="symbol"
-                  value={values.symbol}
-                  onChange={handleChange}
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                />
-              </FieldWrapper>
-              <FieldWrapper>
-                <RadioGroup
-                  aria-label="gender"
-                  defaultValue="radio1"
-                  name="type"
-                  value={values.type}
-                  onChange={handleChange}
-                >
-                  <Grid container>
-                    <Grid item lg={6} sm={6} xs={6}>
-                      <FormControlLabel
-                        value="KIP17"
-                        control={<CustomRadio bgcolor="" />}
-                        label="KIP17"
-                      />
-                    </Grid>
-                    <Grid item lg={6} sm={6} xs={6}>
-                      <FormControlLabel
-                        value="KIP37"
-                        control={<CustomRadio bgcolor="" />}
-                        label="KIP37"
-                      />
-                    </Grid>
-                  </Grid>
-                </RadioGroup>
-              </FieldWrapper>
+              {/*<FieldWrapper>*/}
+              {/*  <FiledTitle>Symbol</FiledTitle>*/}
+              {/*  <FieldSubscription>symbol</FieldSubscription>*/}
+              {/*  <CustomTextField*/}
+              {/*    name="symbol"*/}
+              {/*    value={values.symbol}*/}
+              {/*    onChange={handleChange}*/}
+              {/*    variant="outlined"*/}
+              {/*    fullWidth*/}
+              {/*    size="small"*/}
+              {/*  />*/}
+              {/*</FieldWrapper>*/}
+              {/*<FieldWrapper>*/}
+              {/*  <RadioGroup*/}
+              {/*    aria-label="gender"*/}
+              {/*    defaultValue="radio1"*/}
+              {/*    name="type"*/}
+              {/*    value={values.type}*/}
+              {/*    onChange={handleChange}*/}
+              {/*  >*/}
+              {/*    <Grid container>*/}
+              {/*      <Grid item lg={6} sm={6} xs={6}>*/}
+              {/*        <FormControlLabel*/}
+              {/*          value="KIP17"*/}
+              {/*          control={<CustomRadio bgcolor="" />}*/}
+              {/*          label="KIP17"*/}
+              {/*        />*/}
+              {/*      </Grid>*/}
+              {/*      <Grid item lg={6} sm={6} xs={6}>*/}
+              {/*        <FormControlLabel*/}
+              {/*          value="KIP37"*/}
+              {/*          control={<CustomRadio bgcolor="" />}*/}
+              {/*          label="KIP37"*/}
+              {/*        />*/}
+              {/*      </Grid>*/}
+              {/*    </Grid>*/}
+              {/*  </RadioGroup>*/}
+              {/*</FieldWrapper>*/}
               <FieldWrapper>
                 {account ? (
                   <LoadingButton type="submit" loading={isSubmitting} variant="contained">

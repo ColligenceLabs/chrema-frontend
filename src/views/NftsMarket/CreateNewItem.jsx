@@ -255,7 +255,7 @@ const CreateNewItem = () => {
             }
           }
 
-          formData.append('quantity', '1');
+          formData.append('quantity', '1000');
           formData.append('collection_id', values['collection']);
           formData.append('file', values['nftItem']);
           // formData.append('quote', 'klay');
