@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { NFTType } from '../../types';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
@@ -11,7 +11,6 @@ import FeatherIcon from 'feather-icons-react';
 import ImageViewer from '../../../../components/ImageViewer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import getNftPrice from '../../../../utils/getNftPrice';
-import ReactPlayer from 'react-player';
 import sliceFloatNumber from '../../../../utils/sliceFloatNumber';
 
 interface NFTItemProp {
@@ -68,24 +67,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
               // pt: 1.5,
               pr: 2,
             }}
-          >
-            {/*<Box*/}
-            {/*  sx={{*/}
-            {/*    border: '3px solid white',*/}
-            {/*    borderRadius: '50%',*/}
-            {/*    backgroundColor: 'gray',*/}
-            {/*    opacity: item?.metadata?.content_Type === 'mp4' ? 0.6 : 0,*/}
-            {/*    width: '40px',*/}
-            {/*    height: '40px',*/}
-            {/*    display: 'flex',*/}
-            {/*    justifyContent: 'center',*/}
-            {/*    alignItems: 'center',*/}
-            {/*  }}*/}
-            {/*  boxShadow={3}*/}
-            {/*>*/}
-            {/*  <FeatherIcon icon="video" height="24" color={'white'} />*/}
-            {/*</Box>*/}
-          </Box>
+          ></Box>
 
           {(item?.metadata?.thumbnail !== undefined && item?.metadata?.thumbnail.indexOf('.mp4')) >
             0 ||
@@ -102,41 +84,15 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 width: '100%',
               }}
             >
-              {/*<VideocamOutlinedIcon*/}
-              {/*  sx={{*/}
-              {/*    position: 'absolute',*/}
-              {/*    left: '15px',*/}
-              {/*    top: '5px',*/}
-              {/*    zIndex: 1000,*/}
-              {/*    color: 'gray',*/}
-              {/*    // border: '1px solid gray',*/}
-              {/*    // borderRadius: '15px',*/}
-              {/*  }}*/}
-              {/*  fontSize={'large'}*/}
-              {/*/>*/}
-              <ReactPlayer
-                className="react-player"
-                style={{ zIndex: -1 }}
-                config={{ file: { attributes: { controlsList: 'nodownload' } } }}
-                url={item?.metadata?.thumbnail || item?.metadata?.image}
-                width="100%"
-                // height="100%"
-                height={mdDown ? (showLarge ? '218px' : '170px') : showLarge ? '218px' : '118px'}
-                // controls={true}
-                light={false}
-                pip={true}
-                playing={true}
-                muted={true}
-                loop={true}
-                playIcon={<button>Play</button>}
+              <CardMedia
+                component="video"
+                sx={{ objectFit: 'cover', zIndex: -1 }}
+                height={mdDown ? (showLarge ? '215px' : '115px') : showLarge ? '215px' : '115px'}
+                src={item?.metadata?.thumbnail || item?.metadata?.image}
+                autoPlay
+                loop
+                muted
               />
-              {/*<video*/}
-              {/*  height={mdDown ? (showLarge ? '218px' : '170px') : showLarge ? '218px' : '118px'}*/}
-              {/*  controls*/}
-              {/*  autoPlay*/}
-              {/*>*/}
-              {/*  <source src={item?.metadata?.thumbnail || item?.metadata?.image} type="video/mp4" />*/}
-              {/*</video>*/}
             </Box>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
