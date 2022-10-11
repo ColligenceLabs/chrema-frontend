@@ -101,7 +101,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
       );
       // TODO : Rental NFT Type ?
       // const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 721 : 1155;
-      const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 4907 : 1155;
+      const nftType = data?.data?.collection_id?.contract_type === 'KIP37' ? 4907 : 721;
       const payout =
         data?.data?.collection_id?.fee_payout ?? '0x0000000000000000000000000000000000000000';
       const rate = data?.data?.collection_id?.fee_percentage ?? 0;
