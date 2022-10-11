@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Card } from '@mui/material';
-import ReactPlayer from 'react-player';
+import { Card, CardMedia } from '@mui/material';
 // @ts-ignore
 import FsLightbox from 'fslightbox-react';
 import ImageViewer from '../../../../../components/ImageViewer';
@@ -12,7 +11,7 @@ interface DetailContentsProps {
 
 const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
   const [toggled, setToggled] = useState(false);
-
+  console.log(nft.metadata);
   return (
     <>
       {(nft?.metadata?.alt_url !== undefined && nft?.metadata?.alt_url.indexOf('.mp4')) > 0 ||
@@ -25,20 +24,16 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             justifyContent: 'center',
             alignItems: 'center',
             height: '600px',
+            p: 0,
           }}
         >
-          <ReactPlayer
-            config={{ file: { attributes: { controlsList: 'nodownload' } } }}
-            url={nft.metadata.alt_url || nft?.metadata?.image}
-            width="100%"
-            height="100%"
-            // controls={true}
-            light={false}
-            pip={true}
-            playing={true}
-            muted={true}
-            loop={true}
-            playIcon={<button>Play</button>}
+          <CardMedia
+            component="video"
+            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            src={nft.metadata.alt_url || nft?.metadata?.image}
+            autoPlay
+            loop
+            muted
           />
         </Card>
       ) : (
