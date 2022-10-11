@@ -20,16 +20,7 @@ export default {
     56: '',
     97: '0x11e6c6ca0290e5342DFCB055ae515A667d675547',
     8217: '',
-    1001: '0xB590C13Ab0EcE4951c235b1Bc8bBe25C54c1261b', // 0x033C82e33190267DE25c5d897c862Ad842FA6E72
-  },
-  marketV5: {
-    1: '',
-    3: '',
-    4: '',
-    8217: '',
-    1001: '0xd5ed88ccC09a43d884618C5E3ee1935ad8a8ca93',
-    56: '0x81b2Fc99c5EA3C062D7Eb147E5fd9e331aCcC72b',
-    97: '0x7dcA6d76dD8f8c72229111C2e8999F6Dd7452d49',
+    1001: '0xe8abbee2e5dd5e4ef5791166ff67c6aea4ecee69', // '0xB590C13Ab0EcE4951c235b1Bc8bBe25C54c1261b', // 0x033C82e33190267DE25c5d897c862Ad842FA6E72
   },
   quoteToken: {
     1: '',

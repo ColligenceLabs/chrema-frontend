@@ -290,7 +290,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
               </>
             ) : (
               <>
-                {myNFT[0].status !== 'suspend' && (
+                {myNFT[0].nft_id.creator_id.admin_address === account && (
                   <LoadingButton
                     loading={loading}
                     variant="contained"
