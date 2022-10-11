@@ -320,7 +320,7 @@ const CreateNewItem = () => {
                 // if (isKaikas) {
                 //   result = await mintNFT17WithKaikas(tokenId, tokenUri, nftId);
                 // } else {
-                result = await mintNFT17(tokenId, tokenUri, nftId);
+                result = await mintNFT37(tokenId, quantity, tokenUri, nftId);
                 // }
                 // } else {
                 //   if (isKaikas) {
