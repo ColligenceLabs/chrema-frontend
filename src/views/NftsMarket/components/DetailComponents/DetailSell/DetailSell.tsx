@@ -180,41 +180,45 @@ const DetailSell: React.FC<DetailSellProps> = ({
     <>
       {myNFT !== null && !isCheckingMyNFT ? (
         <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
-          <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
-            <Box sx={{ pt: 2, px: 2 }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: 2,
-                }}
-              >
-                <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
-                  My NFT Count
-                </Typography>
-                {loading ? (
-                  <CircularProgress size={'small'} />
-                ) : (
+          <>
+            {data?.data?.collection_id?.contract_type === 'KIP17' && (
+              <Box sx={{ maxWidth: mdDown ? '100%' : '80%', border: '1px solid red' }}>
+                <Box sx={{ pt: 2, px: 2 }}>
                   <Box
-                    display={'flex'}
-                    justifyContent={'flex-start'}
-                    alignItems={'center'}
-                    gap={'0.5rem'}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: 2,
+                    }}
                   >
-                    <Typography variant={'h3'}>{myNFTCount}</Typography>
+                    <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
+                      My NFT Count
+                    </Typography>
+                    {loading ? (
+                      <CircularProgress size={'small'} />
+                    ) : (
+                      <Box
+                        display={'flex'}
+                        justifyContent={'flex-start'}
+                        alignItems={'center'}
+                        gap={'0.5rem'}
+                      >
+                        <Typography variant={'h3'}>{myNFTCount}</Typography>
+                      </Box>
+                    )}
                   </Box>
-                )}
+                </Box>
               </Box>
-            </Box>
-          </Box>
+            )}
+          </>
           <Box
             sx={{
               py: 1,
               px: 2,
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'end',
+              alignItems: 'center',
               gap: '1rem',
             }}
           >
@@ -224,22 +228,23 @@ const DetailSell: React.FC<DetailSellProps> = ({
                   Amount
                 </Typography>
 
-                <CustomTextField
-                  id="amount"
-                  name="amount"
-                  variant="outlined"
-                  type="number"
-                  size="small"
-                  value={sellAmount}
-                  inputProps={{ min: 0, step: 1 }}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setSellAmount(e.target.value)
-                  }
-                  onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setSellAmount(parseInt(e.target.value).toString())
-                  }
-                  fullWidth
-                />
+                <Typography variant={'h3'}>{myNFTCount}</Typography>
+                {/*<CustomTextField*/}
+                {/*  id="amount"*/}
+                {/*  name="amount"*/}
+                {/*  variant="outlined"*/}
+                {/*  type="number"*/}
+                {/*  size="small"*/}
+                {/*  value={sellAmount}*/}
+                {/*  inputProps={{ min: 0, step: 1 }}*/}
+                {/*  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>*/}
+                {/*    setSellAmount(e.target.value)*/}
+                {/*  }*/}
+                {/*  onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>*/}
+                {/*    setSellAmount(parseInt(e.target.value).toString())*/}
+                {/*  }*/}
+                {/*  fullWidth*/}
+                {/*/>*/}
               </Box>
             )}
             {data?.data?.seller ? (

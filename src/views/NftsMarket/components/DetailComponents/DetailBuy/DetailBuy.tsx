@@ -147,6 +147,8 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
 
   const buy = async () => {
     console.log(`days: ${days}`);
+    console.log(`amount: ${amount}`);
+
     if (data?.data?.quote === 'krw') {
       // setKrwMessage({ ...krwMessage, open: true });
       window.open('https://forms.gle/oFfSPSnWYR1xVoxD6');
@@ -258,35 +260,38 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       }
       // icon={<StorefrontOutlinedIcon />}
     >
-      <Box sx={{ maxWidth: mdDown ? '100%' : '80%' }}>
-        <Box
-          sx={{
-            pt: 2,
-            px: 2,
-          }}
-        >
+      <Box sx={{ maxWidth: mdDown ? '100%' : '100%' }}>
+        {data?.data?.collection_id?.contract_type === 'KIP17' && (
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 2,
+              pt: 2,
+              px: 2,
             }}
           >
-            <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
-              Selling Quantity
-            </Typography>
             <Box
-              display={'flex'}
-              justifyContent={'flex-start'}
-              alignItems={'center'}
-              gap={'0.5rem'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 2,
+              }}
             >
-              <Typography variant={'h3'}>{sellingQuantity}</Typography>
+              <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
+                Selling Quantity
+              </Typography>
+              <Box
+                display={'flex'}
+                justifyContent={'flex-start'}
+                alignItems={'center'}
+                gap={'0.5rem'}
+              >
+                <Typography variant={'h3'}>{sellingQuantity}</Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box sx={{ py: 1, px: 2 }}>
+        )}
+
+        <Box sx={{ py: 1, px: 2, mt: 1 }}>
           <Box
             sx={{
               display: 'flex',
@@ -361,73 +366,31 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
           </Box>
 
           {account !== undefined || data?.data?.quote === 'krw' ? (
-            <Box sx={{ display: 'flex', flex: 1, alignItems: 'flex-end', gap: 2 }}>
+            <Box sx={{ display: 'flex', flex: 1, gap: 2 }}>
               {data?.data?.collection_id?.contract_type === 'KIP37' ? (
                 <Box
                   sx={{
+                    width: '100%',
                     display: 'flex',
-                    flexDirection: 'column',
-                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
                   }}
                 >
-                  <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
-                    Amount
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      gap: '1rem',
-
-                      flex: 1,
-                    }}
+                  <LoadingButton
+                    onClick={buy}
+                    disabled={
+                      sellingQuantity === 0 ||
+                      sellingQuantity < parseInt(amount) ||
+                      parseInt(amount) === 0 ||
+                      isNaN(parseInt(amount))
+                    }
+                    loading={buyFlag}
+                    variant="contained"
+                    fullWidth
+                    // sx={{ width: smDown ? '120px' : '190px' }}
                   >
-                    <CustomTextField
-                      id="amount"
-                      name="amount"
-                      variant="outlined"
-                      type="number"
-                      size="small"
-                      value={amount}
-                      inputProps={{ min: 1, step: 1 }}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const validated = e.target.value.match(/^(\s*|\d+)$/);
-                        if (validated && parseInt(e.target.value) <= 0) {
-                          setAmount('0');
-                        } else {
-                          setAmount(parseInt(e.target.value).toString());
-                        }
-                      }}
-                      onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        parseInt(e.target.value) <= 0
-                          ? '1'
-                          : setAmount(parseInt(e.target.value).toString())
-                      }
-                      sx={{ flex: 5 }}
-                    />
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        flexDirection: smDown ? 'column' : 'row',
-                      }}
-                    >
-                      <LoadingButton
-                        onClick={buy}
-                        disabled={
-                          sellingQuantity === 0 ||
-                          sellingQuantity < parseInt(amount) ||
-                          parseInt(amount) === 0 ||
-                          isNaN(parseInt(amount))
-                        }
-                        loading={buyFlag}
-                        variant="contained"
-                        sx={{ flex: 1, width: smDown ? '50px' : '120px' }}
-                      >
-                        {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
-                      </LoadingButton>
-                    </Box>
-                  </Box>
+                    {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
+                  </LoadingButton>
                 </Box>
               ) : (
                 <Box
@@ -449,14 +412,6 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                   >
                     {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
                   </LoadingButton>
-                  {/*<LoadingButton*/}
-                  {/*  onClick={handleOpenOffer}*/}
-                  {/*  // loading={buyFlag}*/}
-                  {/*  variant="contained"*/}
-                  {/*  sx={{ width: smDown ? '50px' : '120px', height: '40px' }}*/}
-                  {/*>*/}
-                  {/*  Offer*/}
-                  {/*</LoadingButton>*/}
                 </Box>
               )}
             </Box>

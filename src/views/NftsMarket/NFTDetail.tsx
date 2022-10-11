@@ -102,7 +102,7 @@ const NFTDetail = () => {
                   <DetailContents nft={data?.data} />
                   <DetailInformation nft={data?.data} collection={data?.data?.collection_id} />
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1.2 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <DetailTitle nft={data?.data} />
                   <DetailBuy
                     id={id!}
