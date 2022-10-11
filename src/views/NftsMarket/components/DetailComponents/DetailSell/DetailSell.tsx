@@ -182,7 +182,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
         <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
           <>
             {data?.data?.collection_id?.contract_type === 'KIP17' && (
-              <Box sx={{ maxWidth: mdDown ? '100%' : '80%', border: '1px solid red' }}>
+              <Box sx={{ maxWidth: '100%' }}>
                 <Box sx={{ pt: 2, px: 2 }}>
                   <Box
                     sx={{
@@ -291,7 +291,12 @@ const DetailSell: React.FC<DetailSellProps> = ({
             ) : (
               <>
                 {myNFT[0].status !== 'suspend' && (
-                  <LoadingButton loading={loading} variant="contained" onClick={openSchedule}>
+                  <LoadingButton
+                    loading={loading}
+                    variant="contained"
+                    fullWidth
+                    onClick={openSchedule}
+                  >
                     Sell as Rental NFT
                   </LoadingButton>
                 )}

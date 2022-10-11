@@ -21,7 +21,6 @@ import useSWR from 'swr';
 import { nftDetail } from '../../../../../services/market.service';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLocation } from 'react-router-dom';
-import WalletDialog from '../../../../../components/WalletDialog';
 import SellingClock from '../SellingClock';
 import getNftPrice from '../../../../../utils/getNftPrice';
 import { useSelector } from 'react-redux';
@@ -34,11 +33,6 @@ interface DetailBuyProps {
   id: string;
   setItemActivityMutateHandler: (b: boolean) => void;
   itemActivityMutateHandler: boolean;
-}
-
-interface WalletTypes {
-  wallet: string;
-  address: string;
 }
 
 interface WalletsTypes {
@@ -408,7 +402,8 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                     loading={buyFlag}
                     variant="contained"
                     // sx={{ width: smDown ? '50px' : '120px', height: '40px', marginRight: 5 }}
-                    sx={{ width: smDown ? '50px' : '160px', height: '40px' }}
+                    // sx={{ width: smDown ? '50px' : '160px', height: '40px' }}
+                    fullWidth
                   >
                     {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
                   </LoadingButton>
