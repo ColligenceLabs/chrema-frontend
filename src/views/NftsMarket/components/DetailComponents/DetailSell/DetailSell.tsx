@@ -179,7 +179,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
   return (
     <>
       {myNFT !== null && !isCheckingMyNFT ? (
-        <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
+        <SectionWrapper title={'My NFTs'} icon={'tag'}>
           <>
             {data?.data?.collection_id?.contract_type === 'KIP17' && (
               <Box sx={{ maxWidth: '100%' }}>
