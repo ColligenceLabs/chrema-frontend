@@ -222,31 +222,16 @@ const DetailSell: React.FC<DetailSellProps> = ({
               gap: '1rem',
             }}
           >
-            {data?.data?.collection_id?.contract_type === 'KIP37' && (
-              <Box sx={{ flex: 2 }}>
-                <Typography variant={'subtitle2'} color={'primary'}>
-                  Amount
-                </Typography>
+            {/*{data?.data?.collection_id?.contract_type === 'KIP37' && (*/}
+            {/*  <Box sx={{ flex: 2 }}>*/}
+            {/*    <Typography variant={'subtitle2'} color={'primary'}>*/}
+            {/*      Amount*/}
+            {/*    </Typography>*/}
 
-                <Typography variant={'h3'}>{myNFTCount}</Typography>
-                {/*<CustomTextField*/}
-                {/*  id="amount"*/}
-                {/*  name="amount"*/}
-                {/*  variant="outlined"*/}
-                {/*  type="number"*/}
-                {/*  size="small"*/}
-                {/*  value={sellAmount}*/}
-                {/*  inputProps={{ min: 0, step: 1 }}*/}
-                {/*  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>*/}
-                {/*    setSellAmount(e.target.value)*/}
-                {/*  }*/}
-                {/*  onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>*/}
-                {/*    setSellAmount(parseInt(e.target.value).toString())*/}
-                {/*  }*/}
-                {/*  fullWidth*/}
-                {/*/>*/}
-              </Box>
-            )}
+            {/*    <Typography variant={'h3'}>{myNFTCount}</Typography>*/}
+            {/*   */}
+            {/*  </Box>*/}
+            {/*)}*/}
             {data?.data?.seller ? (
               <>
                 <Box sx={{ flex: 2 }}>
