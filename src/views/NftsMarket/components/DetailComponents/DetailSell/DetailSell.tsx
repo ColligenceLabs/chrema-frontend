@@ -222,19 +222,18 @@ const DetailSell: React.FC<DetailSellProps> = ({
               gap: '1rem',
             }}
           >
-            {/*{data?.data?.collection_id?.contract_type === 'KIP37' && (*/}
-            {/*  <Box sx={{ flex: 2 }}>*/}
-            {/*    <Typography variant={'subtitle2'} color={'primary'}>*/}
-            {/*      Amount*/}
-            {/*    </Typography>*/}
+            {data?.data?.collection_id?.contract_type === 'KIP37' && (
+              <Box sx={{ flex: 2 }}>
+                <Typography variant={'subtitle2'} color={'primary'}>
+                  Amount
+                </Typography>
 
-            {/*    <Typography variant={'h3'}>{myNFTCount}</Typography>*/}
-            {/*   */}
-            {/*  </Box>*/}
-            {/*)}*/}
+                <Typography variant={'h3'}>{myNFTCount}</Typography>
+              </Box>
+            )}
             {data?.data?.seller ? (
               <>
-                <Box sx={{ flex: 2 }}>
+                <Box sx={{ flex: 1 }}>
                   <Typography variant={'subtitle2'} color={'primary'}>
                     {`Unit Price (${data?.data?.quote.toUpperCase()})`}
                   </Typography>
@@ -253,10 +252,10 @@ const DetailSell: React.FC<DetailSellProps> = ({
                         setSellPrice(event.target.value);
                       }
                     }}
-                    fullWidth
+                    // fullWidth
                   />
                 </Box>
-                <Box sx={{ flex: 1, width: smDown ? '50px' : '100px' }}>
+                <Box sx={{ flex: 1, width: smDown ? '50px' : '100px', border: '2px solid red' }}>
                   <LoadingButton
                     disabled={
                       totalPrice === 0 ||
@@ -279,7 +278,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
                   <LoadingButton
                     loading={loading}
                     variant="contained"
-                    fullWidth
+                    // fullWidth
                     onClick={openSchedule}
                   >
                     Sell as Rental NFT
