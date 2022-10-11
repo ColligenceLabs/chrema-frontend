@@ -301,7 +301,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
             }}
           >
             <Typography variant={'subtitle2'} color={'primary'}>
-              {sellingQuantity === 0 ? 'Current Price' : 'Price'}
+              {sellingQuantity === 0 ? 'Current Price (per day)' : 'Price (per day)'}
             </Typography>
             <Box
               display={'flex'}
