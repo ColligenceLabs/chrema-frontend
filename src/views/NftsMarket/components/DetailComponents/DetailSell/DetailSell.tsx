@@ -179,7 +179,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
   return (
     <>
       {myNFT !== null && !isCheckingMyNFT ? (
-        <SectionWrapper title={'Sell My NFT'} icon={'tag'}>
+        <SectionWrapper title={'My NFTs'} icon={'tag'}>
           <>
             {data?.data?.collection_id?.contract_type === 'KIP17' && (
               <Box sx={{ maxWidth: '100%' }}>
@@ -274,7 +274,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
               </>
             ) : (
               <>
-                {myNFT[0].status !== 'suspend' && (
+                {myNFT[0].nft_id.creator_id.admin_address === account && (
                   <LoadingButton
                     loading={loading}
                     variant="contained"

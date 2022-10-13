@@ -132,7 +132,7 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
         nftContract,
         // TODO : Rental NFT Type ?
         // nftInfo.data.collection_id.contract_type === 'KIP17' ? 721 : 1155,
-        nftInfo.data.collection_id.contract_type === 'KIP17' ? 4907 : 1155,
+        nftInfo.data.collection_id.contract_type === 'KIP37' ? 4907 : 721,
         parseInt(tokenId, 16),
         quantity,
         // TODO : NFT 개당 가격

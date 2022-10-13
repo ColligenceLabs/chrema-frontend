@@ -105,3 +105,59 @@ export async function addMinter(
     return FAILURE;
   }
 }
+
+export async function getOwner(
+  address: string,
+  type: string,
+  account: string | undefined | null,
+  library: any,
+  chainId: number,
+): Promise<string> {
+  const caver = new Caver(
+    process.env.REACT_APP_MAINNET === 'true'
+      ? 'https://klaytn.taalswap.info:8651'
+      : 'https://api.baobab.klaytn.net:8651',
+  );
+  // const market = contracts.market[process.env.REACT_APP_MAINNET === 'true' ? 8217 : 1001];
+  // @ts-ignore
+  const market = contracts.market[chainId];
+  const gasPrice = await caver.rpc.klay.getGasPrice();
+  const isKaikas = library.connection.url !== 'metamask' || library.connection.url === 'eip-1193:';
+
+  console.log(isKaikas);
+  let contract: any;
+  const abi =
+    type === 'KIP17'
+      ? chainId === 1001 || chainId === 8217
+        ? kip17Abi
+        : erc721Abi
+      : chainId === 1001 || chainId === 8217
+      ? kip37Abi
+      : erc1155Abi;
+
+  if (isKaikas) {
+    // @ts-ignore : In case of Klaytn Kaikas Wallet
+    const caver = new Caver(window.klaytn);
+    const klaytnAbi: AbiItem[] = abi as AbiItem[];
+    contract = new caver.klay.Contract(klaytnAbi, address);
+  } else {
+    contract = new ethers.Contract(address, abi, library?.getSigner());
+  }
+
+  let owner: string = '';
+  try {
+    if (isKaikas) {
+      owner = await contract.methods
+        .owner()
+        .call()
+        .catch(async (err: any) => {
+          console.log(err);
+        });
+    } else {
+      owner = await contract.owner();
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  return owner;
+}
