@@ -323,7 +323,8 @@ const CreateNewCollection = () => {
           formData.append('fee_payout', account);
           formData.append('fee_percentage', '2');
           console.log(optionalImageList);
-          formData.append('optional_images', optionalImageList);
+          // formData.append('optional_images', optionalImageList);
+          optionalImageList.forEach((image) => formData.append('optional_images', image.image));
 
           values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
