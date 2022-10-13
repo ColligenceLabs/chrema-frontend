@@ -6,7 +6,7 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 const DropzoneWrapper = styled('div')`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  border: 3px dashed rgb(204, 204, 204);
+  border: ${(props) => (props.viewerMode ? '0' : '3px dashed rgb(204, 204, 204)')};
   border-radius: ${(props) => props.borderRadius};
   display: flex;
   flex-direction: column;
@@ -16,13 +16,14 @@ const DropzoneWrapper = styled('div')`
 `;
 
 const PreviewImage = styled('img')`
-  padding: 3px 5px;
+  padding: ${(props) => (props.viewerMode ? '0' : '3px 5px')};
+  object-fit: ${(props) => (props.viewerMode ? 'cover' : 'default')};
   border-radius: ${(props) => props.borderRadius};
   width: 100%;
   height: 100%;
   object-fit: cover;
   &:hover {
-    opacity: 0.5;
+    opacity: ${(props) => (props.viewerMode ? '1' : '0.5')};
     &:after {
       content: '';
     }
@@ -37,6 +38,8 @@ const PreviewVideo = styled('video')`
   object-fit: cover;
   margin-top: 0;
 `;
+
+const PreviewAudio = styled('audio')``;
 
 const SelectWrapper = styled('div')`
   display: flex;
@@ -64,7 +67,13 @@ const SelectImage = styled(ImageOutlinedIcon)`
   }
 `;
 
-const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '250px' }) => {
+const ImageSelector = ({
+  image,
+  handleImageSelect,
+  width = '400px',
+  height = '250px',
+  viewerMode = false,
+}) => {
   const [preview, setPreview] = useState(image ? image : null);
   const [previewType, setPreviewType] = useState('image/jpeg');
 
@@ -75,6 +84,7 @@ const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '25
       const {
         currentTarget: { result },
       } = finishedEvent;
+      console.log(theFile.type);
       setPreviewType(theFile.type);
       setPreview(result);
       handleImageSelect(theFile);
@@ -88,7 +98,9 @@ const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '25
     accept: {
       'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       'video/mp4': ['.mp4'],
+      'audio/*': ['.wav'],
     },
+    disabled: viewerMode === true,
     // validator: fileSizeValidator,
   });
 
@@ -105,20 +117,31 @@ const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '25
         handleImageSelect(theFile);
       };
       reader.readAsDataURL(theFile);
+    } else {
+      setPreview(null);
     }
     // setPreview(image);
   }, [image]);
 
   return (
-    <DropzoneWrapper width={width} height={height} {...getRootProps({ className: 'dropzone' })}>
+    <DropzoneWrapper
+      width={width}
+      height={height}
+      viewerMode={viewerMode}
+      {...getRootProps({ className: 'dropzone' })}
+    >
       <input {...getInputProps()} />
       {preview ? (
         previewType === 'video/mp4' ? (
           <PreviewVideo autoPlay controls>
             <source src={preview}></source>
           </PreviewVideo>
+        ) : previewType === 'audio/wav' ? (
+          <PreviewAudio autoPlay controls>
+            <source src={preview} type={previewType} />
+          </PreviewAudio>
         ) : (
-          <PreviewImage src={preview} alt={'thumb'} />
+          <PreviewImage src={preview} alt={'thumb'} viewerMode={viewerMode} />
         )
       ) : (
         <SelectWrapper>

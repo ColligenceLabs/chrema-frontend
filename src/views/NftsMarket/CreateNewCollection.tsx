@@ -5,17 +5,21 @@ import {
   Alert,
   Box,
   Button,
+  CardContent,
   Container,
-  FormControlLabel,
-  Grid,
+  IconButton,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
   MenuItem,
-  RadioGroup,
   Snackbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
 import CustomTextField from '../../components/forms/custom-elements/CustomTextField';
 import CustomTextarea from '../../components/forms/custom-elements/CustomTextarea';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Formik } from 'formik';
 import {
   deployKIP17,
@@ -26,7 +30,6 @@ import {
 import { deployNFT17 } from '../../services/nft.service';
 import { createCollection } from '../../services/collections.service';
 import useUserInfo from '../../hooks/useUserInfo';
-import { useSelector } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
 import WalletDialog from '../../components/WalletDialog';
 import splitAddress from '../../utils/splitAddress';
@@ -41,14 +44,13 @@ import {
 } from '@colligence/metaplex-common';
 import { mintNFT } from '../../solana/actions/nft';
 import { useWallet } from '@solana/wallet-adapter-react';
-import CustomRadio from '../../components/forms/custom-elements/CustomRadio';
 import { MintLayout } from '@solana/spl-token';
 import { Uses } from '@metaplex-foundation/mpl-token-metadata';
 import { LoadingButton } from '@mui/lab';
 import { COLLECTION_CATEGORY } from '../Collection/catetories';
-
 import { addMinter } from '../../utils/transactions';
 import { targetNetwork } from '../../config';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 type metadataTypes = {
   name: string;
@@ -111,16 +113,47 @@ const FieldSubscription = styled('span')`
   font-weight: 500;
 `;
 
+const AddOptionalImage = styled('div')(({ theme }) => ({
+  fontSize: '14px',
+  fontWeight: 600,
+  color: theme.palette.primary.main,
+  cursor: 'pointer',
+}));
+
+const OptionalImageWrapper = styled(Box)`
+  display: flex;
+  width: 100%;
+`;
+
+const CardContentWrapper = styled(CardContent)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+type OptionalImageListTypes = {
+  id: number;
+  image: object | Blob | null;
+  description: string;
+};
 const CreateNewCollection = () => {
   const { library, account, activate, chainId } = useWeb3React();
   const { level, id, full_name } = useUserInfo();
   const wallet = useWallet();
   const connection = useConnection();
   const { endpoint } = useConnectionConfig();
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+    defaultMatches: true,
+  });
   const useKAS = process.env.REACT_APP_USE_KAS ?? 'false';
   // const { ethereum, klaytn, solana, binance } = useSelector((state) => state.wallets);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
+  const [optionalImage, setOptionalImage] = useState(null);
+  const [optionalImageID, setOptionalImageID] = useState(0);
+  const [optionalImageDesc, setOptionalImageDesc] = useState('');
+  const [optionalImageList, setOptionalImageList] = useState<OptionalImageListTypes[]>([]);
   const [selectedNetworkIndex, setSelectedNetworkIndex] = useState(0);
   const [cost, setCost] = useState(0);
   const [nftCreateProgress, setNFTcreateProgress] = useState(0);
@@ -133,6 +166,16 @@ const CreateNewCollection = () => {
 
   const handleCloseModal = async () => {
     setIsOpenConnectModal(false);
+  };
+
+  const handleAddOptionalList = (id: number, image: object, description: string) => {
+    setOptionalImageList([...optionalImageList, { id: id, image, description }]);
+  };
+
+  const handleRemoveOptionalList = (id: number) => {
+    const newList = optionalImageList.filter((item) => item.id !== id);
+    console.log(newList);
+    setOptionalImageList(newList);
   };
 
   const calCost = (files: any, metadata: metadataTypes) => {
@@ -246,6 +289,7 @@ const CreateNewCollection = () => {
         initialValues={{
           logoImage: null,
           bannerImage: null,
+          optionalImage: [],
           name: '',
           url: '',
           description: '',
@@ -278,6 +322,8 @@ const CreateNewCollection = () => {
           formData.append('creator_id', id);
           formData.append('fee_payout', account);
           formData.append('fee_percentage', '2');
+          console.log(optionalImageList);
+          formData.append('optional_images', optionalImageList);
 
           values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
@@ -404,6 +450,7 @@ const CreateNewCollection = () => {
                   handleImageSelect={(image: any) => setFieldValue('logoImage', image)}
                   width="160px"
                   height="160px"
+                  viewerMode={false}
                 />
               </FieldWrapper>
 
@@ -419,7 +466,88 @@ const CreateNewCollection = () => {
                   handleImageSelect={(image: any) => setFieldValue('bannerImage', image)}
                   width="600px"
                   height="200px"
+                  viewerMode={false}
                 />
+              </FieldWrapper>
+
+              <FieldWrapper>
+                <FiledTitle>Optional Image</FiledTitle>
+                <FieldSubscription
+                  onClick={() => {
+                    console.log(values.optionalImage);
+                  }}
+                >
+                  This is the collection where your item will appear. {/*<AddOptionalImage*/}
+                </FieldSubscription>
+                <OptionalImageWrapper>
+                  <ImageSelector
+                    image={optionalImage}
+                    handleImageSelect={(image: any) => setOptionalImage(image)}
+                    width="200px"
+                    height="200px"
+                    viewerMode={false}
+                  />
+                  <Box
+                    sx={{
+                      flex: 1,
+                      marginLeft: 2,
+                      textAlign: 'right',
+                      width: '100%',
+                    }}
+                  >
+                    <CustomTextarea
+                      name="description"
+                      value={optionalImageDesc}
+                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                        setOptionalImageDesc(e.target.value)
+                      }
+                      maxRows={5}
+                      minRows={5}
+                    />
+                    <Button
+                      variant="contained"
+                      disabled={optionalImage === null || optionalImageDesc === ''}
+                      onClick={() => {
+                        handleAddOptionalList(optionalImageID, optionalImage!, optionalImageDesc);
+
+                        setOptionalImageID(optionalImageID + 1);
+                        setOptionalImage(null);
+                        setOptionalImageDesc('');
+                      }}
+                    >
+                      Add
+                    </Button>
+                  </Box>
+                </OptionalImageWrapper>
+                <ImageList sx={{ width: '100%', maxHeight: 500 }}>
+                  {optionalImageList.map((item) => (
+                    <ImageListItem key={item.id} cols={smDown ? 2 : 1}>
+                      <ImageSelector
+                        image={item.image}
+                        handleImageSelect={() => null}
+                        width="100%"
+                        // height="200px"
+                        viewerMode={true}
+                      />
+                      <ImageListItemBar
+                        title={
+                          item.description?.length > 30
+                            ? `${item.description.slice(0, 30)}...`
+                            : item.description
+                        }
+                        subtitle={''}
+                        actionIcon={
+                          <IconButton
+                            onClick={() => handleRemoveOptionalList(item.id)}
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                          >
+                            <HighlightOffIcon sx={{ color: 'white' }} />
+                          </IconButton>
+                        }
+                      />
+                    </ImageListItem>
+                  ))}
+                </ImageList>
               </FieldWrapper>
 
               <FieldWrapper>
