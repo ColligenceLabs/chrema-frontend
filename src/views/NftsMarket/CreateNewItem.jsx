@@ -499,7 +499,7 @@ const CreateNewItem = () => {
               </FieldWrapper>
 
               <FieldWrapper>
-                <FiledTitle>Price</FiledTitle>
+                <FiledTitle>Rental Price</FiledTitle>
                 <FieldSubscription variant="h6">Lorem ipsum dolor sit amet.</FieldSubscription>
                 <Box sx={{ display: 'flex' }}>
                   <Select
