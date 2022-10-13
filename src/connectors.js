@@ -26,7 +26,7 @@ export const RPC_URLS = {
   56: 'https://bsc-dataseed.binance.org',
   97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   1001: 'https://api.baobab.klaytn.net:8651',
-  8217: 'https://klaytn.taalswap.info:8651',
+  8217: 'https://public-en.kaikas.io/v1/cypress',
 };
 
 export const injected = new InjectedConnector({
