@@ -4,6 +4,7 @@ import { Card, CardMedia } from '@mui/material';
 import FsLightbox from 'fslightbox-react';
 import ImageViewer from '../../../../../components/ImageViewer';
 import { NFTType } from '../../../types';
+import bgImage from '../../../../../assets/images/products/s8.jpg';
 
 interface DetailContentsProps {
   nft: NFTType;
@@ -34,6 +35,26 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             autoPlay
             loop
             muted
+          />
+        </Card>
+      ) : nft?.metadata?.image.indexOf('wav') > -1 ? (
+        <Card
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            height: '600px',
+            p: 0,
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: 'cover',
+          }}
+        >
+          <CardMedia
+            component="audio"
+            src={nft.metadata.alt_url || nft?.metadata?.image}
+            autoPlay={true}
+            sx={{ mb: 1, p: 1 }}
+            controls
           />
         </Card>
       ) : (

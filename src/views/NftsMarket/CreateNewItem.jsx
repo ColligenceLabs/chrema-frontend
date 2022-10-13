@@ -198,6 +198,7 @@ const CreateNewItem = () => {
           description: '',
           collection: '',
           nftItem: null,
+          albumJacket: null,
           contract_type: '',
           // category: categories[0].value,
           price: '',
@@ -231,6 +232,7 @@ const CreateNewItem = () => {
             }
           }
 
+          formData.append('album_jacket', values['albumJacket']);
           formData.append('quantity', '1000');
           formData.append('collection_id', values['collection']);
           formData.append('file', values['nftItem']);
@@ -353,10 +355,37 @@ const CreateNewItem = () => {
                 </FieldSubscription>
                 <ImageSelector
                   image={values.nftItem}
-                  handleImageSelect={(image) => setFieldValue('nftItem', image)}
+                  handleImageSelect={(image) => {
+                    console.log(image);
+                    setFieldValue('nftItem', image);
+                  }}
                 />
               </FieldWrapper>
 
+              {values.nftItem && values.nftItem.type === 'audio/wav' && (
+                <FieldWrapper>
+                  <FiledTitleWrapper>
+                    <FiledTitle required={true}>Album Jacket</FiledTitle>
+                    {/* 삭제 금지 - 사용 예정 */}
+                    {/*<FormControlLabel*/}
+                    {/*  value={useImport}*/}
+                    {/*  onChange={() => setUseImport((cur) => !cur)}*/}
+                    {/*  control={<CCheckbox size="small" />}*/}
+                    {/*  label="Import Image"*/}
+                    {/*/>*/}
+                  </FiledTitleWrapper>
+                  <FieldSubscription variant="h6">
+                    File type supported: JPG, PNG, GIF
+                  </FieldSubscription>
+                  <ImageSelector
+                    image={values.albumJacket}
+                    handleImageSelect={(image) => {
+                      console.log(image);
+                      setFieldValue('albumJacket', image);
+                    }}
+                  />
+                </FieldWrapper>
+              )}
               {useImport && (
                 <FieldWrapper>
                   <ImportImageWrapper>

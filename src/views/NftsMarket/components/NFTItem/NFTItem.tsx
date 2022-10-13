@@ -6,6 +6,7 @@ import { NFTType } from '../../types';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
+import bgImage from '../../../../assets/images/products/s8.jpg';
 // @ts-ignore
 import FeatherIcon from 'feather-icons-react';
 import ImageViewer from '../../../../components/ImageViewer';
@@ -92,6 +93,33 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 autoPlay
                 loop
                 muted
+              />
+            </Box>
+          ) : item?.metadata?.image.indexOf('wav') > -1 ? (
+            <Box
+              className={'player-wrapper'}
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                width: '100%',
+                // backgroundColor: 'rgba(199,199,199,0.2)',
+                backgroundImage: `url(${bgImage})`,
+                backgroundSize: 'cover',
+                zIndex: -1,
+              }}
+              height={mdDown ? (showLarge ? '215px' : '115px') : showLarge ? '215px' : '115px'}
+            >
+              <CardMedia
+                component="audio"
+                src={item?.metadata?.thumbnail || item?.metadata?.image}
+                autoPlay={false}
+                // loop
+                // muted
+                controls
+                sx={{ p: 1, mb: 0.5 }}
               />
             </Box>
           ) : (
