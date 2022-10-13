@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 
@@ -25,7 +24,7 @@ const PreviewImage = styled('img')`
   &:hover {
     opacity: 0.5;
     &:after {
-      content: 'asdfasdfasdf';
+      content: '';
     }
   }
 `;
@@ -92,6 +91,23 @@ const ImageSelector = ({ image, handleImageSelect, width = '400px', height = '25
     },
     // validator: fileSizeValidator,
   });
+
+  useEffect(() => {
+    if (image) {
+      const theFile = image;
+      const reader = new FileReader();
+      reader.onloadend = (finishedEvent) => {
+        const {
+          currentTarget: { result },
+        } = finishedEvent;
+        setPreviewType(theFile.type);
+        setPreview(result);
+        handleImageSelect(theFile);
+      };
+      reader.readAsDataURL(theFile);
+    }
+    // setPreview(image);
+  }, [image]);
 
   return (
     <DropzoneWrapper width={width} height={height} {...getRootProps({ className: 'dropzone' })}>
