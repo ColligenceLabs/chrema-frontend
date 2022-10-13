@@ -325,6 +325,7 @@ const CreateNewCollection = () => {
           console.log(optionalImageList);
           // formData.append('optional_images', optionalImageList);
           optionalImageList.forEach((image) => formData.append('optional_images', image.image));
+          formData.append('optional_image_list', JSON.stringify(optionalImageList));
 
           values['category'].forEach((category) => formData.append('category', category));
           // formData.append('logoImage', values.logoImage)
