@@ -460,7 +460,8 @@ const CreateNewItem = () => {
               <FieldWrapper>
                 <FiledTitle>Description</FiledTitle>
                 <FieldSubscription variant="h6">
-                  The description will be included on the item's detail page underneath its image.
+                  The description will be included on the item&apos;s detail page underneath its
+                  image.
                 </FieldSubscription>
                 <CustomTextarea
                   name="description"
