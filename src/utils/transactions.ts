@@ -27,7 +27,7 @@ export async function addMinter(
 ): Promise<number> {
   const caver = new Caver(
     process.env.REACT_APP_MAINNET === 'true'
-      ? 'https://klaytn.taalswap.info:8651'
+      ? 'https://public-en.kaikas.io/v1/cypress'
       : 'https://api.baobab.klaytn.net:8651',
   );
   // const market = contracts.market[process.env.REACT_APP_MAINNET === 'true' ? 8217 : 1001];
@@ -115,7 +115,7 @@ export async function getOwner(
 ): Promise<string> {
   const caver = new Caver(
     process.env.REACT_APP_MAINNET === 'true'
-      ? 'https://klaytn.taalswap.info:8651'
+      ? 'https://public-en.kaikas.io/v1/cypress'
       : 'https://api.baobab.klaytn.net:8651',
   );
   // const market = contracts.market[process.env.REACT_APP_MAINNET === 'true' ? 8217 : 1001];

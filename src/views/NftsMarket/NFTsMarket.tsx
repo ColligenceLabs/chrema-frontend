@@ -13,6 +13,7 @@ const categories = [
   { id: 4, value: 'car', category: 'Car' },
   { id: 5, value: 'house', category: 'House' },
   { id: 6, value: 'nftProject', category: 'NFT Project' },
+  { id: 7, value: 'virtualLand', category: 'Virtual Land' },
 ];
 
 const NFTsMarket = () => {

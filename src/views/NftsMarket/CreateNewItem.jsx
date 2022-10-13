@@ -4,10 +4,10 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   Container,
-  Menu,
+  FormControlLabel,
   MenuItem,
-  Paper,
   Select,
   Snackbar,
   Typography,
@@ -19,7 +19,6 @@ import CustomTextarea from '../../components/forms/custom-elements/CustomTextare
 import CustomSelect from '../../components/forms/custom-elements/CustomSelect';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { getCollectionsByCreatorId } from '../../services/collections.service';
 import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import useUserInfo from '../../hooks/useUserInfo';
@@ -49,6 +48,15 @@ const CreateNewItemContainer = styled(Container)`
   margin-bottom: 10rem;
 `;
 
+const ImportImageWrapper = styled(Box)`
+  display: flex;
+  align-items: flex-end;
+  .ImportImageFiled {
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+`;
 const TitleWrapper = styled(Typography)`
   font-size: 40px;
   font-weight: 600;
@@ -61,6 +69,12 @@ const FieldWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+`;
+
+const FiledTitleWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 `;
 
 const FiledTitle = styled('label')`
@@ -92,6 +106,13 @@ const CreateCollection = styled('div')(({ theme }) => ({
   cursor: 'pointer',
 }));
 
+const CCheckbox = styled(Checkbox)(({ theme }) => ({
+  fontSize: '14px',
+  fontWeight: 600,
+  color: theme.palette.primary.main,
+  padding: '0 5px 0 0',
+}));
+
 const StyledMenuItem = styled(MenuItem)`
   padding: 10px;
   font-size: 16px;
@@ -104,72 +125,12 @@ const StyledMenuItem = styled(MenuItem)`
 
 const QUOTE_TOKEN = [{ value: 'klay', caption: 'KLAY' }];
 
-const categories = [
-  {
-    id: 0,
-    value: 'art',
-    caption: 'Art',
-  },
-  {
-    id: 1,
-    value: 'gameItem',
-    caption: 'Game Item',
-  },
-  {
-    id: 2,
-    value: 'music',
-    caption: 'Music',
-  },
-  {
-    id: 3,
-    value: 'car',
-    caption: 'Car',
-  },
-  {
-    id: 4,
-    value: 'house',
-    caption: 'House',
-  },
-  {
-    id: 5,
-    value: 'nftProject',
-    caption: 'NFT Project',
-  },
-];
-
-const nftItemCreateSchema = yup.object({
-  name: yup.string('Enter your name').required('Name is required'),
-  collection: yup.string().when('fee_percentage', {
-    is: (value) => value > 0,
-    then: yup.string().required('Payout wallet address is required'),
-    category: yup
-      .array('Select category')
-      .nullable()
-      .label('Category')
-      .min(1)
-      .of(yup.string())
-      .required('Category is required'),
-    nftItem: yup.mixed().required('You need to provide a file'),
-    description: yup
-      .string('Enter your Description')
-      .required('Description is required')
-      .max(1024, 'Description has a maximum limit of 1024 characters.'),
-    price: yup.number().min(0, 'Must be greater than 0 percent.'),
-  }),
-});
-
 const CreateNewItem = () => {
   const navigate = useNavigate();
-  const { level, id, full_name } = useUserInfo();
+  const { id } = useUserInfo();
   const { account, chainId } = useActiveWeb3React();
 
   const [collectionList, setCollectionList] = useState([]);
-  const [nftItem, setNftItem] = useState(null);
-  const [collection, setCollection] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState(0);
-  const [price, setPrice] = useState('');
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [targetNetwork, setTargetNetwork] = useState('klaytn');
   const [contractAddr, setContractAddr] = useState(contracts.kip17[1001]);
@@ -178,6 +139,9 @@ const CreateNewItem = () => {
   const kasContract = useKipContractWithKaikas(contractAddr, contractType);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  // const [useImport, setUseImport] = useState('select');
+  const [useImport, setUseImport] = useState(false);
+  const [isImport, setIsImport] = useState(false);
 
   const {
     mintNFT17,
@@ -197,18 +161,28 @@ const CreateNewItem = () => {
   };
 
   const getCollectionList = async () => {
-    console.log(id);
     await getCollectionsByCreatorId(id)
       .then(({ data }) => {
-        console.log(data);
         setCollectionList(data.filter((row) => row.status === 'active'));
       })
       .catch((error) => console.log(error));
   };
 
-  useEffect(() => {
-    console.log(collectionList);
-  }, [collectionList]);
+  const getImageFromURL = async (url, tokenID) => {
+    console.log(`url : ${url}`);
+    console.log(`tokenID : ${tokenID}`);
+    console.log('get image url,,,,,,,');
+    const imageUrl =
+      'https://thumbs.dreamstime.com/z/tv-test-image-card-rainbow-multi-color-bars-geometric-signals-retro-hardware-s-minimal-pop-art-print-suitable-89603635.jpg';
+
+    const response = await fetch(imageUrl);
+    const data = await response.blob();
+    const ext = imageUrl.split('.').pop();
+    const filename = imageUrl.split('/').pop();
+    const metadata = { type: `image/${ext}`, path: filename };
+
+    return new File([data], filename, metadata);
+  };
 
   useEffect(() => {
     getCollectionList();
@@ -218,6 +192,8 @@ const CreateNewItem = () => {
     <MarketLayout>
       <Formik
         initialValues={{
+          url: '',
+          tokenID: '',
           name: '',
           description: '',
           collection: '',
@@ -362,7 +338,16 @@ const CreateNewItem = () => {
             <CreateNewItemContainer>
               <TitleWrapper>Create New Item</TitleWrapper>
               <FieldWrapper>
-                <FiledTitle required={true}>Image, Video, Audio</FiledTitle>
+                <FiledTitleWrapper>
+                  <FiledTitle required={true}>Image, Video, Audio</FiledTitle>
+                  {/* 삭제 금지 - 사용 예정 */}
+                  {/*<FormControlLabel*/}
+                  {/*  value={useImport}*/}
+                  {/*  onChange={() => setUseImport((cur) => !cur)}*/}
+                  {/*  control={<CCheckbox size="small" />}*/}
+                  {/*  label="Import Image"*/}
+                  {/*/>*/}
+                </FiledTitleWrapper>
                 <FieldSubscription variant="h6">
                   File type supported: JPG, PNG, GIF, MP4. Max size: 100 MB
                 </FieldSubscription>
@@ -371,6 +356,52 @@ const CreateNewItem = () => {
                   handleImageSelect={(image) => setFieldValue('nftItem', image)}
                 />
               </FieldWrapper>
+
+              {useImport && (
+                <FieldWrapper>
+                  <ImportImageWrapper>
+                    <Box className="ImportImageFiled" sx={{ flex: 2 }}>
+                      <FiledTitle>URL</FiledTitle>
+                      <FieldSubscription>description</FieldSubscription>
+                      <CustomTextField
+                        name="url"
+                        value={values.url}
+                        onChange={handleChange}
+                        variant="outlined"
+                        fullWidth
+                        size="small"
+                      />
+                    </Box>
+                    <Box className="ImportImageFiled" sx={{ flex: 1 }}>
+                      <FiledTitle>Token ID</FiledTitle>
+                      <FieldSubscription>description</FieldSubscription>
+                      <CustomTextField
+                        name="tokenID"
+                        value={values.tokenID}
+                        onChange={handleChange}
+                        variant="outlined"
+                        fullWidth
+                        size="small"
+                      />
+                    </Box>
+                    <Box>
+                      <LoadingButton
+                        loading={isImport}
+                        disabled={isImport}
+                        variant={'contained'}
+                        onClick={async () => {
+                          setIsImport(true);
+                          const result = await getImageFromURL(values.url, values.tokenID);
+                          setFieldValue('nftItem', result);
+                          setIsImport(false);
+                        }}
+                      >
+                        Import
+                      </LoadingButton>
+                    </Box>
+                  </ImportImageWrapper>
+                </FieldWrapper>
+              )}
 
               <FieldWrapper>
                 <FiledTitle>Collection</FiledTitle>

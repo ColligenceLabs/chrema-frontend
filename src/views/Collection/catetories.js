@@ -12,4 +12,5 @@ export const COLLECTION_CATEGORY = [
   { value: 'car', title: 'Car' },
   { value: 'house', title: 'House' },
   { value: 'nftProject', title: 'NFT Project' },
+  { value: 'virtualLand', title: 'Virtual Land' },
 ];
