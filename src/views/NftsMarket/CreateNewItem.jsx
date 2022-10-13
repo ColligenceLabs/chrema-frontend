@@ -460,7 +460,7 @@ const CreateNewItem = () => {
               <FieldWrapper>
                 <FiledTitle>Description</FiledTitle>
                 <FieldSubscription variant="h6">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, necessitatibus?
+                  The description will be included on the item's detail page underneath its image.
                 </FieldSubscription>
                 <CustomTextarea
                   name="description"
@@ -486,7 +486,7 @@ const CreateNewItem = () => {
               <FieldWrapper>
                 <FiledTitle>Category</FiledTitle>
                 <FieldSubscription variant="h6">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Select a category which your collection is included.
                 </FieldSubscription>
                 <CustomTextField
                   name="category"
@@ -500,7 +500,7 @@ const CreateNewItem = () => {
 
               <FieldWrapper>
                 <FiledTitle>Rental Price</FiledTitle>
-                <FieldSubscription variant="h6">Lorem ipsum dolor sit amet.</FieldSubscription>
+                <FieldSubscription variant="h6">Price for rental per a day.</FieldSubscription>
                 <Box sx={{ display: 'flex' }}>
                   <Select
                     sx={{
