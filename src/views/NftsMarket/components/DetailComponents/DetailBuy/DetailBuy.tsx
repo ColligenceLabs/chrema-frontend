@@ -28,6 +28,8 @@ import WalletConnectorDialog from '../../../../../components/WalletConnectorDial
 import { getChainId } from '../../../../../utils/commonUtils';
 import sliceFloatNumber from '../../../../../utils/sliceFloatNumber';
 import OfferDialog from '../../OfferDialog';
+import { SUCCESS } from '../../../../../config';
+import { setIpfsLink } from '../../../../../services/serials.service';
 
 interface DetailBuyProps {
   id: string;
@@ -165,6 +167,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       const quote = data?.data?.quote;
       const quantity = data?.data?.sell_amount;
       const seller = serials.data[0].seller;
+      const serialId = serials.data[0]._id;
       // tokenId 를 사용 구입 진행.
       // V3 : function buyToken(address _nft, uint256 _tokenId, uint256 _maximumPrice) external;
       // V4 : function buyToken(address _nft, uint256 _tokenId, address _seller, uint256 _quantity, uint256 _maximumPrice, address _quote) external;
@@ -180,8 +183,11 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       };
 
       const vault = await rentalMetadata(reqBody);
-      const uri = vault?.data?.data?.result.metaLink;
-      console.log('presigned url : ', uri);
+      const ipfs_link = vault?.data?.data?.result.metaLink;
+      const image_link = vault?.data?.data?.result.metaData.image;
+      console.log('serial id : ', serialId);
+      console.log('new ipfs link : ', ipfs_link);
+      console.log('presigned url : ', image_link);
 
       const result = await buyNFT(
         isKaikas ? nftContractWithKaikas : nftContract,
@@ -197,8 +203,18 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
         price,
         quote,
         getChainId(data?.data?.collection_id?.network),
-        uri,
+        ipfs_link,
       );
+
+      if (result === SUCCESS) {
+        // TODO : update serial ipfs_url
+        const resp = await setIpfsLink(serialId, ipfs_link, image_link);
+        if (!resp?.data?.status) {
+          console.log('Error: update serial ipfs_link failed...');
+        } else {
+          console.log('Notice: update serial ipfs_link success...');
+        }
+      }
     } catch (e) {
       // 실패인 경우 원복.
       console.log('=====>', serials.data, parseInt(serials.data[0].token_id, 16));

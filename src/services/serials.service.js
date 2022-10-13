@@ -42,8 +42,15 @@ export const setSerialsActive = (nftId, tokenId, quantity, pubkeys) => {
     .catch((error) => (error.response.status === 401 ? authService.logout() : console.log(error)));
 };
 
+export const setIpfsLink = (id, ipfs_link, image_link) => {
+  return axios
+    .put(`${API_URL}/updateLink/${id}`, { ipfs_link, image_link }, { headers: authHeader() })
+    .catch((error) => (error.response.status === 401 ? authService.logout() : console.log(error)));
+};
+
 const serialsService = {
   getSerialsData,
+  setIpfsLink,
 };
 
 export default serialsService;
