@@ -23,6 +23,7 @@ export interface CollectionDetailResponse {
     full_name: string;
     image: string;
   };
+  optional_images: any[];
   contract_address: string;
   contract_type: string;
   path: string;

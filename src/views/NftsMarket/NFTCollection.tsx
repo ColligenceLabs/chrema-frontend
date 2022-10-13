@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import Container from './components/Container';
-import { Box, Typography, IconButton } from '@mui/material';
+import { Box, Typography, IconButton, CardMedia } from '@mui/material';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import NFTList from './components/NFTList';
@@ -11,6 +11,39 @@ import { CollectionDetailResponse } from './types';
 import { getNFTsByCollectionId } from '../../services/market.service';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Slider from 'react-slick';
+
+const StyledPrevArrow = styled(Box)`
+  z-index: 1000;
+`;
+
+function PrevArrow(props: any) {
+  const { className, style, onClick } = props;
+  return (
+    <StyledPrevArrow
+      className={className}
+      style={{
+        ...style,
+        left: '25px',
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function NextArrow(props: any) {
+  const { className, style, onClick } = props;
+  return (
+    <StyledPrevArrow
+      className={className}
+      style={{
+        ...style,
+        right: '25px',
+      }}
+      onClick={onClick}
+    />
+  );
+}
 
 const CollectionInfoWrapper = styled(Box)`
   display: flex;
@@ -55,18 +88,31 @@ const CollectionCreator = styled(Box)`
   margin-bottom: 10px;
 `;
 const NFTCollection = () => {
-  const [showAll, setShowAll] = useState(false);
-
-  const { id, onSale } = useParams();
-
-  const { data, error } = useSWR<CollectionDetailResponse>(
-    `/admin-api/collection/detail/${id}`,
-    () => getNFTsByCollectionId(id),
-  );
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
+  const [showAll, setShowAll] = useState(false);
+  const { id, onSale } = useParams();
+  const { data, error } = useSWR<CollectionDetailResponse>(
+    `/admin-api/collection/detail/${id}`,
+    () => getNFTsByCollectionId(id),
+  );
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    // data?.optional_images !== undefined && data?.optional_images?.length < 2
+    //   ? data?.optional_images.length
+    //   : mdDown
+    //   ? 1
+    //   : 1,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+  };
 
   return (
     <>
@@ -132,6 +178,42 @@ const NFTCollection = () => {
             </CollectionName>
           </CollectionInfoWrapper>
         )}
+
+        <Box sx={{ px: 10, my: 2 }}>
+          <Slider {...settings}>
+            {data?.optional_images.map((item, index) => (
+              <Box
+                key={index}
+                // component={Link}
+                // to={`/market/collection/${item._id}`}
+                sx={{ position: 'relative' }}
+              >
+                <CardMedia
+                  component="img"
+                  sx={{ px: '10px', width: '100%', maxHeight: '500px', objectFit: 'cover' }}
+                  image={item.image}
+                  alt="Live from space album cover"
+                />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    right: '20px',
+                    bottom: '10px',
+                    p: 1,
+                    // backgroundColor: 'rgba(240, 250, 245, 0.5)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  }}
+                >
+                  <Typography color={'white'} fontSize={'x-large'} fontWeight={800}>
+                    {item.description.length > 20
+                      ? `${item.description.slice(0, 17)}...`
+                      : item.description}
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
+          </Slider>
+        </Box>
 
         <Box
           sx={{ borderBottom: '1px solid', borderColor: `#d9d9d9`, width: '100%', pt: '30px' }}
