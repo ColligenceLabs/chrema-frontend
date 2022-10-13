@@ -259,6 +259,7 @@ export interface NFTType {
     creator_name: string;
     category: string[];
   };
+  album_jacket: string;
   quantity: number;
   quantity_selling: number;
   quote: string;

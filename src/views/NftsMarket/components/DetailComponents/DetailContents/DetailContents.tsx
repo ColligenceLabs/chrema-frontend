@@ -45,7 +45,7 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             alignItems: 'flex-end',
             height: '600px',
             p: 0,
-            backgroundImage: `url(${bgImage})`,
+            backgroundImage: `url(${nft?.album_jacket})`,
             backgroundSize: 'cover',
           }}
         >

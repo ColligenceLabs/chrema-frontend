@@ -106,7 +106,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 alignItems: 'center',
                 width: '100%',
                 // backgroundColor: 'rgba(199,199,199,0.2)',
-                backgroundImage: `url(${bgImage})`,
+                backgroundImage: `url(${item?.album_jacket})`,
                 backgroundSize: 'cover',
                 zIndex: -1,
               }}
