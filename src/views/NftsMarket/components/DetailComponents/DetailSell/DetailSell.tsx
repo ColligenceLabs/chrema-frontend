@@ -13,6 +13,7 @@ import useMarket from '../../../../../hooks/useMarket';
 import { getNftContract } from '../../../../../utils/contract';
 import { getChainId } from '../../../../../utils/commonUtils';
 import ScheduleDialog from '../../../../NFTs/ScheduleDialog';
+import useCopyToClipBoard from '../../../../../hooks/useCopyToClipBoard';
 
 interface DetailSellProps {
   id: string;
@@ -30,7 +31,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
   setItemActivityMutateHandler,
 }) => {
   const { account, library } = useActiveWeb3React();
-
+  const { copyToClipBoard, copyResult, copyMessage, copyDone, setCopyDone } = useCopyToClipBoard();
   const params = useLocation();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
@@ -161,6 +162,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
     setTimeout(() => {
       myNftMutate().then((res) => {
         if (myNftData && myNftData?.data !== null) {
+          console.log(myNftData?.data);
           setMyNFT(myNftData?.data);
           setMyNFTCount(myNftData?.data.length);
         } else {
@@ -274,7 +276,7 @@ const DetailSell: React.FC<DetailSellProps> = ({
               </>
             ) : (
               <>
-                {myNFT[0].nft_id.creator_id.admin_address === account && (
+                {myNFT[0].nft_id.creator_id.admin_address === account ? (
                   <LoadingButton
                     loading={loading}
                     variant="contained"
@@ -282,6 +284,13 @@ const DetailSell: React.FC<DetailSellProps> = ({
                     onClick={openSchedule}
                   >
                     Sell as Rental NFT
+                  </LoadingButton>
+                ) : (
+                  <LoadingButton
+                    variant="contained"
+                    onClick={() => copyToClipBoard(myNFT[0].image_link)}
+                  >
+                    Copy Content Lint
                   </LoadingButton>
                 )}
               </>
@@ -378,6 +387,18 @@ const DetailSell: React.FC<DetailSellProps> = ({
           sx={{ width: '100%' }}
         >
           {errorMessage === '' ? 'Success' : `Fail (${errorMessage})`}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={copyDone}
+        autoHideDuration={2000}
+        onClose={() => {
+          setCopyDone(false);
+        }}
+      >
+        <Alert variant="filled" severity={copyResult ? 'success' : 'error'} sx={{ width: '100%' }}>
+          {copyResult ? 'Copied.' : copyMessage}
         </Alert>
       </Snackbar>
       <ScheduleDialog open={openScheduleModal} handleCloseModal={handleCloseModal} selected={id} />
