@@ -54,15 +54,14 @@ const TrendingAllCategory = () => {
   const { data, error } = useSWR<CollectionResponse>(url, fetcher);
 
   const settings = {
-    dots: true,
+    // dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow:
-      data?.data?.items !== undefined && data?.data?.items?.length < 4
-        ? data?.data?.items.length
-        : mdDown
-        ? 1
-        : 4,
+    slidesToShow: mdDown
+      ? 1
+      : data?.data?.items !== undefined && data?.data?.items?.length < 4
+      ? data?.data?.items.length
+      : 4,
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
