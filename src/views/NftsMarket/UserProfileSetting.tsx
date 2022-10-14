@@ -44,9 +44,9 @@ const UserProfileSetting = () => {
   const { t } = useTranslation();
   const { full_name, email, description, image: userImage, id, banner } = useUserInfo();
 
-  useEffect(() => {
-    console.log(userImage);
-  }, [userImage]);
+  // useEffect(() => {
+  //   console.log(userImage);
+  // }, [userImage]);
 
   return (
     <MarketLayout>

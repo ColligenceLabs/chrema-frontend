@@ -105,7 +105,9 @@ const ImageSelector = ({
   });
 
   useEffect(() => {
-    if (image) {
+    console.log(typeof image);
+    if (image && typeof image !== 'string') {
+      console.log(image);
       const theFile = image;
       const reader = new FileReader();
       reader.onloadend = (finishedEvent) => {
@@ -117,6 +119,8 @@ const ImageSelector = ({
         handleImageSelect(theFile);
       };
       reader.readAsDataURL(theFile);
+    } else if (image && typeof image === 'string') {
+      setPreview(image);
     } else {
       setPreview(null);
     }
