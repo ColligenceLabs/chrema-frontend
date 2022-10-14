@@ -46,7 +46,7 @@ const CollectionList: React.FC<SelectedCategoryProp> = ({ selectedCategory }) =>
           data &&
           data.map((result: CollectionResponse) => {
             return result.data?.items.map((item) => (
-              <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
                 <CollectionItem
                   id={item._id}
                   name={item.name}
