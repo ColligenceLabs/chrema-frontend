@@ -18,6 +18,7 @@ const Home = (): JSX.Element => {
       <CategorySection title="Car" category="car" />
       <CategorySection title="House" category="house" />
       <CategorySection title="NFT Project" category="nftProject" />
+      <CategorySection title="MetaVerse" category="metaVerse" />
       <Box bgcolor={'alternate.main'}>
         <TrendingAllCategory />
       </Box>
