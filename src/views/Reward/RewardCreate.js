@@ -97,7 +97,6 @@ const RewardCreate = () => {
                   <Button
                     variant="contained"
                     component="label"
-                    variant="contained"
                     size="small"
                     style={{ marginRight: '1rem' }}
                   >
