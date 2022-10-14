@@ -383,6 +383,8 @@ const CreateNewItem = () => {
                       console.log(image);
                       setFieldValue('albumJacket', image);
                     }}
+                    width="250px"
+                    height="250px"
                   />
                 </FieldWrapper>
               )}
@@ -513,20 +515,20 @@ const CreateNewItem = () => {
                 />
               </FieldWrapper>
 
-              <FieldWrapper>
-                <FiledTitle>Category</FiledTitle>
-                <FieldSubscription variant="h6">
-                  Select a category which your collection is included.
-                </FieldSubscription>
-                <CustomTextField
-                  name="category"
-                  value={values.category}
-                  onChange={handleChange}
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                />
-              </FieldWrapper>
+              {/*<FieldWrapper>*/}
+              {/*  <FiledTitle>Category</FiledTitle>*/}
+              {/*  <FieldSubscription variant="h6">*/}
+              {/*    Select a category which your collection is included.*/}
+              {/*  </FieldSubscription>*/}
+              {/*  <CustomTextField*/}
+              {/*    name="category"*/}
+              {/*    value={values.category}*/}
+              {/*    onChange={handleChange}*/}
+              {/*    variant="outlined"*/}
+              {/*    fullWidth*/}
+              {/*    size="small"*/}
+              {/*  />*/}
+              {/*</FieldWrapper>*/}
 
               <FieldWrapper>
                 <FiledTitle>Rental Price</FiledTitle>
