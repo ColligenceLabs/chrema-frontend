@@ -113,6 +113,7 @@ export interface NFTResponse {
           category: string[];
           creator_name: string;
         };
+        album_jacket: string;
         quantity: number;
         quantity_selling: number;
         price: number;

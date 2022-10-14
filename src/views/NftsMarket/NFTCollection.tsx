@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import Container from './components/Container';
 import { Box, Typography, IconButton, CardMedia } from '@mui/material';
@@ -12,6 +12,8 @@ import { getNFTsByCollectionId } from '../../services/market.service';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Slider from 'react-slick';
+// @ts-ignore
+import ImageViewer from 'react-simple-image-viewer';
 
 const StyledPrevArrow = styled(Box)`
   z-index: 1000;
@@ -64,7 +66,7 @@ const CollectionLogo = styled(Box)`
     width: 150px;
     height: 150px;
     object-fit: cover;
-    borderr-adius: 100%;
+    //borderr-adius: 100%;
     border: 5px solid white;
     box-sizing: border-box;
   }
@@ -92,7 +94,14 @@ const NFTCollection = () => {
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
+    defaultMatches: true,
+  });
   const [showAll, setShowAll] = useState(false);
+  const [optionalImageList, setOptionalImageList] = useState<any[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [visible, setVisible] = useState(false);
+
   const { id, onSale } = useParams();
   const { data, error } = useSWR<CollectionDetailResponse>(
     `/admin-api/collection/detail/${id}`,
@@ -103,16 +112,23 @@ const NFTCollection = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
-    // data?.optional_images !== undefined && data?.optional_images?.length < 2
-    //   ? data?.optional_images.length
-    //   : mdDown
-    //   ? 1
-    //   : 1,
-    slidesToScroll: 1,
+    slidesToShow:
+      data?.optional_images !== undefined && data?.optional_images?.length < 4
+        ? data?.optional_images.length
+        : mdDown
+        ? 1
+        : 4,
+    // slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
+
+  useEffect(() => {
+    console.log(data?.optional_images);
+    const result = data?.optional_images.map((item) => item.image);
+    console.log(result);
+    if (result) setOptionalImageList(result);
+  }, [data?.optional_images]);
 
   return (
     <>
@@ -134,7 +150,7 @@ const NFTCollection = () => {
               {/*  )}*/}
               {/*  alt={data?.creator_id?.full_name}*/}
               {/*/>*/}
-              <img src={data?.logo_image} />
+              <img src={data?.logo_image} alt="" />
             </CollectionLogo>
             <CollectionName>
               <Typography
@@ -187,10 +203,14 @@ const NFTCollection = () => {
                 // component={Link}
                 // to={`/market/collection/${item._id}`}
                 sx={{ position: 'relative' }}
+                onClick={() => {
+                  setVisible(true);
+                  setActiveIndex(item.id);
+                }}
               >
                 <CardMedia
                   component="img"
-                  sx={{ px: '10px', width: '100%', maxHeight: '500px', objectFit: 'cover' }}
+                  sx={{ px: '10px', width: '100%', height: '250px', objectFit: 'cover' }}
                   image={item.image}
                   alt="Live from space album cover"
                 />
@@ -223,6 +243,30 @@ const NFTCollection = () => {
           <NFTList onSale={onSale} />
         </Container>
       </MarketLayout>
+      {/*<Viewer*/}
+      {/*  visible={visible}*/}
+      {/*  onClose={() => {*/}
+      {/*    setVisible(false);*/}
+      {/*  }}*/}
+      {/*  zoomSpeed={0.2}*/}
+      {/*  images={data?.optional_images.map((item) => ({ ...item, src: item.image }))}*/}
+      {/*  activeIndex={activeIndex}*/}
+      {/*  zIndex={2001}*/}
+
+      {/*  // downloadable*/}
+      {/*/>*/}
+      {visible && (
+        <ImageViewer
+          src={optionalImageList}
+          currentIndex={activeIndex}
+          disableScroll={false}
+          closeOnClickOutside={true}
+          onClose={() => {
+            setVisible(false);
+          }}
+          backgroundStyle={{ zIndex: 2001 }}
+        />
+      )}
     </>
   );
 };
