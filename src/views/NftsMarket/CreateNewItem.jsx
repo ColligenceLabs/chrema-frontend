@@ -342,13 +342,12 @@ const CreateNewItem = () => {
               <FieldWrapper>
                 <FiledTitleWrapper>
                   <FiledTitle required={true}>Image, Video, Audio</FiledTitle>
-                  {/* 삭제 금지 - 사용 예정 */}
-                  {/*<FormControlLabel*/}
-                  {/*  value={useImport}*/}
-                  {/*  onChange={() => setUseImport((cur) => !cur)}*/}
-                  {/*  control={<CCheckbox size="small" />}*/}
-                  {/*  label="Import Image"*/}
-                  {/*/>*/}
+                  <FormControlLabel
+                    value={useImport}
+                    onChange={() => setUseImport((cur) => !cur)}
+                    control={<CCheckbox size="small" />}
+                    label="Import Image"
+                  />
                 </FiledTitleWrapper>
                 <FieldSubscription variant="h6">
                   File type supported: JPG, PNG, GIF, MP4, WAV. Max size: 100 MB
@@ -366,13 +365,6 @@ const CreateNewItem = () => {
                 <FieldWrapper>
                   <FiledTitleWrapper>
                     <FiledTitle required={true}>Album Jacket</FiledTitle>
-                    {/* 삭제 금지 - 사용 예정 */}
-                    {/*<FormControlLabel*/}
-                    {/*  value={useImport}*/}
-                    {/*  onChange={() => setUseImport((cur) => !cur)}*/}
-                    {/*  control={<CCheckbox size="small" />}*/}
-                    {/*  label="Import Image"*/}
-                    {/*/>*/}
                   </FiledTitleWrapper>
                   <FieldSubscription variant="h6">
                     File type supported: JPG, PNG, GIF
