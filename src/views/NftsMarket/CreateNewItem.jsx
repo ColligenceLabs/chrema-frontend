@@ -351,7 +351,7 @@ const CreateNewItem = () => {
                   {/*/>*/}
                 </FiledTitleWrapper>
                 <FieldSubscription variant="h6">
-                  File type supported: JPG, PNG, GIF, MP4. Max size: 100 MB
+                  File type supported: JPG, PNG, GIF, MP4, WAV. Max size: 100 MB
                 </FieldSubscription>
                 <ImageSelector
                   image={values.nftItem}
