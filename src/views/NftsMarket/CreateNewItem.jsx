@@ -175,7 +175,7 @@ const CreateNewItem = () => {
     console.log('get image url,,,,,,,');
 
     // TODO : 이미지 링크 가지고 오는 로직
-    const meta_link = await getTokenURI(
+    let meta_link = await getTokenURI(
       contract,
       parseInt(tokenId, 10),
       'KIP17', // ERC1155는 ?
@@ -183,19 +183,28 @@ const CreateNewItem = () => {
       library,
       parseInt(chainId, 10),
     );
+    if (meta_link === '') return undefined;
+    let encodeData = [];
+    if (meta_link.startsWith('ipfs://')) {
+      meta_link = meta_link.replace('ipfs://', 'https://taalfi.infura-ipfs.io/ipfs/');
+    } else if (meta_link.startsWith('data:application/json')) {
+      encodeData = meta_link.split(',');
+    }
 
     let imageUrl;
-    // imageUrl =
-    ('https://thumbs.dreamstime.com/z/tv-test-image-card-rainbow-multi-color-bars-geometric-signals-retro-hardware-s-minimal-pop-art-print-suitable-89603635.jpg');
+    if (encodeData.length !== 0) {
+      const metadata = JSON.parse(Buffer.from(encodeData[encodeData.length - 1], 'base64').toString());
+      imageUrl = metadata.image.replace('ipfs://', 'https://taalfi.infura-ipfs.io/ipfs/');
+    } else {
+      await fetch(meta_link.replace('https://ipfs.io', 'https://taalfi.infura-ipfs.io'))
+        .then((res) => res.json())
+        .then((out) => (imageUrl = out.image))
+        .catch((err) => {
+          throw err;
+        });
+    }
 
-    await fetch(meta_link)
-      .then((res) => res.json())
-      .then((out) => (imageUrl = out.image))
-      .catch((err) => {
-        throw err;
-      });
-
-    imageUrl.replace('ipfs.io', 'taalfi.infura-ipfs.io');
+    imageUrl.replace('https://ipfs.io', 'https://taalfi.infura-ipfs.io');
     console.log(`image url : ${imageUrl}`);
 
     const response = await fetch(imageUrl);
@@ -440,7 +449,8 @@ const CreateNewItem = () => {
                         onClick={async () => {
                           setIsImport(true);
                           const result = await getImageFromURL(values.contract, values.tokenId);
-                          setFieldValue('nftItem', result);
+                          if (result)
+                            setFieldValue('nftItem', result);
                           setIsImport(false);
                         }}
                       >
