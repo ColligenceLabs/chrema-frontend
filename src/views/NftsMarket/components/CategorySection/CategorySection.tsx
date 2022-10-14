@@ -108,11 +108,6 @@ const CategorySection: React.FC<CategorySectionProps> = ({ title, category }) =>
     mutate();
   }, []);
 
-  useEffect(() => {
-    console.log(category);
-    if (category === 'house') console.log(data);
-  }, [category]);
-
   return (
     <AllCategorySection>
       <Box
