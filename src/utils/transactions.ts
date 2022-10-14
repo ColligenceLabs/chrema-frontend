@@ -161,3 +161,70 @@ export async function getOwner(
   }
   return owner;
 }
+
+export async function getTokenURI(
+  address: string,
+  tokenId: number,
+  type: string,
+  account: string | undefined | null,
+  library: any,
+  chainId: number,
+): Promise<string> {
+  const caver = new Caver(
+    process.env.REACT_APP_MAINNET === 'true'
+      ? 'https://public-en.kaikas.io/v1/cypress'
+      : 'https://api.baobab.klaytn.net:8651',
+  );
+  // @ts-ignore
+  const isKaikas = library.connection.url !== 'metamask' || library.connection.url === 'eip-1193:';
+
+  console.log(isKaikas);
+  let contract: any;
+  const abi =
+    type === 'KIP17'
+      ? chainId === 1001 || chainId === 8217
+        ? kip17Abi
+        : erc721Abi
+      : chainId === 1001 || chainId === 8217
+      ? kip37Abi
+      : erc1155Abi;
+
+  if (isKaikas) {
+    // @ts-ignore : In case of Klaytn Kaikas Wallet
+    const caver = new Caver(window.klaytn);
+    const klaytnAbi: AbiItem[] = abi as AbiItem[];
+    contract = new caver.klay.Contract(klaytnAbi, address);
+  } else {
+    contract = new ethers.Contract(address, abi, library?.getSigner());
+  }
+
+  let uri: string = '';
+  try {
+    if (type === 'KIP17') {
+      if (isKaikas) {
+        uri = await contract.methods
+          .tokenURI(tokenId)
+          .call()
+          .catch(async (err: any) => {
+            console.log(err);
+          });
+      } else {
+        uri = await contract.tokenURI(tokenId);
+      }
+    } else {
+      if (isKaikas) {
+        uri = await contract.methods
+          .uri(tokenId)
+          .call()
+          .catch(async (err: any) => {
+            console.log(err);
+          });
+      } else {
+        uri = await contract.uri(tokenId);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  return uri;
+}

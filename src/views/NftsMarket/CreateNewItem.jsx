@@ -39,6 +39,7 @@ import { useKipContract, useKipContractWithKaikas } from '../../hooks/useContrac
 import useNFT from '../../hooks/useNFT';
 import contracts from '../../config/constants/contracts';
 import { LoadingButton } from '@mui/lab';
+import { getTokenURI } from '../../utils/transactions';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -128,7 +129,7 @@ const QUOTE_TOKEN = [{ value: 'klay', caption: 'KLAY' }];
 const CreateNewItem = () => {
   const navigate = useNavigate();
   const { id } = useUserInfo();
-  const { account, chainId } = useActiveWeb3React();
+  const { account, library, chainId } = useActiveWeb3React();
 
   const [collectionList, setCollectionList] = useState([]);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
@@ -168,12 +169,34 @@ const CreateNewItem = () => {
       .catch((error) => console.log(error));
   };
 
-  const getImageFromURL = async (url, tokenID) => {
-    console.log(`url : ${url}`);
-    console.log(`tokenID : ${tokenID}`);
+  const getImageFromURL = async (contract, tokenId) => {
+    console.log(`contract : ${contract}`);
+    console.log(`tokenId : ${tokenId}`);
     console.log('get image url,,,,,,,');
-    const imageUrl =
-      'https://thumbs.dreamstime.com/z/tv-test-image-card-rainbow-multi-color-bars-geometric-signals-retro-hardware-s-minimal-pop-art-print-suitable-89603635.jpg';
+
+    // TODO : 이미지 링크 가지고 오는 로직
+    const meta_link = await getTokenURI(
+      contract,
+      parseInt(tokenId, 10),
+      'KIP17', // ERC1155는 ?
+      account,
+      library,
+      parseInt(chainId, 10),
+    );
+
+    let imageUrl;
+    // imageUrl =
+    ('https://thumbs.dreamstime.com/z/tv-test-image-card-rainbow-multi-color-bars-geometric-signals-retro-hardware-s-minimal-pop-art-print-suitable-89603635.jpg');
+
+    await fetch(meta_link)
+      .then((res) => res.json())
+      .then((out) => (imageUrl = out.image))
+      .catch((err) => {
+        throw err;
+      });
+
+    imageUrl.replace('ipfs.io', 'taalfi.infura-ipfs.io');
+    console.log(`image url : ${imageUrl}`);
 
     const response = await fetch(imageUrl);
     const data = await response.blob();
@@ -384,11 +407,13 @@ const CreateNewItem = () => {
                 <FieldWrapper>
                   <ImportImageWrapper>
                     <Box className="ImportImageFiled" sx={{ flex: 2 }}>
-                      <FiledTitle>URL</FiledTitle>
-                      <FieldSubscription>description</FieldSubscription>
+                      <FiledTitle>Contract Address</FiledTitle>
+                      <FieldSubscription>
+                        Input the contract address of NFT imported
+                      </FieldSubscription>
                       <CustomTextField
-                        name="url"
-                        value={values.url}
+                        name="contract"
+                        value={values.contract}
                         onChange={handleChange}
                         variant="outlined"
                         fullWidth
@@ -397,10 +422,10 @@ const CreateNewItem = () => {
                     </Box>
                     <Box className="ImportImageFiled" sx={{ flex: 1 }}>
                       <FiledTitle>Token ID</FiledTitle>
-                      <FieldSubscription>description</FieldSubscription>
+                      <FieldSubscription>Input the token ID imported</FieldSubscription>
                       <CustomTextField
-                        name="tokenID"
-                        value={values.tokenID}
+                        name="tokenId"
+                        value={values.tokenId}
                         onChange={handleChange}
                         variant="outlined"
                         fullWidth
@@ -414,7 +439,7 @@ const CreateNewItem = () => {
                         variant={'contained'}
                         onClick={async () => {
                           setIsImport(true);
-                          const result = await getImageFromURL(values.url, values.tokenID);
+                          const result = await getImageFromURL(values.contract, values.tokenId);
                           setFieldValue('nftItem', result);
                           setIsImport(false);
                         }}
