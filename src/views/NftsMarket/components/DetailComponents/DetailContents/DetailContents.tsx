@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Card, CardMedia } from '@mui/material';
 // @ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -55,6 +55,12 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             autoPlay={true}
             sx={{ mb: 1, p: 1 }}
             controls
+            onTimeUpdate={(e: ChangeEvent<HTMLVideoElement>) => {
+              if (e.target.currentTime > 10) {
+                e.target.pause();
+                e.target.currentTime = 0;
+              }
+            }}
           />
         </Card>
       ) : (

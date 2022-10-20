@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -119,6 +119,12 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
                 // loop
                 // muted
                 controls
+                onTimeUpdate={(e: ChangeEvent<HTMLVideoElement>) => {
+                  if (e.target.currentTime > 10) {
+                    e.target.pause();
+                    e.target.currentTime = 0;
+                  }
+                }}
                 sx={{ p: 1, mb: 0.5 }}
               />
             </Box>
