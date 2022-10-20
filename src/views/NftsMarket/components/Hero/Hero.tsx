@@ -33,7 +33,7 @@ const BackGroundImage = styled(Box)`
 const HeroSection = styled(Container)`
   display: flex;
   max-width: 1500px;
-  height: 550px;
+  height: 600px;
 `;
 
 const Hero = (): JSX.Element => {

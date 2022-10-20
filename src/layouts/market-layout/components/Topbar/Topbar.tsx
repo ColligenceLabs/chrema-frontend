@@ -29,6 +29,7 @@ import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWalle
 import useUserInfo from '../../../../hooks/useUserInfo';
 import { setupNetwork } from '../../../../utils/wallet';
 import { targetNetwork } from '../../../../config';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -85,6 +86,11 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
   const openProfile = Boolean(anchorProfileEl);
 
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 38,
+  });
+
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
   const triedEager = useEagerConnect();
   // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
@@ -118,6 +124,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
 
     if (chainId !== parseInt(targetNetwork!)) setupNetwork(parseInt(targetNetwork!));
   }, [account]);
+
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
       <LogoIcon />
@@ -129,7 +136,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               <Link to="/" style={{ textDecoration: 'none' }}>
                 <Typography
                   variant="subtitle1"
-                  color={pathname === '/' ? 'text.primary' : 'text.secondary'}
+                  color={pathname === '/' ? (trigger ? 'text.primary' : 'white') : 'text.secondary'}
                   fontWeight={700}
                 >
                   Home

@@ -7,10 +7,11 @@ import TopCollections from './components/TopCollections';
 import Introduction from './components/Introduction';
 import AllCollectionList from './components/AllCollectionList';
 import CategorySection from './components/CategorySection/CategorySection';
+import HomeLayout from '../../layouts/home-layout/HomeLayout';
 
 const Home = (): JSX.Element => {
   return (
-    <MarketLayout colorInvert={true}>
+    <HomeLayout colorInvert={true}>
       <Hero />
       <CategorySection title="Art" category="art" />
       <CategorySection title="Game Item" category="gameItem" />
@@ -31,7 +32,7 @@ const Home = (): JSX.Element => {
       <Box bgcolor={'primary.main'}>
         <Introduction />
       </Box>
-    </MarketLayout>
+    </HomeLayout>
   );
 };
 
