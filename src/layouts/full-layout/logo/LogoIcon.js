@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/material/styles';
-import ntal_logo from '../../../assets/images/logos/ntal_logo.png';
+import logo from '../../../assets/images/logos/taalswap-marketplace_logo.png';
 
 const LogoWrapper = styled(Link)`
   text-decoration: none;
@@ -19,14 +19,7 @@ const LogoIcon = () => {
   return (
     <>
       <LogoWrapper to="/">
-        <img src={ntal_logo} width="40px" alt="logo" />
-        <Typography
-          style={{ fontSize: mdDown ? '20px:' : '33px' }}
-          fontWeight={700}
-          color={'primary'}
-        >
-          NTal
-        </Typography>
+        <img src={logo} width="170px" alt="logo" />
       </LogoWrapper>
     </>
   );
