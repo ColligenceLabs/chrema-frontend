@@ -19,7 +19,7 @@ const LogoIcon = () => {
   return (
     <>
       <LogoWrapper to="/">
-        <img src={logo} width="170px" alt="logo" />
+        <img src={logo} width="150px" alt="logo" />
       </LogoWrapper>
     </>
   );
