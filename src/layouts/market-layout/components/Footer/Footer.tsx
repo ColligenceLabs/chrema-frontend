@@ -47,13 +47,13 @@ const Footer = (): JSX.Element => {
           padding: '40px 24px',
         }}
       >
-        <LogoWrapper>
-          <img src={ntal_logo} alt="logo_img" width="40px" className="footer_logo" />
-          <Typography style={{ fontSize: '30px' }} fontWeight={700} color={'white'}>
-            N-Tal
-          </Typography>
-          {/* <p>&copy; All rights reserved. Made by TaalSwap. </p> */}
-        </LogoWrapper>
+        {/*<LogoWrapper>*/}
+        {/*  <img src={ntal_logo} alt="logo_img" width="40px" className="footer_logo" />*/}
+        {/*  <Typography style={{ fontSize: '30px' }} fontWeight={700} color={'white'}>*/}
+        {/*    N-Tal*/}
+        {/*  </Typography>*/}
+        {/*  /!* <p>&copy; All rights reserved. Made by TaalSwap. </p> *!/*/}
+        {/*</LogoWrapper>*/}
         <Box
           sx={{
             display: 'flex',
