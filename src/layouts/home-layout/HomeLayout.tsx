@@ -34,11 +34,11 @@ const HomeLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element =
     <Box>
       <Box sx={{ minHeight: `calc(100vh - 123.5px)` }}>
         <AppBar
-          // position={'sticky'}
+          position={'sticky'}
           sx={{
             top: 0,
             backgroundColor: trigger ? theme.palette.background.paper : bgcolor,
-            boxShadow: 8,
+            // boxShadow: 8,
           }}
           elevation={trigger ? 1 : 0}
         >
@@ -46,7 +46,7 @@ const HomeLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element =
             isSidebarOpen={isSidebarOpen}
             onSidebarClose={() => setSidebarOpen(false)}
           />
-          <Container paddingY={1}>
+          <Container paddingY={3}>
             <Topbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
           </Container>
         </AppBar>

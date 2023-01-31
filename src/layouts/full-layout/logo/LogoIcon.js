@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/material/styles';
-import logo from '../../../assets/images/logos/taalswap-marketplace_logo.png';
+import logo from '../../../assets/images/logos/crmc_logo.png';
 
 const LogoWrapper = styled(Link)`
   text-decoration: none;
@@ -19,7 +19,7 @@ const LogoIcon = () => {
   return (
     <>
       <LogoWrapper to="/">
-        <img src={logo} width="150px" alt="logo" />
+        <img src={logo} height="45px" alt="logo" />
       </LogoWrapper>
     </>
   );

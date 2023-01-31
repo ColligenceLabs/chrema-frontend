@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import { CollectionItemType } from '../../types';
@@ -29,79 +29,114 @@ const CollectionItem: React.FC<CollectionItemType> = ({
       <Link to={`/market/collection/${id}`} style={{ textDecoration: 'none' }}>
         <Card
           sx={{
-            p: 0,
+            p: '20px 22px',
             m: smDown ? 0.5 : 1,
             mt: 2,
             textDecoration: 'none',
             transition: 'all .2s ease-in-out',
-            border: '0.1px solid #d6d6d6',
-            borderRadius: '25px',
+            border: '1px solid #DFDFDF',
+            borderRadius: '10px',
+            // backgroundColor: '#F5F5F5',
             '&:hover': {
               transform: `translateY(-${theme.spacing(1 / 2)})`,
             },
-            // minHeight: smDown ? '150px' : '400px',
+            boxShadow: 0,
           }}
         >
+          <Typography sx={{ fontSize: '20px', fontWeight: 700, lineHeight: '26px', mb: '13px' }}>
+            {name.length > 20 ? `${name.slice(0, 20)}...` : name}
+          </Typography>
+          <Box
+            sx={{
+              width: '100%',
+              position: 'relative',
+              '&:after': {
+                content: '""',
+                display: 'block',
+                paddingBottom: '100%',
+              },
+            }}
+          >
+            <ImageViewer
+              src={cover_image}
+              alt={name}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '15px',
+              }}
+            />
+          </Box>
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
+              mt: '20px',
+              gap: '1rem',
             }}
           >
-            <ImageViewer src={cover_image} alt={name} height={smDown ? '150px' : '200px'} />
-            <Box
+            <Avatar
+              src={avatarImage}
+              alt={'avatarImage'}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '50px',
-                height: '50px',
-                marginTop: '-25px',
-                border: '3px solid #f1f1f1f1',
-                borderRadius: '100%',
-                p: 3,
+                width: '40px',
+                height: '40px',
               }}
-            >
-              <Avatar
-                src={avatarImage}
-                alt={'avatarImage'}
-                sx={{
-                  width: '50px',
-                  height: '50px',
-                }}
-              />
-            </Box>
-          </Box>
-          <CardContent sx={{ textAlign: 'center', p: 2 }}>
-            <Typography variant={smDown ? 'caption' : 'h4'}>
-              {name.length > 20 ? `${name.slice(0, 20)}...` : name}
-            </Typography>
+            />
             <Box
               sx={{
                 display: 'flex',
-
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center',
-                // gap: '0.2rem',
-                mb: smDown ? '0px' : '10px',
+                alignItems: 'flex-start',
               }}
             >
-              <Typography variant={'caption'}>by </Typography>
-              <Typography variant={'caption'} color={'primary'}>
+              <Typography
+                sx={{ fontWeight: 400, lineHeight: '22px', fontSize: '14px', color: '#979797' }}
+              >
+                Seller
+              </Typography>
+              <Typography sx={{ fontWeight: 700, lineHeight: '22px', fontSize: '16px' }}>
                 {creator_fullName}
               </Typography>
             </Box>
-
+          </Box>
+          <Box sx={{ textAlign: 'center', p: 2 }}>
             {!smDown && (
-              <Typography variant="body2" color="text.secondary" sx={{ minHeight: '61px' }}>
-                {description && description.length > 70
-                  ? `${description.slice(0, 67)}...`
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: '12px',
+                  lineHeight: '20px',
+                  textAlign: 'center',
+                  color: '#B9B8BB',
+                  minHeight: '40px',
+                }}
+              >
+                {description && description.length > 60
+                  ? `${description.slice(0, 57)}...`
                   : description}
               </Typography>
             )}
-          </CardContent>
+          </Box>
+          <Button
+            variant={'contained'}
+            fullWidth
+            sx={{
+              fontWeight: 700,
+              fontSize: '16px',
+              lineHeight: '24px',
+              height: '48px',
+              borderRadius: '10px',
+            }}
+          >
+            Detail
+          </Button>
         </Card>
       </Link>
     </>

@@ -51,9 +51,6 @@ const MenuItemWrapper = styled(Box)`
 const MenuItemMarker = styled(Box)`
   position: absolute;
   top: 48px;
-  //length: 40px;
-  border-bottom: ${(props: MenuItemMarkerProps) =>
-    props.pathname ? `3px solid ${props.color}` : ''};
   width: 110%;
 `;
 
@@ -126,73 +123,85 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   }, [account]);
 
   return (
-    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
-      <LogoIcon />
+    // <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={1} py={0.5}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+        }}
+      >
+        <LogoIcon />
+        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '82px' }}>
+          {!smDown ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <MenuItemWrapper minWidth="80px">
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                  <Typography
+                    variant="subtitle1"
+                    color={pathname === '/' ? 'primary' : 'text.secondary'}
+                    fontWeight={700}
+                  >
+                    Home
+                  </Typography>
+                </Link>
+              </MenuItemWrapper>
+              <MenuItemWrapper minWidth="100px">
+                <Link to="/market" style={{ textDecoration: 'none' }}>
+                  <Typography
+                    variant="subtitle1"
+                    color={pathname === '/market' ? 'text.primary' : 'text.secondary'}
+                    fontWeight={700}
+                  >
+                    Marketplace
+                  </Typography>
+                </Link>
+              </MenuItemWrapper>
+              <MenuItemWrapper minWidth="100px">
+                <Link to="/market/create" style={{ textDecoration: 'none' }}>
+                  <Typography
+                    variant="subtitle1"
+                    color={pathname === '/market/create' ? 'text.primary' : 'text.secondary'}
+                    fontWeight={700}
+                  >
+                    Create
+                  </Typography>
+                </Link>
+              </MenuItemWrapper>
+            </Box>
+          ) : (
+            <Box>
+              <IconButton
+                size="large"
+                aria-label="menu"
+                onClick={toggleSidebar}
+                sx={{
+                  display: {
+                    lg: 'none',
+                    xs: 'flex',
+                  },
+                }}
+              >
+                <FeatherIcon icon="menu" width="20" height="20" />
+              </IconButton>
+            </Box>
+          )}
 
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {!smDown ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <MenuItemWrapper minWidth="80px">
-              <Link to="/" style={{ textDecoration: 'none' }}>
-                <Typography
-                  variant="subtitle1"
-                  color={pathname === '/' ? (trigger ? 'text.primary' : 'white') : 'text.secondary'}
-                  fontWeight={700}
-                >
-                  Home
-                </Typography>
-              </Link>
-              <MenuItemMarker pathname={pathname === '/'} color={theme.palette.primary.main} />
-            </MenuItemWrapper>
-            <MenuItemWrapper minWidth="100px">
-              <Link to="/market" style={{ textDecoration: 'none' }}>
-                <Typography
-                  variant="subtitle1"
-                  color={pathname === '/market' ? 'text.primary' : 'text.secondary'}
-                  fontWeight={700}
-                >
-                  Marketplace
-                </Typography>
-              </Link>
-              <MenuItemMarker
-                pathname={pathname === '/market'}
-                color={theme.palette.primary.main}
-              />
-            </MenuItemWrapper>
-            <MenuItemWrapper minWidth="100px">
-              <Link to="/market/create" style={{ textDecoration: 'none' }}>
-                <Typography
-                  variant="subtitle1"
-                  color={pathname === '/market/create' ? 'text.primary' : 'text.secondary'}
-                  fontWeight={700}
-                >
-                  Create
-                </Typography>
-              </Link>
-              <MenuItemMarker
-                pathname={pathname === '/market/create'}
-                color={theme.palette.primary.main}
-              />
-            </MenuItemWrapper>
-          </Box>
-        ) : (
-          <Box>
-            <IconButton
-              size="large"
-              aria-label="menu"
-              onClick={toggleSidebar}
-              sx={{
-                display: {
-                  lg: 'none',
-                  xs: 'flex',
-                },
-              }}
-            >
-              <FeatherIcon icon="menu" width="20" height="20" />
-            </IconButton>
-          </Box>
-        )}
-
+          {/*<Box>*/}
+          {/*  <WalletConnector activate={activate} />*/}
+          {/*</Box>*/}
+          {/*<Box>*/}
+          {/*  {user !== null && <ProfileButton useMarket={true} />}*/}
+          {/*</Box>*/}
+        </Box>
+      </Box>
+      <Box>
         <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '2rem', gap: 4 }}>
           <IconButton
             onClick={handleClickProfile}
@@ -210,7 +219,9 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
                 sx={{
                   color: account ? `${theme.palette.primary.main}` : 'text.secondary',
                   fontSize: '2rem',
-                  '&:hover': { color: account ? `${theme.palette.primary.main}` : 'text.primary' },
+                  '&:hover': {
+                    color: account ? `${theme.palette.primary.main}` : 'text.primary',
+                  },
                 }}
               />
             )}
@@ -248,12 +259,6 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
               </ListItemIcon>
               My Collections
             </StyledMenuItem>
-            {/*<StyledMenuItem>*/}
-            {/*  <ListItemIcon>*/}
-            {/*    <Settings />*/}
-            {/*  </ListItemIcon>*/}
-            {/*  Settings*/}
-            {/*</StyledMenuItem>*/}
             <StyledMenuItem
               onClick={async () => {
                 await deactivate();
@@ -284,12 +289,6 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             activate={activate}
           />
         </Box>
-        {/*<Box>*/}
-        {/*  <WalletConnector activate={activate} />*/}
-        {/*</Box>*/}
-        {/*<Box>*/}
-        {/*  {user !== null && <ProfileButton useMarket={true} />}*/}
-        {/*</Box>*/}
       </Box>
     </Box>
   );

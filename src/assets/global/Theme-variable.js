@@ -25,7 +25,7 @@ const baseTheme = {
   direction: 'ltr',
   palette: {
     primary: {
-      main: '#1a97f5',
+      main: '#3749E9',
       light: '#e6f4ff',
       dark: '#1682d4',
     },
@@ -110,7 +110,7 @@ const themesOptions = [
     name: BLUE_THEME,
     palette: {
       primary: {
-        main: 'rgb(32, 129, 226)',
+        main: '#3749E9',
         light: '#e6f4ff',
         dark: 'rgb(32, 129, 226)',
       },
@@ -210,12 +210,12 @@ export const BuildTheme = (config = {}) => {
     palette: {
       mode: customizer.activeMode,
       background: {
-        default: customizer.activeMode === 'dark' ? '#20232a' : '#fafbfb',
+        default: customizer.activeMode === 'dark' ? '#20232a' : '#ffffff',
         dark: customizer.activeMode === 'dark' ? '#1c2025' : '#ffffff',
         paper: customizer.activeMode === 'dark' ? '#282C34' : '#ffffff',
       },
       text: {
-        primary: customizer.activeMode === 'dark' ? '#e6e5e8' : 'rgba(0, 0, 0, 0.87)',
+        primary: customizer.activeMode === 'dark' ? '#e6e5e8' : '#130518',
         secondary: customizer.activeMode === 'dark' ? '#adb0bb' : '#777e89',
       },
     },

@@ -8,7 +8,8 @@ import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Container from '../Container';
-import main from '../../../../assets/images/collery_main.png';
+import main from '../../../../assets/images/main_visual.png';
+import ImageViewer from '../../../../components/ImageViewer';
 // import ImageViewer from '../../../../components/ImageViewer';
 
 const HeroContainer = styled(Box)`
@@ -50,32 +51,23 @@ const Hero = (): JSX.Element => {
 
   return (
     <HeroContainer>
-      <BackGroundImage />
+      {/*<BackGroundImage />*/}
       <HeroSection>
         <Grid container spacing={4}>
           <Grid item container xs={12} md={6} alignItems={'center'}>
             <Box data-aos={isMd ? 'fade-right' : 'fade-up'}>
               <Box marginBottom={2} sx={{ textAlign: 'left' }}>
-                <Typography fontSize={'40px'} color="white" sx={{ fontWeight: 700 }}>
-                  Global First Rental NFT
+                <Typography fontSize={'40px'} color="text.primary" sx={{ fontWeight: 700 }}>
+                  NFTs with DeFi…
                   <br />
-                  <Typography
-                    color={'primary'}
-                    component={'span'}
-                    variant={'inherit'}
-                    sx={{
-                      background: `linear-gradient(180deg, transparent 82%, ${alpha(
-                        theme.palette.secondary.main,
-                        0.3,
-                      )} 0%)`,
-                    }}
-                  >
-                    Get your extra profits.
+                  Get{' '}
+                  <Typography color={'primary'} component={'span'} variant={'inherit'}>
+                    your extra profits.
                   </Typography>
                 </Typography>
               </Box>
               <Box marginBottom={3} sx={{ textAlign: 'left' }}>
-                <Typography variant="h2" component="p" color="white">
+                <Typography fontSize="18px" component="p">
                   Create and trade NFTs on our Rentable Marketplace or Generate additional revenue
                   through N-Tal service.
                 </Typography>
@@ -100,7 +92,7 @@ const Hero = (): JSX.Element => {
           </Grid>
           <Grid item alignItems={'center'} justifyContent={'center'} xs={12} md={6}>
             <Box sx={{ px: '30px' }}>
-              {/*<ImageViewer src={main} alt={'main'} style={{ borderRadius: '20px' }} />*/}
+              <ImageViewer src={main} alt={'main'} style={{ borderRadius: '20px' }} />
             </Box>
           </Grid>
         </Grid>
