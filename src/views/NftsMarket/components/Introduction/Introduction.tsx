@@ -13,6 +13,7 @@ const IntroductionSection = styled(Container)(({ theme }) => ({
   display: 'flex',
   backgroundColor: theme.palette.primary.main,
   borderRadius: '38px',
+  zIndex: '2000',
 }));
 
 const IntroData = [

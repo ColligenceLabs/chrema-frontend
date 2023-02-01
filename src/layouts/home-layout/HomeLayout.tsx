@@ -32,7 +32,7 @@ const HomeLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element =
 
   return (
     <Box>
-      <Box sx={{ minHeight: `calc(100vh - 123.5px)` }}>
+      <Box sx={{ position: 'relative', minHeight: `calc(100vh - 123.5px)`, zIndex: 1000 }}>
         <AppBar
           position={'sticky'}
           sx={{
@@ -53,7 +53,7 @@ const HomeLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element =
 
         <main>{children}</main>
       </Box>
-      <Footer />
+      <Footer isLanding={true} />
     </Box>
   );
 };

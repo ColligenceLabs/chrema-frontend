@@ -5,11 +5,7 @@ import useSWRInfinite from 'swr/infinite';
 import { CollectionResponse } from '../../types';
 
 interface SelectedCategoryProp {
-  selectedCategory: {
-    id: number;
-    category: string;
-    value: string;
-  };
+  selectedCategory: string;
 }
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -20,9 +16,7 @@ const CollectionList: React.FC<SelectedCategoryProp> = ({ selectedCategory }) =>
     (index) =>
       `${process.env.REACT_APP_API_SERVER}/admin-api/home/indexs?page=${
         index + 1
-      }&perPage=${PAGE_SIZE}&category=${
-        selectedCategory.value === 'all' ? '' : selectedCategory.value
-      }`,
+      }&perPage=${PAGE_SIZE}&category=${selectedCategory === 'all' ? '' : selectedCategory}`,
     fetcher,
   );
 

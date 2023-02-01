@@ -1,35 +1,17 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import { styled, useTheme } from '@mui/material/styles';
 import crmc_logo from '../../../../assets/images/logos/crmc_logo.png';
 import ytb_icon from '../../../../assets/images/logos/ytb_icon.png';
 import fb_icon from '../../../../assets/images/logos/fb_icon.png';
 import twt_icon from '../../../../assets/images/logos/twt_icon.png';
 import dsc_icon from '../../../../assets/images/logos/dsd_icon.png';
-import messege_icon from '../../../../assets/images/logos/messege_icon_w.svg';
-import page_icon from '../../../../assets/images/logos/page_icon_w.svg';
-import twitter_icon from '../../../../assets/images/logos/twitter_icon_w.svg';
-import gitbook_icon from '../../../../assets/images/logos/gitbook_icon_w.svg';
-import github_icon from '../../../../assets/images/logos/github_icon_w.svg';
-import mail_icon from '../../../../assets/images/logos/mail_icon_w.svg';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { Typography } from '@mui/material';
 
-const LogoWrapper = styled(Box)`
-  text-decoration: none;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
+type FooterProps = {
+  isLanding?: boolean;
+};
 
-const Footer = (): JSX.Element => {
-  const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
-    defaultMatches: true,
-  });
-  const currentLang = localStorage.getItem('cur_language') || 'en';
+const Footer: React.FC<FooterProps> = ({ isLanding }): JSX.Element => {
   return (
     <Box
       sx={{
@@ -40,7 +22,11 @@ const Footer = (): JSX.Element => {
         width: '100%',
         height: '100%',
         mt: '100px',
-        padding: '20px',
+        padding: '30px',
+        paddingTop: isLanding ? '350px' : '100px',
+        marginTop: isLanding ? '-250px' : '0px',
+        zIndex: isLanding ? -1000 : 0,
+        backgroundColor: '#F7F7F7',
       }}
     >
       <Box sx={{ marginBottom: '18px' }}>

@@ -37,7 +37,7 @@ const MarketLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element
           sx={{
             top: 0,
             backgroundColor: trigger ? theme.palette.background.paper : bgcolor,
-            boxShadow: 8,
+            // boxShadow: 8,
           }}
           elevation={trigger ? 1 : 0}
         >
@@ -45,7 +45,7 @@ const MarketLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element
             isSidebarOpen={isSidebarOpen}
             onSidebarClose={() => setSidebarOpen(false)}
           />
-          <Container paddingY={1}>
+          <Container paddingY={3} sx={{ borderBottom: '10px solid #F7FBFD' }}>
             <Topbar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
           </Container>
         </AppBar>
