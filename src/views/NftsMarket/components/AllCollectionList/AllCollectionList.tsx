@@ -16,7 +16,7 @@ const AllCategorySection = styled(Container)`
 `;
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 12;
 
 const AllCollectionList = () => {
   const theme = useTheme();
@@ -28,7 +28,7 @@ const AllCollectionList = () => {
     (index) =>
       `${process.env.REACT_APP_API_SERVER}/admin-api/home/indexs?page=${
         index + 1
-      }&perPage=${PAGE_SIZE}`,
+      }&perPage=${PAGE_SIZE}&category=${selectedCategory === 'all' ? '' : selectedCategory}`,
     fetcher,
   );
 
@@ -112,13 +112,30 @@ const AllCollectionList = () => {
           </Box>
         )}
         {!isEmpty && (
-          <Grid item xs={12} sm={12} md={12} lg={12} sx={{ px: 2, mt: 2 }}>
+          // <Grid item xs={12} sm={12} md={12} lg={12} sx={{ px: 2, mt: 2 }}>
+          //   {!(isLoadingMore || isReachingEnd) && (
+          //     <Button variant={'contained'} onClick={() => setSize(size + 1)}>
+          //       {isLoadingMore ? 'Loading...' : isReachingEnd ? 'No more NFTs' : 'MORE'}
+          //     </Button>
+          //   )}
+          // </Grid>
+          <Box sx={{ width: '100%', textAlign: 'center', marginTop: '1rem' }}>
             {!(isLoadingMore || isReachingEnd) && (
-              <Button fullWidth variant={'contained'} onClick={() => setSize(size + 1)}>
-                {isLoadingMore ? 'Loading...' : isReachingEnd ? 'No more NFTs' : 'MORE'}
+              <Button
+                variant={'contained'}
+                sx={{
+                  width: '150px',
+                  height: '60px',
+                  fontsSize: '16px',
+                  fontWeight: 500,
+                  lineHeight: '19.5px',
+                }}
+                onClick={() => setSize(size + 1)}
+              >
+                {isLoadingMore ? 'Loading...' : isReachingEnd ? 'No more NFTs' : 'More'}
               </Button>
             )}
-          </Grid>
+          </Box>
         )}
       </Grid>
     </AllCategorySection>
