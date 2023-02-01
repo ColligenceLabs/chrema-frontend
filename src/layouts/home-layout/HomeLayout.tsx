@@ -53,7 +53,7 @@ const HomeLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element =
 
         <main>{children}</main>
       </Box>
-      {/*<Footer />*/}
+      <Footer />
     </Box>
   );
 };

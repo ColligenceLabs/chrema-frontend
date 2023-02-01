@@ -2,8 +2,11 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { styled, useTheme } from '@mui/material/styles';
-import ntal_logo from '../../../../assets/images/logos/ntal_logo.png';
-import footerlogo_img from '../../../../assets/images/logos/footer_Logo.png';
+import crmc_logo from '../../../../assets/images/logos/crmc_logo.png';
+import ytb_icon from '../../../../assets/images/logos/ytb_icon.png';
+import fb_icon from '../../../../assets/images/logos/fb_icon.png';
+import twt_icon from '../../../../assets/images/logos/twt_icon.png';
+import dsc_icon from '../../../../assets/images/logos/dsd_icon.png';
 import messege_icon from '../../../../assets/images/logos/messege_icon_w.svg';
 import page_icon from '../../../../assets/images/logos/page_icon_w.svg';
 import twitter_icon from '../../../../assets/images/logos/twitter_icon_w.svg';
@@ -30,78 +33,48 @@ const Footer = (): JSX.Element => {
   return (
     <Box
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         width: '100%',
-        backgroundColor: '#161C24',
         height: '100%',
-        mt: 'auto',
+        mt: '100px',
+        padding: '20px',
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          margin: '0 auto',
-          boxSizing: 'border-box',
-          padding: '40px 24px',
-        }}
-      >
-        {/*<LogoWrapper>*/}
-        {/*  <img src={ntal_logo} alt="logo_img" width="40px" className="footer_logo" />*/}
-        {/*  <Typography style={{ fontSize: '30px' }} fontWeight={700} color={'white'}>*/}
-        {/*    N-Tal*/}
-        {/*  </Typography>*/}
-        {/*  /!* <p>&copy; All rights reserved. Made by TaalSwap. </p> *!/*/}
-        {/*</LogoWrapper>*/}
-        <Box
+      <Box sx={{ marginBottom: '18px' }}>
+        <img src={crmc_logo} alt="logo" width="127px" />
+      </Box>
+      <Box sx={{ maxWidth: '500px' }}>
+        <Typography
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: smDown ? 'column' : 'row',
-            gap: 1,
+            fontSize: '16px',
+            fontWeight: 400,
+            lineHeight: '24px',
+            color: '#565660',
+            textAlign: 'center',
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-            <Box>
-              <Link href="/">
-                <img src={twitter_icon} alt="twitter_icon" />
-              </Link>
-            </Box>
-            <Box>
-              {currentLang === 'ko-KR' ? (
-                <Link href="/">
-                  <img src={page_icon} alt="page_icon" />
-                </Link>
-              ) : (
-                <Link href="/">
-                  <img src={page_icon} alt="page_icon" />
-                </Link>
-              )}
-            </Box>
-            <Box>
-              <Link href="/">
-                <img src={messege_icon} alt="messege_icon" />
-              </Link>
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-            <Box>
-              <Link href="/">
-                <img src={gitbook_icon} alt="gitbook_icon" />
-              </Link>
-            </Box>
-            <Box>
-              <Link href="/">
-                <img src={github_icon} alt="github_icon" />
-              </Link>
-            </Box>
-            <Box>
-              <Link href="/">
-                <img src={mail_icon} alt="github_icon" />
-              </Link>
-            </Box>
-          </Box>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent
+          libero. Sed cursus ante dapibus diam.
+        </Typography>
+        <Typography
+          sx={{
+            fontWeight: 400,
+            lineHeight: '22px',
+            color: '#B9B8BB',
+            textAlign: 'center',
+            marginBottom: '30px',
+          }}
+        >
+          Copyright © 2023 crmc. All rights reserved.
+        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '30px' }}>
+          <img src={twt_icon} alt="twitter" width="20px" />
+          <img src={fb_icon} alt="facebook" width="20px" />
+          <img src={ytb_icon} alt="youtube" width="20px" />
+          <img src={dsc_icon} alt="discord" width="20px" />
         </Box>
       </Box>
     </Box>
