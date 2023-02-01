@@ -13,13 +13,6 @@ const Home = (): JSX.Element => {
   return (
     <HomeLayout colorInvert={true}>
       <Hero />
-      {/*<CategorySection title="Art" category="art" />*/}
-      {/*<CategorySection title="Game Item" category="gameItem" />*/}
-      {/*<CategorySection title="Music" category="music" />*/}
-      {/*<CategorySection title="Car" category="car" />*/}
-      {/*<CategorySection title="House" category="house" />*/}
-      {/*<CategorySection title="NFT Project" category="nftProject" />*/}
-      {/*<CategorySection title="MetaVerse" category="metaVerse" />*/}
       {/*<Box bgcolor={'alternate.main'}>*/}
       {/*  <TrendingAllCategory />*/}
       {/*</Box>*/}
@@ -29,7 +22,7 @@ const Home = (): JSX.Element => {
       <Box bgcolor={'alternate.main'}>
         <TopCollections />
       </Box>
-      <Box bgcolor={'primary.main'}>
+      <Box>
         <Introduction />
       </Box>
     </HomeLayout>
