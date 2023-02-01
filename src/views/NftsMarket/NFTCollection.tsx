@@ -14,6 +14,12 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Slider from 'react-slick';
 // @ts-ignore
 import ImageViewer from 'react-simple-image-viewer';
+import twt_icon from '../../assets/images/logos/twt_icon.png';
+import fb_icon from '../../assets/images/logos/fb_icon.png';
+import ytb_icon from '../../assets/images/logos/ytb_icon.png';
+import dsc_icon from '../../assets/images/logos/dsd_icon.png';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
 
 const StyledPrevArrow = styled(Box)`
   z-index: 1000;
@@ -50,19 +56,20 @@ function NextArrow(props: any) {
 const CollectionInfoWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const CollectionLogo = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 150px;
-  margin-top: -130px;
-  margin-left: 30px;
+  width: 200px;
+  height: 200px;
+  margin-top: -200px;
+  //margin-left: 30px;
 
   & img {
+    border-radius: 50%;
     width: 150px;
     height: 150px;
     object-fit: cover;
@@ -73,10 +80,11 @@ const CollectionLogo = styled(Box)`
 `;
 
 const CollectionName = styled(Box)`
-  max-width: 800px;
+  //max-width: 800px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 30px;
   margin-bottom: 16px;
   margin-left: 30px;
@@ -142,30 +150,89 @@ const NFTCollection = () => {
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </Box>
+            <Box
+              sx={{
+                py: '30px',
+                px: '60px',
+                width: '1500px',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '30px',
+                }}
+              >
+                <img src={twt_icon} alt="twitter" width="24px" />
+                <img src={fb_icon} alt="facebook" width="24px" />
+                <img src={ytb_icon} alt="youtube" width="24px" />
+                <img src={dsc_icon} alt="discord" width="24px" />
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '30px',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    backgroundColor: '#F7FBFD',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  {/*<img src={twt_icon} alt="twitter" width="20px" />*/}
+                  <FavoriteIcon sx={{ color: '#706C83' }} />
+                </Box>
+                <Box
+                  sx={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    backgroundColor: '#F7FBFD',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  {/*<img src={twt_icon} alt="twitter" width="20px" />*/}
+                  <ShareIcon sx={{ color: '#706C83' }} />
+                </Box>
+              </Box>
+            </Box>
             <CollectionLogo>
-              {/*<img*/}
-              {/*  src={data?.creator_id?.image?.replace(*/}
-              {/*    'https://nftbedev.talken.io/taalNft/uploads',*/}
-              {/*    'http://localhost:4000/taalNft',*/}
-              {/*  )}*/}
-              {/*  alt={data?.creator_id?.full_name}*/}
-              {/*/>*/}
               <img src={data?.logo_image} alt="" />
             </CollectionLogo>
             <CollectionName>
               <Typography
-                variant={smDown ? 'h3' : 'h1'}
-                mb={smDown ? '15px' : '5px'}
-                // sx={{ textAlign: 'center' }}
+                sx={{ fontSize: '28px', fontWeight: 700, lineHeight: '44px', color: '#191820' }}
               >
                 {data?.name}
               </Typography>
               <CollectionCreator>
-                <Typography variant={'caption'}>by</Typography>
+                <Typography sx={{ fontSize: '18px', fontWeight: 500, lineHeight: '44px' }}>
+                  By
+                </Typography>
                 <Typography
                   component={Link}
                   to={`/market/creator/${data?.creator_id?._id}`}
-                  sx={{ textDecoration: 'none' }}
+                  sx={{
+                    fontSize: '18px',
+                    fontWeight: 500,
+                    lineHeight: '44px',
+                    color: '#3749E9',
+                    textDecoration: 'none',
+                  }}
                   variant={'caption'}
                   color={'primary'}
                 >
@@ -173,24 +240,47 @@ const NFTCollection = () => {
                 </Typography>
               </CollectionCreator>
 
-              <Typography
+              <Box
                 sx={{
-                  // px: 3,
-                  textAlign: 'left',
-                  background: showAll
-                    ? 'none'
-                    : `linear-gradient(to bottom, ${theme.palette.text.secondary}, #fff)`,
-                  WebkitBackgroundClip: showAll ? 'none' : 'text',
-                  WebkitTextFillColor: showAll ? 'none' : 'transparent',
+                  pt: '40px',
+                  pb: '15px',
+                  px: '30px',
+                  width: '1500px',
+                  textAlign: 'center',
+                  backgroundColor: '#F7FBFD',
                 }}
-                variant={'body1'}
-                color="text.secondary"
               >
-                {showAll ? data?.description : `${data?.description.slice(0, smDown ? 150 : 300)}`}
-              </Typography>
-              <IconButton onClick={() => setShowAll((curr) => !curr)}>
-                {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-              </IconButton>
+                <Typography
+                  sx={{
+                    // textAlign: 'left',
+                    // background: showAll
+                    //   ? 'none'
+                    //   : `linear-gradient(to bottom, ${theme.palette.text.secondary}, #fff)`,
+                    fontSize: '18px',
+                    fontWeight: 400,
+                    lineHeight: '24px',
+                    color: '#706C83',
+                    // WebkitBackgroundClip: showAll ? 'none' : 'text',
+                    // WebkitTextFillColor: showAll ? 'none' : 'transparent',
+                  }}
+                >
+                  {showAll
+                    ? data?.description
+                    : `${data?.description.slice(0, smDown ? 150 : 300)}`}
+                </Typography>
+                <Box
+                  sx={{
+                    borderBottom: '1px dashed #DFDFDF',
+                    width: '100%',
+                    height: '2px',
+                    my: '10px',
+                    // backgroundColor: 'red',
+                  }}
+                />
+                <IconButton onClick={() => setShowAll((curr) => !curr)}>
+                  {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                </IconButton>
+              </Box>
             </CollectionName>
           </CollectionInfoWrapper>
         )}
@@ -235,11 +325,7 @@ const NFTCollection = () => {
           </Slider>
         </Box>
 
-        <Box
-          sx={{ borderBottom: '1px solid', borderColor: `#d9d9d9`, width: '100%', pt: '30px' }}
-        />
-
-        <Container>
+        <Container sx={{ maxWidth: '1500px' }}>
           <NFTList onSale={onSale} />
         </Container>
       </MarketLayout>

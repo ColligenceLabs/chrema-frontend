@@ -175,6 +175,9 @@ const ItemFilter: React.FC<ItemFilterProp> = ({
           variant="outlined"
           size="small"
           sx={{ minWidth: '185px' }}
+          inputProps={{
+            sx: { backgroundColor: '#F7FBFD' },
+          }}
         >
           {SORTING_CATEGORY.map((category, index) => (
             <MenuItem key={index} value={category.value}>
