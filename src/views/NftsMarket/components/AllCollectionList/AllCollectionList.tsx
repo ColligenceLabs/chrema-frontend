@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, Chip, CircularProgress, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Typography, useTheme } from '@mui/material';
 import { CollectionResponse } from '../../types';
 import CollectionItem from '../CollectionItem';
 import useSWRInfinite from 'swr/infinite';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/material/styles';
 import Container from '../Container';
-import { COLLECTION_CATEGORY } from '../../../Collection/catetories';
+import CategorySelector from '../CategorySelector/CategorySelector';
 
 const AllCategorySection = styled(Container)`
   max-width: 1500px;
@@ -14,42 +14,6 @@ const AllCategorySection = styled(Container)`
   flex-direction: column;
   gap: 32px;
 `;
-
-// const BoxChip = styled(Box)`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: flex-start;
-//   padding: 5px 20px;
-//   gap: 10px;
-//
-//   //width: 62px;
-//   height: 32px;
-//
-//   background: #3749e9;
-//   border-radius: 16px;
-//   color: ${(props) => (props.selectedItem ? 'white' : 'black')};
-//   /* Inside auto layout */
-//
-//   flex: none;
-//   order: 0;
-//   flex-grow: 0;
-// `;
-
-const BoxChip = styled(Box)(({ theme, selected }: any) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  padding: '5px 20px',
-  gap: '10px',
-  height: '32px',
-  background: selected ? '#3749e9' : '#F7FBFD',
-  borderRadius: '16px',
-  color: selected ? '#ffffff' : theme.palette.text.primary,
-  cursor: 'pointer',
-  fontWeight: selected ? '700' : '500',
-  fontSize: '16px',
-  lineHeight: '22px',
-}));
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const PAGE_SIZE = 20;
@@ -88,17 +52,10 @@ const AllCollectionList = () => {
           All Collections
         </Typography>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-        {COLLECTION_CATEGORY.map((item, index) => (
-          <BoxChip
-            key={index}
-            selected={selectedCategory === item.value}
-            onClick={() => setSelectedCategory(item.value)}
-          >
-            {item.title}
-          </BoxChip>
-        ))}
-      </Box>
+      <CategorySelector
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
       <Grid container>
         {!error &&
           data &&
