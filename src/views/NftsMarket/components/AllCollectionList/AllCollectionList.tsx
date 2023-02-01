@@ -23,7 +23,7 @@ const AllCollectionList = () => {
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
-  const [selectedCategory, setSelectedCategory] = useState('art');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const { data, size, setSize, error, isValidating } = useSWRInfinite<CollectionResponse>(
     (index) =>
       `${process.env.REACT_APP_API_SERVER}/admin-api/home/indexs?page=${

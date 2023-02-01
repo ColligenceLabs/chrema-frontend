@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import * as React from 'react';
-import PLACE_HOLDER from '../../assets/images/logos/ntal_logo.png';
+import PLACE_HOLDER from '../../assets/images/holder.png';
 import { CardMedia } from '@mui/material';
 
 interface IProps {

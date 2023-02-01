@@ -6,6 +6,7 @@ export const COLLECTION_CATEGORY = [
   // { value: 'pieces', title: 'Pieces' },
   // { value: 'games', title: 'Games' },
   // { value: 'virtual', title: 'Virtual Worlds' },
+  { value: 'all', title: 'All' },
   { value: 'art', title: 'Art' },
   { value: 'gameItem', title: 'Game Item' },
   { value: 'music', title: 'Music' },
