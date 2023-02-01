@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Box, Button, Menu, MenuItem, Typography, Divider } from '@mui/material';
+import { Avatar, Box, Button, Menu, MenuItem, Typography, Divider, Grid } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import useSWR from 'swr';
-import { TrendingCategoryItem, TrendingCategoryResponse } from '../../types';
-import ntal_logo from '../../../../assets/images/logos/ntal_logo.png';
-import taal_logo from '../../../../assets/images/landing_icon/introduction_taal.svg';
-import talk_icon from '../../../../assets/images/logos/talken_icon.png';
-import klay_icon from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
-import bnbLogo from '../../../../assets/images/network_icon/binance-bnb-logo.png';
-import { Link } from 'react-router-dom';
-import sliceFloatNumber from '../../../../utils/sliceFloatNumber';
+import { TrendingCategoryResponse } from '../../types';
+import crmc_logo from '../../../../assets/images/logos/crmc-symbol.png';
 import Container from '../Container';
 
 const TopCollectionsSection = styled(Container)`
@@ -48,7 +42,7 @@ const TopCollections = () => {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [category, setCategory] = useState<CategoryTypes>(CATEGORY[1]);
-  const [emptyItem, setEmptyItem] = useState([0]);
+  const [items, setItems] = useState<any[]>([]);
 
   const { data } = useSWR<TrendingCategoryResponse>(
     `${process.env.REACT_APP_API_SERVER}/admin-api/collection/top?days=${category.value}d&size=15&page=0`,
@@ -80,12 +74,41 @@ const TopCollections = () => {
   });
 
   useEffect(() => {
-    if (data?.data && data?.data.length < 15) {
-      const loopCount = 15 - data?.data.length;
-      const arr = Array.from({ length: loopCount }, (v, i) => i);
-      setEmptyItem(arr);
+    if (data?.data && data?.data.length < 20) {
+      const loopCount = 20 - data?.data.length;
+      const arr = Array.from({ length: loopCount }, (v, i) => {
+        return {
+          network: null,
+          category: null,
+          maximum_supply: null,
+          status: null,
+          _id: null,
+          name: null,
+          cover_image: null,
+          creator_id: null,
+          contract_address: null,
+          contract_type: null,
+          path: null,
+          image_link: null,
+          description: null,
+          createdAt: null,
+          updatedAt: null,
+          __v: null,
+          total_volume: null,
+          total_volume_usd: null,
+          total_volume_krw: null,
+          floorPrice: null,
+        };
+      });
+      setItems([...data.data, ...arr]);
+    } else if (data?.data) {
+      setItems([...data.data]);
     }
   }, [data?.data]);
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   return (
     <TopCollectionsSection>
@@ -131,140 +154,59 @@ const TopCollections = () => {
           ))}
         </Menu>
       </Box>
-      <Box
-        sx={{
-          px: isLG ? '100px' : '0px',
-          height: isMd ? '360px' : '',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {data?.data?.map((item: TrendingCategoryItem, index: number) => (
-          <Link
-            key={index}
-            to={`/market/collection/${item._id}`}
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <Box
-              sx={{
-                px: '10px',
-                py: '15px',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                width: smDown ? '300px' : '350px',
-                gap: '0.5rem',
-                borderBottom: '0.5px solid #d6d6d6',
-                cursor: 'pointer',
-                '&:hover': {
-                  // boxShadow: '60px -16px teal',
-                  // boxShadow: '10px 5px 5px black',
-                  boxShadow: '0px 0px 2px 2px rgba(0, 0, 0, 0.2)',
-                  //
-                },
-              }}
-            >
-              <Box>
-                <Typography variant={'body2'} fontWeight={700}>
-                  {index + 1}
-                </Typography>
-              </Box>
-              <Avatar src={item.image_link} />
-              <Box sx={{ flex: 1 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography fontSize={'13px'} fontWeight={700}>
-                    {item.name.length > 20 ? `${item.name.slice(0, 20)}...` : item.name}
-                  </Typography>
-                  {/*<Typography*/}
-                  {/*  fontSize={'13px'}*/}
-                  {/*  fontWeight={700}*/}
-                  {/*  color={item.fluctuationRate > 0 ? 'primary' : 'red'}*/}
-                  {/*>*/}
-                  {/*  {item.fluctuationRate}*/}
-                  {/*</Typography>*/}
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      gap: 1,
-                    }}
-                  >
-                    <Typography fontSize={'12px'} color={'text.secondary'}>
-                      Floor price :
-                    </Typography>
-                    {item?.floorPrice?._id === 'talk' && (
-                      <img alt="talk" style={{ width: '12px', height: '12px' }} src={talk_icon} />
-                    )}
-
-                    {item?.floorPrice?._id === 'klay' && (
-                      <img alt="klay" style={{ width: '12px', height: '12px' }} src={klay_icon} />
-                    )}
-
-                    {item?.floorPrice?._id === 'bnb' && (
-                      <img src={bnbLogo} alt="bnb" height="24px" />
-                    )}
-                    {item?.floorPrice?._id === 'krw' && (
-                      <Typography fontSize={'12px'} color={'text.secondary'}>
-                        ￦
-                      </Typography>
-                    )}
-
-                    <Typography fontSize={'12px'} color={'text.secondary'}>
-                      {`${
-                        item?.floorPrice?.floorPrice !== undefined
-                          ? item?.floorPrice?.floorPrice
-                          : '-'
-                      } ${item?.floorPrice?._id !== undefined ? item?.floorPrice?._id : ''}`}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Typography fontSize={'12px'} color={'text.secondary'} fontWeight={500}>
-                      $ {sliceFloatNumber(item.total_volume_usd.toString())}
-                      {/*$ {item.total_volume_usd.toFixed(4)}*/}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Link>
-        ))}
-        {emptyItem.length > 0 &&
-          emptyItem.map((item, index) => (
+      <Grid container>
+        {items.map((item, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Box
               key={index}
               sx={{
-                px: '10px',
-                py: '15px',
+                m: '10px',
                 display: 'flex',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                width: smDown ? '300px' : '350px',
-                gap: '0.5rem',
-                borderBottom: '0.5px solid #d6d6d6',
+                // width: smDown ? '300px' : '335px',
+                height: '80px',
+                border: '1px solid #DFDFDF',
+                borderRadius: '10px',
               }}
             >
-              <Box>
-                <Typography variant={'body2'} fontWeight={700}>
-                  -
-                </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#EDEDED',
+                  borderRadius: '50%',
+                  width: '50px',
+                  height: '50px',
+                  marginLeft: '25px',
+                  marginRight: '18px',
+                  my: '15px',
+                }}
+              >
+                <Avatar src={crmc_logo} sx={{ width: '25px', height: '24px' }} />
               </Box>
-              <Avatar src={ntal_logo} />
-              <Box sx={{ flex: 1 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography fontSize={'13px'} fontWeight={700}>
-                    No Item
+
+              <Box>
+                <Box
+                  sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+                >
+                  <Typography
+                    sx={{ fontSize: '14px', fontWeight: 700, lineHeight: '22px', color: '#343434' }}
+                  >
+                    {item.name ? item.name : `Collections ${index}`}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: '12px', fontWeight: 400, lineHeight: '22px', color: '#979797' }}
+                  >
+                    D-day 00:00:00
                   </Typography>
                 </Box>
               </Box>
             </Box>
-          ))}
-      </Box>
+          </Grid>
+        ))}
+      </Grid>
     </TopCollectionsSection>
   );
 };
