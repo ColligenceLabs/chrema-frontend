@@ -63,12 +63,13 @@ const TopCollections = () => {
     setAnchorEl(null);
   };
 
-  const isMd = useMediaQuery(theme.breakpoints.up('md'), {
-    defaultMatches: true,
-  });
-  const isLG = useMediaQuery(theme.breakpoints.up('lg'), {
-    defaultMatches: true,
-  });
+  // const isMd = useMediaQuery(theme.breakpoints.up('md'), {
+  //   defaultMatches: true,
+  // });
+  // const isLG = useMediaQuery(theme.breakpoints.up('lg'), {
+  //   defaultMatches: true,
+  // });
+
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
@@ -76,7 +77,7 @@ const TopCollections = () => {
   useEffect(() => {
     if (data?.data && data?.data.length < 20) {
       const loopCount = 20 - data?.data.length;
-      const arr = Array.from({ length: loopCount }, (v, i) => {
+      const arr = Array.from({ length: loopCount }, () => {
         return {
           network: null,
           category: null,
@@ -122,7 +123,7 @@ const TopCollections = () => {
           mb: '50px',
         }}
       >
-        <Typography fontSize={smDown ? '21px' : '30px'} fontWeight={'700'}>
+        <Typography sx={{ fontSize: '38px', fontWeight: 500, lineHeight: '44px' }}>
           Top Collections over
         </Typography>
         <Button
@@ -131,7 +132,7 @@ const TopCollections = () => {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
-          sx={{ fontSize: smDown ? '21px' : '30px', fontWeight: '700', color: 'primary' }}
+          sx={{ fontSize: smDown ? '21px' : '38px', fontWeight: 700, color: 'primary' }}
         >
           {category.caption}
           <KeyboardArrowDownIcon />
