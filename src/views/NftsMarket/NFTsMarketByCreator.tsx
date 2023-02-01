@@ -14,19 +14,13 @@ import userImage from '../../assets/images/users/user.png';
 import bannerImage from '../../assets/images/users/banner.png';
 import useSWR from 'swr';
 
-interface CreatorInfoType {
-  full_name: string;
-  image: string;
-  description: string;
-}
 const UserProfileLogo = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 150px;
   height: 150px;
-  margin-top: -130px;
-  margin-left: 30px;
+  margin-top: -80px;
 
   & img {
     width: 150px;
@@ -54,7 +48,7 @@ const NFTsMarketByCreator = () => {
     fetcher,
   );
 
-  const { data, size, setSize, mutate, error, isValidating } = useSWRInfinite<CollectionResponse>(
+  const { data, size, setSize, error, isValidating } = useSWRInfinite<CollectionResponse>(
     (index) =>
       `${process.env.REACT_APP_API_SERVER}/admin-api/home/indexs?page=${
         index + 1
@@ -69,7 +63,7 @@ const NFTsMarketByCreator = () => {
   const isEmpty = data?.[0]?.data?.items.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.data?.headers?.x_pages_count <= size);
-  const isRefreshing = isValidating && data && data.length === size;
+  // const isRefreshing = isValidating && data && data.length === size;
 
   return (
     <MarketLayout>
@@ -91,7 +85,7 @@ const NFTsMarketByCreator = () => {
                   width: '150px',
                   height: '150px',
                   objectFit: 'cover',
-                  // borderRadius: '100%',
+                  borderRadius: '50%',
                   border: '5px solid white',
                   boxSizing: 'border-box',
                 }}
@@ -113,32 +107,67 @@ const NFTsMarketByCreator = () => {
                 </Typography>
               </Box>
 
-              <Typography
+              {/*<Typography*/}
+              {/*  sx={{*/}
+              {/*    px: 3,*/}
+              {/*    textAlign: 'center',*/}
+              {/*    background: showAll*/}
+              {/*      ? 'none'*/}
+              {/*      : `linear-gradient(to bottom, ${theme.palette.text.secondary}, #fff)`,*/}
+              {/*    WebkitBackgroundClip: showAll ? 'none' : 'text',*/}
+              {/*    WebkitTextFillColor: showAll ? 'none' : 'transparent',*/}
+              {/*  }}*/}
+              {/*  variant={'body1'}*/}
+              {/*  color="text.secondary"*/}
+              {/*>*/}
+              {/*  {showAll && creatorData?.data?.description !== null*/}
+              {/*    ? `${creatorData?.data?.description.slice(0, smDown ? 150 : 300)}`*/}
+              {/*    : creatorData?.data?.description}*/}
+              {/*</Typography>*/}
+              {/*<IconButton onClick={() => setShowAll((curr) => !curr)}>*/}
+              {/*  {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}*/}
+              {/*</IconButton>*/}
+              <Box
                 sx={{
-                  px: 3,
+                  pt: '40px',
+                  pb: '15px',
+                  px: '30px',
+                  width: '1500px',
                   textAlign: 'center',
-                  background: showAll
-                    ? 'none'
-                    : `linear-gradient(to bottom, ${theme.palette.text.secondary}, #fff)`,
-                  WebkitBackgroundClip: showAll ? 'none' : 'text',
-                  WebkitTextFillColor: showAll ? 'none' : 'transparent',
+                  backgroundColor: '#F7FBFD',
                 }}
-                variant={'body1'}
-                color="text.secondary"
               >
-                {showAll && creatorData?.data?.description !== null
-                  ? `${creatorData?.data?.description.slice(0, smDown ? 150 : 300)}`
-                  : creatorData?.data?.description}
-              </Typography>
-              <IconButton onClick={() => setShowAll((curr) => !curr)}>
-                {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-              </IconButton>
+                <Typography
+                  sx={{
+                    fontSize: '18px',
+                    fontWeight: 400,
+                    lineHeight: '24px',
+                    color: '#706C83',
+                  }}
+                >
+                  {showAll
+                    ? creatorData?.data?.description
+                    : `${creatorData?.data?.description.slice(0, smDown ? 150 : 300)}`}
+                </Typography>
+                <Box
+                  sx={{
+                    borderBottom: '1px dashed #DFDFDF',
+                    width: '100%',
+                    height: '2px',
+                    my: '10px',
+                    // backgroundColor: 'red',
+                  }}
+                />
+                <IconButton onClick={() => setShowAll((curr) => !curr)}>
+                  {showAll ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                </IconButton>
+              </Box>
             </Box>
           </Box>
-          <Box
-            sx={{ borderBottom: '1px solid', borderColor: `#d9d9d9`, width: '100%', pt: '30px' }}
-          />
-          <Container>
+          {/*<Box*/}
+          {/*  sx={{ borderBottom: '1px solid', borderColor: `#d9d9d9`, width: '100%', pt: '30px' }}*/}
+          {/*/>*/}
+          <Container sx={{ maxWidth: '1500px' }}>
             <Grid container>
               {!error &&
                 data &&
