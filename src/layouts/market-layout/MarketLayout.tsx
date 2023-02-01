@@ -36,7 +36,7 @@ const MarketLayout = ({ children, bgcolor = 'transparent' }: Props): JSX.Element
           position={'sticky'}
           sx={{
             top: 0,
-            backgroundColor: trigger ? theme.palette.background.paper : bgcolor,
+            backgroundColor: theme.palette.background.paper,
             // boxShadow: 8,
           }}
           elevation={trigger ? 1 : 0}
