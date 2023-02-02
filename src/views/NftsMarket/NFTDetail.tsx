@@ -18,7 +18,6 @@ import DetailTitle from './components/DetailComponents/DetailTitle';
 import DetailInformation from './components/DetailComponents/DetailInformation';
 import DetailBuy from './components/DetailComponents/DetailBuy';
 import DetailSell from './components/DetailComponents/DetailSell';
-import OfferDialog from './components/OfferDialog';
 
 const NFTDetail = () => {
   const [listingMutateHandler, setListingMutateHandler] = useState(false);
@@ -100,15 +99,15 @@ const NFTDetail = () => {
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <DetailContents nft={data?.data} />
-                  <DetailInformation nft={data?.data} collection={data?.data?.collection_id} />
+                  <DetailTitle nft={data?.data} />
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <DetailTitle nft={data?.data} />
                   <DetailBuy
                     id={id!}
                     itemActivityMutateHandler={itemActivityMutateHandler}
                     setItemActivityMutateHandler={(result) => setItemActivityMutateHandler(result)}
                   />
+                  <DetailInformation nft={data?.data} collection={data?.data?.collection_id} />
                   <Listings
                     id={id!}
                     listingMutateHandler={listingMutateHandler}

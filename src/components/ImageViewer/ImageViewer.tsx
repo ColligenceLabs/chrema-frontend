@@ -40,7 +40,7 @@ function ImageViewer({ src, alt, style, height }: IProps) {
       component={'img'}
       src={isLoad ? src : PLACE_HOLDER}
       alt={alt}
-      style={{ ...style }}
+      sx={{ ...style }}
       height={height}
     />
   );

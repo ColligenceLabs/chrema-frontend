@@ -4,7 +4,6 @@ import { Card, CardMedia } from '@mui/material';
 import FsLightbox from 'fslightbox-react';
 import ImageViewer from '../../../../../components/ImageViewer';
 import { NFTType } from '../../../types';
-import bgImage from '../../../../../assets/images/products/s8.jpg';
 
 interface DetailContentsProps {
   nft: NFTType;
@@ -25,6 +24,7 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             justifyContent: 'center',
             alignItems: 'center',
             height: '600px',
+            borderRadius: 0,
             p: 0,
           }}
         >
@@ -47,6 +47,7 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
             p: 0,
             backgroundImage: `url(${nft?.album_jacket})`,
             backgroundSize: 'cover',
+            borderRadius: 0,
           }}
         >
           <CardMedia
@@ -64,7 +65,7 @@ const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
           />
         </Card>
       ) : (
-        <Card sx={{ p: 0, m: 0 }} onClick={() => setToggled(!toggled)}>
+        <Card sx={{ p: 0, m: 0, borderRadius: 0 }} onClick={() => setToggled(!toggled)}>
           <ImageViewer
             src={nft.metadata.alt_url ? nft.metadata.alt_url : nft.metadata.image}
             alt={nft.metadata.name}

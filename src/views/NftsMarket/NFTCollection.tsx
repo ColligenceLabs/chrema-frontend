@@ -13,12 +13,9 @@ import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 // @ts-ignore
 import ImageViewer from 'react-simple-image-viewer';
-import twt_icon from '../../assets/images/logos/twt_icon.png';
-import fb_icon from '../../assets/images/logos/fb_icon.png';
-import ytb_icon from '../../assets/images/logos/ytb_icon.png';
-import dsc_icon from '../../assets/images/logos/dsd_icon.png';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
+import SNSButtons from './components/SNSButtons/SNSButtons';
 
 const CollectionInfoWrapper = styled(Box)`
   display: flex;
@@ -101,24 +98,12 @@ const NFTCollection = () => {
               sx={{
                 py: '30px',
                 px: '60px',
-                // width: '1500px',
+                width: '1500px',
                 display: 'flex',
                 justifyContent: 'space-between',
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '30px',
-                }}
-              >
-                <img src={twt_icon} alt="twitter" width="24px" />
-                <img src={fb_icon} alt="facebook" width="24px" />
-                <img src={ytb_icon} alt="youtube" width="24px" />
-                <img src={dsc_icon} alt="discord" width="24px" />
-              </Box>
+              <SNSButtons />
               <Box
                 sx={{
                   display: 'flex',
@@ -193,7 +178,6 @@ const NFTCollection = () => {
                   pb: '15px',
                   px: '30px',
                   width: '1500px',
-                  // width: '100%',
                   textAlign: 'center',
                   backgroundColor: '#F7FBFD',
                 }}
