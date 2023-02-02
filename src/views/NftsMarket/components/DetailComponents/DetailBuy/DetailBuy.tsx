@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import SectionWrapper from '../SectionWrapper';
 import { Box, Button, Snackbar, Typography, useTheme } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import klayLogo from '../../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../../assets/images/network_icon/binance-bnb-logo.png';
-
-import CustomTextField from '../../../../../components/forms/custom-elements/CustomTextField';
 import { LoadingButton } from '@mui/lab';
 import {
   cancelBuy,
@@ -254,80 +251,27 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   }, [itemActivityMutateHandler]);
 
   return (
-    <SectionWrapper
-      // title={`Sale ends ${new Date(data?.data?.end_date).toLocaleString()}`}
-      title={
-        <TitleBox
-          title={
-            (listingData && listingData?.data?.items.length !== 0) || sellingQuantity > 0
-              ? `Sale ends ${new Date(data?.data?.end_date).toLocaleString()}`
-              : 'Sold out'
-          }
-          deadline={data?.data?.end_date}
-          checkSellingQuantity={sellingQuantity > 0}
-          checkListingQuantity={listingData && listingData?.data?.items.length > 0}
-        />
-      }
-      // icon={<StorefrontOutlinedIcon />}
-    >
-      <Box sx={{ maxWidth: mdDown ? '100%' : '100%' }}>
-        {data?.data?.collection_id?.contract_type === 'KIP17' && (
-          <Box
-            sx={{
-              pt: 2,
-              px: 2,
-            }}
-          >
+    <Box sx={{ backgroundColor: '#F7FBFD', padding: '30px', borderRadius: '10px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: '20px' }}>
+              Current price
+            </Typography>
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
-                marginBottom: 2,
+                gap: '0.5rem',
               }}
             >
-              <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>
-                Selling Quantity
-              </Typography>
-              <Box
-                display={'flex'}
-                justifyContent={'flex-start'}
-                alignItems={'center'}
-                gap={'0.5rem'}
-              >
-                <Typography variant={'h3'}>{sellingQuantity}</Typography>
+              <Box>
+                {data?.data?.quote === 'klay' && <img src={klayLogo} alt="klay" height="30px" />}
+                {data?.data?.quote === 'talk' && <img src={talkLogo} alt="talk" height="30px" />}
+                {data?.data?.quote === 'bnb' && <img src={bnbLogo} alt="bnb" height="30px" />}
               </Box>
-            </Box>
-          </Box>
-        )}
-
-        <Box sx={{ py: 1, px: 2, mt: 1 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 2,
-            }}
-          >
-            <Typography variant={'subtitle2'} color={'primary'}>
-              {sellingQuantity === 0 ? 'Current Price (per day)' : 'Price (per day)'}
-            </Typography>
-            <Box
-              display={'flex'}
-              justifyContent={'flex-start'}
-              alignItems={'center'}
-              gap={'0.5rem'}
-            >
-              {data?.data?.quote === 'klay' && <img src={klayLogo} alt="klay" height="18px" />}
-              {data?.data?.quote === 'talk' && <img src={talkLogo} alt="talk" height="18px" />}
-              {data?.data?.quote === 'bnb' && <img src={bnbLogo} alt="bnb" height="18px" />}
-              {data?.data?.quote === 'krw' && (
-                <Typography variant={'h3'} color={'text.primary'}>
-                  ￦
-                </Typography>
-              )}
-              <Typography variant={'h3'}>
+              <Typography sx={{ fontSize: '24px', fontWeight: 500, lineHeight: '26px' }}>
                 {sellingQuantity === 0 && !buyFlag
                   ? getNftPrice(
                       data?.data?.price,
@@ -336,103 +280,243 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                       data?.data?.quantity_selling,
                       data?.data?.last_price,
                     )
-                  : sliceFloatNumber(data?.data?.price.toString())}
+                  : sliceFloatNumber(data?.data?.price.toString())}{' '}
+                Talk
               </Typography>
             </Box>
           </Box>
-
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 4,
-            }}
-          >
-            <Typography variant={'subtitle2'} color={'primary'}>
-              Rental Duration (in Days)
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+            <Typography sx={{ fontSize: '16px', fontWeight: 400, lineHeight: '20px' }}>
+              Selling Quantity
             </Typography>
-            <CustomTextField
-              id="days"
-              name="days"
-              variant="outlined"
-              type="number"
-              size="small"
-              value={days}
-              inputProps={{ min: 1, step: 1 }}
-              sx={{ textAlign: 'right' }}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                const validated = e.target.value.match(/^(\s*|\d+)$/);
-                if (validated && parseInt(e.target.value) <= 0) {
-                  setDays('1'); // Default Rental Duration at least
-                } else {
-                  setDays(e.target.value);
-                }
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}
-              onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)
-              }
-            />
+            >
+              <Typography sx={{ fontSize: '24px', fontWeight: 500, lineHeight: '26px' }}>
+                {sellingQuantity}
+              </Typography>
+            </Box>
           </Box>
-
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
           {account !== undefined || data?.data?.quote === 'krw' ? (
-            <Box sx={{ display: 'flex', flex: 1, gap: 2 }}>
+            <Box sx={{ width: '100%' }}>
               {data?.data?.collection_id?.contract_type === 'KIP37' ? (
-                <Box
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                  }}
+                <LoadingButton
+                  sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
+                  onClick={buy}
+                  disabled={
+                    sellingQuantity === 0 ||
+                    sellingQuantity < parseInt(amount) ||
+                    parseInt(amount) === 0 ||
+                    isNaN(parseInt(amount))
+                  }
+                  loading={buyFlag}
+                  variant="contained"
+                  fullWidth
                 >
-                  <LoadingButton
-                    onClick={buy}
-                    disabled={
-                      sellingQuantity === 0 ||
-                      sellingQuantity < parseInt(amount) ||
-                      parseInt(amount) === 0 ||
-                      isNaN(parseInt(amount))
-                    }
-                    loading={buyFlag}
-                    variant="contained"
-                    fullWidth
-                    // sx={{ width: smDown ? '120px' : '190px' }}
-                  >
-                    {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
-                  </LoadingButton>
-                </Box>
+                  {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
+                </LoadingButton>
               ) : (
-                <Box
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    // justifyContent: 'center',
-                    justifyContent: 'left',
-                  }}
+                <LoadingButton
+                  sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
+                  onClick={buy}
+                  disabled={sellingQuantity === 0}
+                  loading={buyFlag}
+                  variant="contained"
+                  fullWidth
                 >
-                  <LoadingButton
-                    // fullWidth
-                    onClick={buy}
-                    disabled={sellingQuantity === 0}
-                    loading={buyFlag}
-                    variant="contained"
-                    // sx={{ width: smDown ? '50px' : '120px', height: '40px', marginRight: 5 }}
-                    // sx={{ width: smDown ? '50px' : '160px', height: '40px' }}
-                    fullWidth
-                  >
-                    {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
-                  </LoadingButton>
-                </Box>
+                  {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
+                </LoadingButton>
               )}
             </Box>
           ) : (
-            <Button variant="contained" onClick={() => setIsOpenConnectModal(true)} fullWidth>
+            <Button
+              sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
+              variant="contained"
+              onClick={() => setIsOpenConnectModal(true)}
+              fullWidth
+            >
               Connect Wallet
             </Button>
           )}
+          <Button
+            sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
+            fullWidth
+            variant="outlined"
+          >
+            Offer
+          </Button>
         </Box>
       </Box>
+      {/*<Box sx={{ maxWidth: mdDown ? '100%' : '100%' }}>*/}
+      {/*  {data?.data?.collection_id?.contract_type === 'KIP17' && (*/}
+      {/*    <Box*/}
+      {/*      sx={{*/}
+      {/*        pt: 2,*/}
+      {/*        px: 2,*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      <Box*/}
+      {/*        sx={{*/}
+      {/*          display: 'flex',*/}
+      {/*          justifyContent: 'space-between',*/}
+      {/*          alignItems: 'center',*/}
+      {/*          marginBottom: 2,*/}
+      {/*        }}*/}
+      {/*      >*/}
+      {/*        <Typography variant={'subtitle2'} color={'primary'} sx={{ flex: 1 }}>*/}
+      {/*          Selling Quantity*/}
+      {/*        </Typography>*/}
+      {/*        <Box*/}
+      {/*          display={'flex'}*/}
+      {/*          justifyContent={'flex-start'}*/}
+      {/*          alignItems={'center'}*/}
+      {/*          gap={'0.5rem'}*/}
+      {/*        >*/}
+      {/*          <Typography variant={'h3'}>{sellingQuantity}</Typography>*/}
+      {/*        </Box>*/}
+      {/*      </Box>*/}
+      {/*    </Box>*/}
+      {/*  )}*/}
+
+      {/*  <Box sx={{ py: 1, px: 2, mt: 1 }}>*/}
+      {/*    <Box*/}
+      {/*      sx={{*/}
+      {/*        display: 'flex',*/}
+      {/*        justifyContent: 'space-between',*/}
+      {/*        alignItems: 'center',*/}
+      {/*        marginBottom: 2,*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      <Typography variant={'subtitle2'} color={'primary'}>*/}
+      {/*        {sellingQuantity === 0 ? 'Current Price (per day)' : 'Price (per day)'}*/}
+      {/*      </Typography>*/}
+      {/*      <Box*/}
+      {/*        display={'flex'}*/}
+      {/*        justifyContent={'flex-start'}*/}
+      {/*        alignItems={'center'}*/}
+      {/*        gap={'0.5rem'}*/}
+      {/*      >*/}
+      {/*        {data?.data?.quote === 'klay' && <img src={klayLogo} alt="klay" height="18px" />}*/}
+      {/*        {data?.data?.quote === 'talk' && <img src={talkLogo} alt="talk" height="18px" />}*/}
+      {/*        {data?.data?.quote === 'bnb' && <img src={bnbLogo} alt="bnb" height="18px" />}*/}
+      {/*        {data?.data?.quote === 'krw' && (*/}
+      {/*          <Typography variant={'h3'} color={'text.primary'}>*/}
+      {/*            ￦*/}
+      {/*          </Typography>*/}
+      {/*        )}*/}
+      {/*        <Typography variant={'h3'}>*/}
+      {/*          {sellingQuantity === 0 && !buyFlag*/}
+      {/*            ? getNftPrice(*/}
+      {/*                data?.data?.price,*/}
+      {/*                data?.data?.floor_price,*/}
+      {/*                data?.data?.user_quantity_selling,*/}
+      {/*                data?.data?.quantity_selling,*/}
+      {/*                data?.data?.last_price,*/}
+      {/*              )*/}
+      {/*            : sliceFloatNumber(data?.data?.price.toString())}*/}
+      {/*        </Typography>*/}
+      {/*      </Box>*/}
+      {/*    </Box>*/}
+
+      {/*    <Box*/}
+      {/*      sx={{*/}
+      {/*        display: 'flex',*/}
+      {/*        justifyContent: 'space-between',*/}
+      {/*        alignItems: 'center',*/}
+      {/*        marginBottom: 4,*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      <Typography variant={'subtitle2'} color={'primary'}>*/}
+      {/*        Rental Duration (in Days)*/}
+      {/*      </Typography>*/}
+      {/*      <CustomTextField*/}
+      {/*        id="days"*/}
+      {/*        name="days"*/}
+      {/*        variant="outlined"*/}
+      {/*        type="number"*/}
+      {/*        size="small"*/}
+      {/*        value={days}*/}
+      {/*        inputProps={{ min: 1, step: 1 }}*/}
+      {/*        sx={{ textAlign: 'right' }}*/}
+      {/*        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {*/}
+      {/*          const validated = e.target.value.match(/^(\s*|\d+)$/);*/}
+      {/*          if (validated && parseInt(e.target.value) <= 0) {*/}
+      {/*            setDays('1'); // Default Rental Duration at least*/}
+      {/*          } else {*/}
+      {/*            setDays(e.target.value);*/}
+      {/*          }*/}
+      {/*        }}*/}
+      {/*        onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>*/}
+      {/*          parseInt(e.target.value) <= 0 ? '1' : setDays(e.target.value)*/}
+      {/*        }*/}
+      {/*      />*/}
+      {/*    </Box>*/}
+
+      {/*    {account !== undefined || data?.data?.quote === 'krw' ? (*/}
+      {/*      <Box sx={{ display: 'flex', flex: 1, gap: 2 }}>*/}
+      {/*        {data?.data?.collection_id?.contract_type === 'KIP37' ? (*/}
+      {/*          <Box*/}
+      {/*            sx={{*/}
+      {/*              width: '100%',*/}
+      {/*              display: 'flex',*/}
+      {/*              justifyContent: 'flex-end',*/}
+      {/*              alignItems: 'center',*/}
+      {/*            }}*/}
+      {/*          >*/}
+      {/*            <LoadingButton*/}
+      {/*              onClick={buy}*/}
+      {/*              disabled={*/}
+      {/*                sellingQuantity === 0 ||*/}
+      {/*                sellingQuantity < parseInt(amount) ||*/}
+      {/*                parseInt(amount) === 0 ||*/}
+      {/*                isNaN(parseInt(amount))*/}
+      {/*              }*/}
+      {/*              loading={buyFlag}*/}
+      {/*              variant="contained"*/}
+      {/*              fullWidth*/}
+      {/*              // sx={{ width: smDown ? '120px' : '190px' }}*/}
+      {/*            >*/}
+      {/*              {sellingQuantity === 0 ? 'Sold out' : 'Buy'}*/}
+      {/*            </LoadingButton>*/}
+      {/*          </Box>*/}
+      {/*        ) : (*/}
+      {/*          <Box*/}
+      {/*            sx={{*/}
+      {/*              width: '100%',*/}
+      {/*              display: 'flex',*/}
+      {/*              // justifyContent: 'center',*/}
+      {/*              justifyContent: 'left',*/}
+      {/*            }}*/}
+      {/*          >*/}
+      {/*            <LoadingButton*/}
+      {/*              // fullWidth*/}
+      {/*              onClick={buy}*/}
+      {/*              disabled={sellingQuantity === 0}*/}
+      {/*              loading={buyFlag}*/}
+      {/*              variant="contained"*/}
+      {/*              // sx={{ width: smDown ? '50px' : '120px', height: '40px', marginRight: 5 }}*/}
+      {/*              // sx={{ width: smDown ? '50px' : '160px', height: '40px' }}*/}
+      {/*              fullWidth*/}
+      {/*            >*/}
+      {/*              {sellingQuantity === 0 ? 'Sold out' : 'Buy'}*/}
+      {/*            </LoadingButton>*/}
+      {/*          </Box>*/}
+      {/*        )}*/}
+      {/*      </Box>*/}
+      {/*    ) : (*/}
+      {/*      <Button variant="contained" onClick={() => setIsOpenConnectModal(true)} fullWidth>*/}
+      {/*        Connect Wallet*/}
+      {/*      </Button>*/}
+      {/*    )}*/}
+      {/*  </Box>*/}
+      {/*</Box>*/}
       <WalletConnectorDialog
         selectedNetworkIndex={selectedNetworkId}
         isOpenConnectModal={isOpenConnectModal}
@@ -462,7 +546,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       {/*  handleCloseModal={handleCloseModal}*/}
       {/*  activate={activate}*/}
       {/*/>*/}
-    </SectionWrapper>
+    </Box>
   );
 };
 
