@@ -89,8 +89,7 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
               >
                 <CardMedia
                   component="video"
-                  sx={{ objectFit: 'cover' }}
-                  style={{
+                  sx={{
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -111,24 +110,18 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
               <Box
                 className={'player-wrapper'}
                 sx={{
-                  position: 'relative',
+                  position: 'absolute',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-end',
                   alignItems: 'center',
                   width: '100%',
-                  // backgroundColor: 'rgba(199,199,199,0.2)',
+                  height: '100%',
                   backgroundImage: `url(${item?.album_jacket})`,
                   backgroundSize: 'cover',
-                  // zIndex: -1,
-                }}
-                style={{
-                  position: 'absolute',
                   top: 0,
                   left: 0,
                   right: 0,
-                  width: '100%',
-                  height: '100%',
                   objectFit: 'cover',
                   borderRadius: '15px',
                 }}
