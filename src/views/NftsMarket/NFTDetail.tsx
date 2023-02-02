@@ -99,7 +99,7 @@ const NFTDetail = () => {
             </Box>
           ) : (
             <Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <DetailContents nft={data?.data} />
                   <DetailTitle nft={data?.data} />

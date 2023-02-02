@@ -3,10 +3,12 @@ import {
   Box,
   Button,
   MenuItem,
+  Pagination,
   Select,
   Table,
   TableBody,
   TableCell,
+  tableCellClasses,
   TableContainer,
   TableHead,
   TablePagination,
@@ -19,7 +21,7 @@ import FireplaceIcon from '@mui/icons-material/Fireplace'; // burn
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows'; // transfer
 import LinkIcon from '@mui/icons-material/Link';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import SectionWrapper from '../DetailComponents/SectionWrapper';
 import useSWR from 'swr';
 import klayLogo from '../../../../assets/images/network_icon/klaytn-klay-logo.png';
@@ -75,6 +77,13 @@ const MenuProps = {
     },
   },
 };
+
+const StyledCell = styled(TableCell)`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #706c83;
+`;
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -175,81 +184,103 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
 
   return (
     <SectionWrapper title={'Item Activity'} icon={'activity'} toggled={true}>
-      <Box sx={{ backgroundColor: '#f0faf5', p: 1, borderRadius: 2 }}>
-        <Box sx={{ display: 'flex', gap: 1, pb: 1 }}>
-          <Select
-            multiple
-            fullWidth
-            value={selectedFilter}
-            onChange={(event) => setSelectedFilter(event.target.value)}
-            sx={{ p: 0, m: 0, backgroundColor: 'white' }}
-            renderValue={(selected) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 1,
-                }}
-              >
-                {selected.map((item: any, index: number) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: 1,
-                      backgroundColor: `${theme.palette.primary.main}`,
-                      px: 2,
-                      borderRadius: '10px',
-                    }}
-                  >
-                    <Typography variant={'subtitle2'} color={'white'}>
-                      {getEventCaptionByValue(item)}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {EVENT_TYPE.map((item) => (
-              <MenuItem key={item.value} value={item.value}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-          {selectedFilter.length > 0 && (
-            <Button variant={'contained'} onClick={() => setSelectedFilter([])}>
-              Clear
-            </Button>
-          )}
-        </Box>
+      <Box
+        sx={{
+          borderRadius: '5px',
+          margin: '20px 30px',
+          // padding: '10px',
+        }}
+      >
+        {/*<Box sx={{ display: 'flex', gap: 1, pb: 1 }}>*/}
+        {/*  <Select*/}
+        {/*    multiple*/}
+        {/*    fullWidth*/}
+        {/*    value={selectedFilter}*/}
+        {/*    onChange={(event) => setSelectedFilter(event.target.value)}*/}
+        {/*    sx={{ p: 0, m: 0, backgroundColor: 'white' }}*/}
+        {/*    renderValue={(selected) => (*/}
+        {/*      <Box*/}
+        {/*        sx={{*/}
+        {/*          display: 'flex',*/}
+        {/*          flexWrap: 'wrap',*/}
+        {/*          gap: 1,*/}
+        {/*        }}*/}
+        {/*      >*/}
+        {/*        {selected.map((item: any, index: number) => (*/}
+        {/*          <Box*/}
+        {/*            key={index}*/}
+        {/*            sx={{*/}
+        {/*              display: 'flex',*/}
+        {/*              alignItems: 'center',*/}
+        {/*              justifyContent: 'space-between',*/}
+        {/*              gap: 1,*/}
+        {/*              backgroundColor: `${theme.palette.primary.main}`,*/}
+        {/*              px: 2,*/}
+        {/*              borderRadius: '10px',*/}
+        {/*            }}*/}
+        {/*          >*/}
+        {/*            <Typography variant={'subtitle2'} color={'white'}>*/}
+        {/*              {getEventCaptionByValue(item)}*/}
+        {/*            </Typography>*/}
+        {/*          </Box>*/}
+        {/*        ))}*/}
+        {/*      </Box>*/}
+        {/*    )}*/}
+        {/*    MenuProps={MenuProps}*/}
+        {/*  >*/}
+        {/*    {EVENT_TYPE.map((item) => (*/}
+        {/*      <MenuItem key={item.value} value={item.value}>*/}
+        {/*        {item.name}*/}
+        {/*      </MenuItem>*/}
+        {/*    ))}*/}
+        {/*  </Select>*/}
+        {/*  {selectedFilter.length > 0 && (*/}
+        {/*    <Button variant={'contained'} onClick={() => setSelectedFilter([])}>*/}
+        {/*      Clear*/}
+        {/*    </Button>*/}
+        {/*  )}*/}
+        {/*</Box>*/}
         <Box sx={{ height: '368px', backgroundColor: 'white' }}>
           <TableContainer>
-            <Table aria-labelledby="tableTitle" size={'small'}>
-              <TableHead>
-                <TableRow sx={{ height: '50px' }}>
-                  <TableCell align={'left'} padding={'normal'}>
+            <Table
+              aria-labelledby="tableTitle"
+              size={'small'}
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 'none',
+                },
+              }}
+            >
+              <TableHead
+                sx={{
+                  backgroundColor: '#F7FBFD',
+                }}
+              >
+                <TableRow
+                  sx={{
+                    height: '50px',
+                  }}
+                >
+                  <StyledCell align={'left'} padding={'normal'}>
                     Event
-                  </TableCell>
-                  <TableCell align={'left'} padding={'normal'}>
+                  </StyledCell>
+                  <StyledCell align={'left'} padding={'normal'}>
                     Price
-                  </TableCell>
+                  </StyledCell>
                   {contractType === 'KIP37' && (
-                    <TableCell align={'left'} padding={'normal'}>
+                    <StyledCell align={'left'} padding={'normal'}>
                       Amount
-                    </TableCell>
+                    </StyledCell>
                   )}
-                  <TableCell align={'left'} padding={'normal'}>
+                  <StyledCell align={'left'} padding={'normal'}>
                     From
-                  </TableCell>
-                  <TableCell align={'left'} padding={'normal'}>
+                  </StyledCell>
+                  <StyledCell align={'left'} padding={'normal'}>
                     To
-                  </TableCell>
-                  <TableCell align={'left'} padding={'normal'}>
+                  </StyledCell>
+                  <StyledCell align={'left'} padding={'normal'}>
                     Date
-                  </TableCell>
+                  </StyledCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -263,7 +294,7 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
                         key={row._id}
                         sx={{ height: '50px' }}
                       >
-                        <TableCell>
+                        <StyledCell>
                           <Box
                             sx={{
                               display: 'flex',
@@ -283,8 +314,8 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
                               {getEventCaptionByValue(row.type)}
                             </Typography>
                           </Box>
-                        </TableCell>
-                        <TableCell>
+                        </StyledCell>
+                        <StyledCell>
                           {row.type !== 1 && row.type !== 0 ? (
                             <Box sx={{ display: 'flex', gap: 0.7, alignItems: 'center' }}>
                               {row.quote === 'klay' && (
@@ -308,25 +339,25 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
                               -
                             </Typography>
                           )}
-                        </TableCell>
+                        </StyledCell>
                         {contractType === 'KIP37' && (
-                          <TableCell>
+                          <StyledCell>
                             <Typography color="textSecondary" variant="h6">
                               {row.quantity}
                             </Typography>
-                          </TableCell>
+                          </StyledCell>
                         )}
-                        <TableCell>
+                        <StyledCell>
                           <Typography color="textSecondary" variant="h6">
                             {row.type === 1 ? splitAddress(row.to) : splitAddress(row.from)}
                           </Typography>
-                        </TableCell>
-                        <TableCell>
+                        </StyledCell>
+                        <StyledCell>
                           <Typography color="textSecondary" variant="h6">
                             {row.type === 1 ? splitAddress(row.from) : splitAddress(row.to)}
                           </Typography>
-                        </TableCell>
-                        <TableCell>
+                        </StyledCell>
+                        <StyledCell>
                           <Box
                             sx={{
                               display: 'flex',
@@ -336,18 +367,22 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
                             }}
                             onClick={() => handleViewExplorerByTx(row.chain_id, row.tx_id)}
                           >
-                            <Typography color="primary" variant="h6">
+                            <Typography variant="h6">
                               {new Date(row.createdAt).toLocaleString()}
                             </Typography>
-                            <LinkIcon color={'primary'} />
+                            <LinkIcon />
                           </Box>
-                        </TableCell>
+                        </StyledCell>
                       </TableRow>
                     );
                   })}
               </TableBody>
             </Table>
           </TableContainer>
+          {/*<Box>*/}
+          {/*  <Pagination count={rowCount} showFirstButton showLastButton />*/}
+          {/*</Box>*/}
+
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
