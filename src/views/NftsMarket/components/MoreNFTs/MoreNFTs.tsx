@@ -31,13 +31,34 @@ const MoreNFTs: React.FC<MoreNFTsProps> = ({ collection_id, name, nft_id }) => {
   }, [name, mutate]);
 
   return (
-    <SectionWrapper title={'More From This Collection'} icon={<AppsIcon />} toggled={true}>
+    // <SectionWrapper title={'More From This Collection'} icon={<AppsIcon />} toggled={true}>
+    <>
       <Box
         sx={{
-          p: smDown ? 0 : 2,
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          gap: '15px',
+          marginTop: '70px',
+          marginBottom: '50px',
+        }}
+      >
+        <Typography
+          sx={{ fontSize: '24px', fontWeight: 700, lineHeight: '24px', color: '#706C83' }}
+        >
+          More from this collection
+        </Typography>
+        <Button variant={'contained'} component={Link} to={`/market/collection/${collection_id}`}>
+          More +
+        </Button>
+      </Box>
+
+      <Box
+        sx={{
+          p: 0,
           overflow: 'hidden',
           overflowY: 'scroll',
-          backgroundColor: '#f0faf5',
+          // backgroundColor: '#f0faf5',
         }}
       >
         <Box>
@@ -73,12 +94,13 @@ const MoreNFTs: React.FC<MoreNFTsProps> = ({ collection_id, name, nft_id }) => {
           </Grid>
         </Box>
       </Box>
-      <Box sx={{ borderTop: 0.5, borderColor: '#d6d6d6', p: 2, textAlign: 'center' }}>
-        <Button component={Link} to={`/market/collection/${collection_id}`} variant={'outlined'}>
-          View NFTs in this Collection
-        </Button>
-      </Box>
-    </SectionWrapper>
+      {/*<Box sx={{ borderTop: 0.5, borderColor: '#d6d6d6', p: 2, textAlign: 'center' }}>*/}
+      {/*  <Button component={Link} to={`/market/collection/${collection_id}`} variant={'outlined'}>*/}
+      {/*    View NFTs in this Collection*/}
+      {/*  </Button>*/}
+      {/*</Box>*/}
+    </>
+    // </SectionWrapper>
   );
 };
 
