@@ -20,10 +20,6 @@ import dsc_icon from '../../assets/images/logos/dsd_icon.png';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 
-const StyledPrevArrow = styled(Box)`
-  z-index: 1000;
-`;
-
 const CollectionInfoWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -105,7 +101,7 @@ const NFTCollection = () => {
               sx={{
                 py: '30px',
                 px: '60px',
-                width: '1500px',
+                // width: '1500px',
                 display: 'flex',
                 justifyContent: 'space-between',
               }}
@@ -197,6 +193,7 @@ const NFTCollection = () => {
                   pb: '15px',
                   px: '30px',
                   width: '1500px',
+                  // width: '100%',
                   textAlign: 'center',
                   backgroundColor: '#F7FBFD',
                 }}
@@ -230,7 +227,8 @@ const NFTCollection = () => {
           </CollectionInfoWrapper>
         )}
 
-        <Container sx={{ maxWidth: '1500px' }}>
+        {/*<Container sx={{ maxWidth: '1500px' }}>*/}
+        <Container>
           <NFTList onSale={onSale} />
         </Container>
       </MarketLayout>

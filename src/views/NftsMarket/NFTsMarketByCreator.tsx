@@ -26,7 +26,7 @@ const UserProfileLogo = styled(Box)`
     width: 150px;
     height: 150px;
     object-fit: cover;
-    borderr-adius: 100%;
+    border-radius: 100%;
     border: 5px solid white;
     box-sizing: border-box;
   }
@@ -48,7 +48,7 @@ const NFTsMarketByCreator = () => {
     fetcher,
   );
 
-  const { data, size, setSize, error, isValidating } = useSWRInfinite<CollectionResponse>(
+  const { data, size, setSize, error } = useSWRInfinite<CollectionResponse>(
     (index) =>
       `${process.env.REACT_APP_API_SERVER}/admin-api/home/indexs?page=${
         index + 1
@@ -167,7 +167,8 @@ const NFTsMarketByCreator = () => {
           {/*<Box*/}
           {/*  sx={{ borderBottom: '1px solid', borderColor: `#d9d9d9`, width: '100%', pt: '30px' }}*/}
           {/*/>*/}
-          <Container sx={{ maxWidth: '1500px' }}>
+          {/*<Container sx={{ maxWidth: '1500px' }}>*/}
+          <Container>
             <Grid container>
               {!error &&
                 data &&

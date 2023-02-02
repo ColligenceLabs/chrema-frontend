@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import { Box, Button, CircularProgress, Grid, Typography, useTheme } from '@mui/material';
+import { Box, CircularProgress, Grid, Typography, useTheme } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import useSWRInfinite from 'swr/infinite';
-import { CollectionResponse } from '../../types';
 import useSWR from 'swr';
 import CollectionItem from '../CollectionItem';
 import { styled } from '@mui/material/styles';
@@ -10,7 +8,7 @@ import Container from '../Container';
 import Slider from 'react-slick';
 
 const AllCategorySection = styled(Container)`
-  max-width: 1500px;
+  //max-width: 1500px;
 `;
 
 const StyledPrevArrow = styled(Box)`

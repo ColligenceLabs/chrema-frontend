@@ -1,5 +1,5 @@
 import React from 'react';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -16,24 +16,9 @@ const HeroContainer = styled(Box)`
   position: relative;
 `;
 
-const BackGroundImage = styled(Box)`
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  background-image: url(${main});
-  background-position: top;
-  background-size: cover;
-  //opacity: 0.5;
-  z-index: -1;
-  .overlay {
-    width: 100vw;
-    height: 100vh;
-    background: rgba(333, 444, 331, 0.1);
-  }
-`;
 const HeroSection = styled(Container)`
   display: flex;
-  max-width: 1500px;
+  //max-width: 1500px;
   height: 600px;
 `;
 
@@ -51,7 +36,6 @@ const Hero = (): JSX.Element => {
 
   return (
     <HeroContainer>
-      {/*<BackGroundImage />*/}
       <HeroSection>
         <Grid container spacing={4}>
           <Grid item container xs={12} md={6} alignItems={'center'}>
@@ -82,7 +66,7 @@ const Hero = (): JSX.Element => {
                   variant="contained"
                   color="primary"
                   size="large"
-                  fullWidth={isMd ? false : true}
+                  fullWidth={!isMd}
                   onClick={navigateToPage}
                 >
                   Start now

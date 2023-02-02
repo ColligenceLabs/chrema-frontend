@@ -2,29 +2,11 @@ import React, { useState } from 'react';
 import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import Container from './components/Container';
 import CollectionList from './components/CollectionList/CollectionList';
-import { Box, useTheme, Typography, Select, MenuItem } from '@mui/material';
+import { Box, useTheme, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CategorySelector from './components/CategorySelector/CategorySelector';
 
-const categories = [
-  { id: 0, value: 'all', category: 'ALL' },
-  { id: 1, value: 'art', category: 'Art' },
-  { id: 2, value: 'gameItem', category: 'Game Item' },
-  { id: 3, value: 'music', category: 'Music' },
-  { id: 4, value: 'car', category: 'Car' },
-  { id: 5, value: 'house', category: 'House' },
-  { id: 6, value: 'nftProject', category: 'NFT Project' },
-  { id: 7, value: 'metaVerse', category: 'MetaVerse' },
-];
-
 const NFTsMarket = () => {
-  const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
-    defaultMatches: true,
-  });
-  const mdDown = useMediaQuery(theme.breakpoints.down('md'), {
-    defaultMatches: true,
-  });
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // const handleChange = (e: any) => {
@@ -36,7 +18,8 @@ const NFTsMarket = () => {
 
   return (
     <MarketLayout>
-      <Container sx={{ maxWidth: '1500px' }}>
+      {/*<Container sx={{ maxWidth: '1500px' }}>*/}
+      <Container>
         <Box
           sx={{
             display: 'flex',
