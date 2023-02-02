@@ -17,7 +17,10 @@ const DetailDescription: React.FC<DetailInformationProps> = ({ nft }) => {
           padding: '10px',
         }}
       >
-        <Typography variant={'body2'} sx={{ paddingX: 1 }}>
+        <Typography
+          variant={'body2'}
+          sx={{ fontSize: '16px', fontWeight: 400, lineHeight: '24px', color: '#706C83' }}
+        >
           {nft.metadata.description}
         </Typography>
       </Box>

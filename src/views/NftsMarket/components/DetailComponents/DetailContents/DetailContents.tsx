@@ -11,7 +11,6 @@ interface DetailContentsProps {
 
 const DetailContents: React.FC<DetailContentsProps> = ({ nft }) => {
   const [toggled, setToggled] = useState(false);
-  console.log(nft.metadata);
   return (
     <Box
       sx={{

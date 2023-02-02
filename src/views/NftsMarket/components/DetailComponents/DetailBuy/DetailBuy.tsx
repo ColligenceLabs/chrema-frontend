@@ -136,6 +136,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
     horizontal: 'right',
   });
 
+  console.log(data);
   const { vertical, horizontal, open } = krwMessage;
 
   const buy = async () => {
@@ -281,7 +282,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                       data?.data?.last_price,
                     )
                   : sliceFloatNumber(data?.data?.price.toString())}{' '}
-                Talk
+                {data?.data?.quote.replace(/^[a-z]/, (char: string) => char.toUpperCase())}
               </Typography>
             </Box>
           </Box>
