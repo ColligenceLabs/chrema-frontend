@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import SectionWrapper from '../SectionWrapper';
 import { CollectionDetailResponse, NFTType } from '../../../types';
 import splitAddress from '../../../../../utils/splitAddress';
-import { Link } from 'react-router-dom';
 
 interface DetailInformationProps {
   collection: CollectionDetailResponse;
@@ -53,7 +52,14 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ nft, collection }
   return (
     <>
       <SectionWrapper title={'Description'} icon={'align-left'} maxHeight={'200px'}>
-        <Box sx={{ p: 2 }}>
+        <Box
+          sx={{
+            backgroundColor: '#F7FBFD',
+            borderRadius: '5px',
+            margin: '20px 30px',
+            padding: '10px',
+          }}
+        >
           <Typography variant={'body2'} sx={{ paddingX: 1 }}>
             {nft.metadata.description}
           </Typography>

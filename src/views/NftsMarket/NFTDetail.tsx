@@ -18,6 +18,9 @@ import DetailTitle from './components/DetailComponents/DetailTitle';
 import DetailInformation from './components/DetailComponents/DetailInformation';
 import DetailBuy from './components/DetailComponents/DetailBuy';
 import DetailSell from './components/DetailComponents/DetailSell';
+import DetailDescription from './components/DetailComponents/DetailDescription/DetailDescription';
+import DetailsInfo from './components/DetailComponents/DetailsInfo/DetailsInfo';
+import DetailOfficial from './components/DetailComponents/DetailOfficial/DetailOfficial';
 
 const NFTDetail = () => {
   const [listingMutateHandler, setListingMutateHandler] = useState(false);
@@ -107,7 +110,8 @@ const NFTDetail = () => {
                     itemActivityMutateHandler={itemActivityMutateHandler}
                     setItemActivityMutateHandler={(result) => setItemActivityMutateHandler(result)}
                   />
-                  <DetailInformation nft={data?.data} collection={data?.data?.collection_id} />
+                  {/*<DetailInformation nft={data?.data} collection={data?.data?.collection_id} />*/}
+                  <DetailDescription nft={data?.data} />
                   <Listings
                     id={id!}
                     listingMutateHandler={listingMutateHandler}
@@ -116,6 +120,8 @@ const NFTDetail = () => {
                     myNftMutateHandler={myNftMutateHandler}
                     setMyNftMutateHandler={(result) => setMyNftMutateHandler(result)}
                   />
+                  <DetailOfficial />
+                  <DetailsInfo nft={data?.data} collection={data?.data?.collection_id} />
                   <DetailSell
                     id={id!}
                     listingMutateHandler={listingMutateHandler}

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Box, SvgIconProps, Typography } from '@mui/material';
-// @ts-ignore
-import FeatherIcon from 'feather-icons-react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -15,7 +13,7 @@ interface SectionWrapperProps {
 
 const SectionWrapper: React.FC<SectionWrapperProps> = ({
   title,
-  icon,
+  // icon,
   children,
   maxHeight,
   toggled = true,
@@ -35,9 +33,9 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
           justifyContent: 'space-between',
           alignItems: 'center',
           gap: '0.25rem',
-          borderBottom: showChildren ? 0.5 : 0,
-          borderColor: '#d6d6d6',
-          p: 2,
+          // paddingTop: 2,
+          // paddingX: 2,
+          padding: showChildren ? '20px 20px 0px 20px' : '20px',
         }}
       >
         <Box
@@ -48,8 +46,15 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
             gap: '0.5rem',
           }}
         >
-          {typeof icon === 'string' ? <FeatherIcon icon={icon} width="20" /> : icon}
-          {typeof title === 'string' ? <Typography variant={'h4'}>{title}</Typography> : title}
+          {typeof title === 'string' ? (
+            <Typography
+              sx={{ fontSize: '24px', fontWeight: 700, lineHeight: '24px', color: '#706C83' }}
+            >
+              {title}
+            </Typography>
+          ) : (
+            title
+          )}
         </Box>
 
         {showChildren ? (
