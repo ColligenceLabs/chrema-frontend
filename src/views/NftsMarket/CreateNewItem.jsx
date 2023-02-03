@@ -40,6 +40,7 @@ import useNFT from '../../hooks/useNFT';
 import contracts from '../../config/constants/contracts';
 import { LoadingButton } from '@mui/lab';
 import { getTokenURI } from '../../utils/transactions';
+import { useSelector } from 'react-redux';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -131,6 +132,8 @@ const CreateNewItem = () => {
   const { id } = useUserInfo();
   const { account, library, chainId } = useActiveWeb3React();
 
+  const { ethereum, klaytn, solana, binance } = useSelector((state) => state.wallets);
+
   const [collectionList, setCollectionList] = useState([]);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [targetNetwork, setTargetNetwork] = useState('klaytn');
@@ -143,6 +146,7 @@ const CreateNewItem = () => {
   // const [useImport, setUseImport] = useState('select');
   const [useImport, setUseImport] = useState(false);
   const [isImport, setIsImport] = useState(false);
+  const [isBatchMint, setIsBatchMint] = useState(false);
 
   const {
     mintNFT17,
@@ -193,7 +197,9 @@ const CreateNewItem = () => {
 
     let imageUrl;
     if (encodeData.length !== 0) {
-      const metadata = JSON.parse(Buffer.from(encodeData[encodeData.length - 1], 'base64').toString());
+      const metadata = JSON.parse(
+        Buffer.from(encodeData[encodeData.length - 1], 'base64').toString(),
+      );
       imageUrl = metadata.image.replace('ipfs://', 'https://taalfi.infura-ipfs.io/ipfs/');
     } else {
       await fetch(meta_link.replace('https://ipfs.io', 'https://taalfi.infura-ipfs.io'))
@@ -265,7 +271,10 @@ const CreateNewItem = () => {
           }
 
           formData.append('album_jacket', values['albumJacket']);
-          formData.append('quantity', '1000');
+          formData.append('quantity', values['quantity']);
+          if (values['contract_type'] === 'KIP17' && values['quantity'] > 1) {
+            formData.append('batch', values['quantity']);
+          }
           formData.append('collection_id', values['collection']);
           formData.append('file', values['nftItem']);
           // formData.append('quote', 'klay');
@@ -280,14 +289,15 @@ const CreateNewItem = () => {
 
           let result = SUCCESS;
           // console.log(ethereum, klaytn, solana, binance);
-          if (
-            (targetNetwork === 'binance' && binance.address === undefined) ||
-            (targetNetwork === 'klaytn' && klaytn.address === undefined) ||
-            (targetNetwork === 'ethereum' && ethereum.address === undefined)
-          ) {
-            // todo 지갑연결 창을 targetNetowrk 선택 상태로 띄워 준다.
-            console.log('지갑을 연결하시오.');
-          }
+          // TODO : 단일 체인에서는 필요없는 부분인지 재 확인이 필요함....!!!!
+          // if (
+          //   (targetNetwork === 'binance' && binance.address === undefined) ||
+          //   (targetNetwork === 'klaytn' && klaytn.address === undefined) ||
+          //   (targetNetwork === 'ethereum' && ethereum.address === undefined)
+          // ) {
+          //   // todo 지갑연결 창을 targetNetowrk 선택 상태로 띄워 준다.
+          //   console.log('지갑을 연결하시오.');
+          // }
           const targetChainId = getChainId(targetNetwork);
           if (chainId !== targetChainId) {
             if (targetNetwork === 'klaytn' && klaytn.wallet === 'kaikas') {
@@ -296,49 +306,66 @@ const CreateNewItem = () => {
             } else await setupNetwork(targetChainId);
           }
           // check minter
-          // const isKaikas =
-          //   library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
-          //
-          // let test;
-          // if (!isKaikas) test = await kipContract.isMinter(account);
-          // else test = await kasContract.methods.isMinter(account).call();
-          // if (!test) {
-          //   setErrorMessage(account + ' is not a Minter');
-          //   setSuccessRegister(false);
-          //   return;
-          // }
+          const isKaikas =
+            library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
 
-          // if (isBatchMint) {
-          //   console.log(`batch count :  ${values.batch}`);
-          //   for (var pair of formData.entries()) {
-          //     console.log(pair[0] + ', ' + pair[1]);
-          //   }
-          // }
+          let test;
+          if (!isKaikas) test = await kipContract.isMinter(account);
+          else test = await kasContract.methods.isMinter(account).call();
+          if (!test) {
+            setErrorMessage(account + ' is not a Minter');
+            setSuccessRegister(false);
+            return;
+          }
 
-          // await registerNFT(formData)
-          await registerRentalNFT(formData)
+          if (isBatchMint) {
+            console.log(`batch count :  ${values.batch}`);
+            for (var pair of formData.entries()) {
+              console.log(pair[0] + ', ' + pair[1]);
+            }
+          }
+
+          await registerNFT(formData)
+            // await registerRentalNFT(formData)
             .then(async (res) => {
               console.log(res);
               if (res.data.status === 1) {
-                const nftId = res.data.data._id;
-                const tokenId = res.data.data.metadata.tokenId;
-                const tokenUri = res.data.data.ipfs_link;
-                const quantity = res.data.data.quantity;
+                let nftId, tokenId, tokenUri, quantity;
+                if (!isBatchMint) {
+                  nftId = res.data.data._id;
+                  tokenId = res.data.data.metadata.tokenId;
+                  tokenUri = res.data.data.ipfs_link;
+                  quantity = res.data.data.quantity;
+                }
 
                 // Actual NFT Minting here
-                // if (contractType === 'KIP17') {
-                // if (isKaikas) {
-                //   result = await mintNFT17WithKaikas(tokenId, tokenUri, nftId);
-                // } else {
-                result = await mintNFT37(tokenId, quantity, tokenUri, nftId);
-                // }
-                // } else {
-                //   if (isKaikas) {
-                //     result = await mintNFT37WithKaikas(tokenId, quantity, tokenUri, nftId);
-                //   } else {
-                //     result = await mintNFT37(tokenId, quantity, tokenUri, nftId);
-                //   }
-                // }
+                if (contractType === 'KIP17') {
+                  if (isBatchMint) {
+                    // TODO : Batch mint is ok but sell & buy gets failed. Need to Check later....
+                    console.log('=== start batch mint ===');
+                    const data = res.data.data;
+                    result = await mintNFTBatch(
+                      data.tokenIds,
+                      data.tokenUris,
+                      data.quantities,
+                      data.nftIds,
+                      contractType,
+                      isKaikas,
+                    );
+                  } else {
+                    if (isKaikas) {
+                      result = await mintNFT17WithKaikas(tokenId, tokenUri, nftId);
+                    } else {
+                      result = await mintNFT17(tokenId, tokenUri, nftId);
+                    }
+                  }
+                } else {
+                  if (isKaikas) {
+                    result = await mintNFT37WithKaikas(tokenId, quantity, tokenUri, nftId);
+                  } else {
+                    result = await mintNFT37(tokenId, quantity, tokenUri, nftId);
+                  }
+                }
                 if (result === FAILURE) {
                   // delete nft and serials
                   await cancelCreateNft(nftId);
@@ -449,8 +476,7 @@ const CreateNewItem = () => {
                         onClick={async () => {
                           setIsImport(true);
                           const result = await getImageFromURL(values.contract, values.tokenId);
-                          if (result)
-                            setFieldValue('nftItem', result);
+                          if (result) setFieldValue('nftItem', result);
                           setIsImport(false);
                         }}
                       >
@@ -471,14 +497,20 @@ const CreateNewItem = () => {
                   name="collection"
                   value={values.collection}
                   onChange={(event) => {
-                    collectionList.filter((collection) => {
-                      setFieldValue('collection', event.target.value);
-                      setFieldValue('category', collection.category.toString());
-                      setFieldValue('amount', '1');
-                      setFieldValue('contract_type', collection.contract_type);
-                      setContractAddr(collection.contract_address);
-                      setContractType(collection.contract_type);
-                    });
+                    collectionList
+                      .filter((collection) => collection._id === event.target.value)
+                      .map((collection) => {
+                        setFieldValue('collection', event.target.value);
+                        setFieldValue('category', collection.category.toString());
+                        // setFieldValue('amount', '1');
+                        setFieldValue(
+                          'quantity',
+                          collection.contract_type === 'KIP37' ? '1000' : '1',
+                        );
+                        setFieldValue('contract_type', collection.contract_type);
+                        setContractAddr(collection.contract_address);
+                        setContractType(collection.contract_type);
+                      });
                   }}
                   fullWidth
                   size="small"
@@ -529,6 +561,29 @@ const CreateNewItem = () => {
                   minRows={5}
                 />
               </FieldWrapper>
+
+              {contractType === 'KIP37' ? (
+                <FieldWrapper>
+                  <FiledTitle>Supply</FiledTitle>
+                  <CustomTextField
+                    name="quantity"
+                    value={values.quantity}
+                    onChange={(event) => {
+                      setFieldValue('quantity', event.target.value);
+                      if (contractType === 'KIP17' && event.target.value > 1) {
+                        setIsBatchMint(true);
+                      } else {
+                        setIsBatchMint(false);
+                      }
+                    }}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                  />
+                </FieldWrapper>
+              ) : (
+                ''
+              )}
 
               <FieldWrapper>
                 <FiledTitle>External URL</FiledTitle>

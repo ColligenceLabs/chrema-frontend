@@ -10,6 +10,7 @@ import {
   getUserNftSerialsData,
   rentalMetadata,
   selectSerials,
+  setStopSelling,
 } from '../../../../../services/nft.service';
 import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import useMarket from '../../../../../hooks/useMarket';
@@ -26,7 +27,7 @@ import { getChainId } from '../../../../../utils/commonUtils';
 import sliceFloatNumber from '../../../../../utils/sliceFloatNumber';
 import OfferDialog from '../../OfferDialog';
 import { SUCCESS } from '../../../../../config';
-import { setIpfsLink } from '../../../../../services/serials.service';
+import { getSellingSerial, setIpfsLink } from '../../../../../services/serials.service';
 
 interface DetailBuyProps {
   id: string;
@@ -91,7 +92,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
 
   const [openOffer, setOpenOffer] = useState(false);
 
-  const { buyNFT, sellNFT, listNFT } = useMarket();
+  const { buyNFT, sellNFT, listNFT, stopSelling } = useMarket();
   const params = useLocation();
 
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
@@ -135,12 +136,43 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
     vertical: 'top',
     horizontal: 'right',
   });
+  const [seller, setSeller] = useState('');
 
-  console.log(data);
+  console.log('=====>', data);
   const { vertical, horizontal, open } = krwMessage;
 
+  const getSeller = async () => {
+    const tokenId = `0x${data.data.metadata.tokenId.toString(16)}`;
+    const serial = await getSellingSerial(data.data._id, tokenId);
+    setSeller(serial.data.seller);
+  };
+
+  useEffect(() => {
+    getSeller();
+  }, [data]);
+
+  const stop = async () => {
+    // const result = await stopSelling(
+    //   data.data.collection_id.contract_address,
+    //   parseInt(data.data.metadata.tokenId, 10),
+    //   data.data.sell_amount,
+    //   data.data.price,
+    //   data.data.quote,
+    //   getChainId(data.data.collection_id.network),
+    // );
+    //
+    // if (result === SUCCESS) {
+    const res = await setStopSelling(data.data._id, false, account);
+
+    if (res.data.status !== 1) {
+      console.log('!!! stop selling ... failed');
+    }
+    console.log('!!! stop selling ... success');
+    // }
+  };
+
   const buy = async () => {
-    console.log(`days: ${days}`);
+    // console.log(`days: ${days}`);
     console.log(`amount: ${amount}`);
 
     if (data?.data?.quote === 'krw') {
@@ -166,26 +198,27 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       const quantity = data?.data?.sell_amount;
       const seller = serials.data[0].seller;
       const serialId = serials.data[0]._id;
+      const ipfs_link = data?.data?.ipfs_link;
       // tokenId 를 사용 구입 진행.
       // V3 : function buyToken(address _nft, uint256 _tokenId, uint256 _maximumPrice) external;
       // V4 : function buyToken(address _nft, uint256 _tokenId, address _seller, uint256 _quantity, uint256 _maximumPrice, address _quote) external;
 
-      const reqBody = {
-        filename: data?.data?.filename,
-        expires: days,
-        vault_name: 'nfts',
-        name: data?.data?.metadata.name,
-        description: data?.data?.metadata.description,
-        external_url: '',
-        attributes: [],
-      };
+      // const reqBody = {
+      //   filename: data?.data?.filename,
+      //   expires: days,
+      //   vault_name: 'nfts',
+      //   name: data?.data?.metadata.name,
+      //   description: data?.data?.metadata.description,
+      //   external_url: '',
+      //   attributes: [],
+      // };
 
-      const vault = await rentalMetadata(reqBody);
-      const ipfs_link = vault?.data?.data?.result.metaLink;
-      const image_link = vault?.data?.data?.result.metaData.image;
+      // const vault = await rentalMetadata(reqBody);
+      // const ipfs_link = vault?.data?.data?.result.metaLink;
+      // const image_link = vault?.data?.data?.result.metaData.image;z
       console.log('serial id : ', serialId);
-      console.log('new ipfs link : ', ipfs_link);
-      console.log('presigned url : ', image_link);
+      // console.log('new ipfs link : ', ipfs_link);
+      // console.log('presigned url : ', image_link);
 
       const result = await buyNFT(
         isKaikas ? nftContractWithKaikas : nftContract,
@@ -196,8 +229,8 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
         // quantity_selling이 아마도 팔리면 팔린만큼 증가하는 수이고 촐 판매수량은 quantity 일 듯
         // GUI에서 입력받은 amount + quantity_selling > quantity 이면 GUI에 우류 표시하면 될 듯...
         // TODO : Rental Duration
-        // amount,
-        days,
+        amount,
+        // days,
         price,
         quote,
         getChainId(data?.data?.collection_id?.network),
@@ -206,12 +239,12 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
 
       if (result === SUCCESS) {
         // TODO : update serial ipfs_url
-        const resp = await setIpfsLink(serialId, ipfs_link, image_link);
-        if (!resp?.data?.status) {
-          console.log('Error: update serial ipfs_link failed...');
-        } else {
-          console.log('Notice: update serial ipfs_link success...');
-        }
+        // const resp = await setIpfsLink(serialId, ipfs_link, image_link);
+        // if (!resp?.data?.status) {
+        //   console.log('Error: update serial ipfs_link failed...');
+        // } else {
+        //   console.log('Notice: update serial ipfs_link success...');
+        // }
       }
     } catch (e) {
       // 실패인 경우 원복.
@@ -310,7 +343,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
               {data?.data?.collection_id?.contract_type === 'KIP37' ? (
                 <LoadingButton
                   sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
-                  onClick={buy}
+                  onClick={account === seller ? stop : buy}
                   disabled={
                     sellingQuantity === 0 ||
                     sellingQuantity < parseInt(amount) ||
@@ -321,18 +354,18 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                   variant="contained"
                   fullWidth
                 >
-                  {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
+                  {sellingQuantity === 0 ? 'Sold out' : account === seller ? 'Stop Selling' : 'Buy'}
                 </LoadingButton>
               ) : (
                 <LoadingButton
                   sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
-                  onClick={buy}
+                  onClick={account === seller ? stop : buy}
                   disabled={sellingQuantity === 0}
                   loading={buyFlag}
                   variant="contained"
                   fullWidth
                 >
-                  {sellingQuantity === 0 ? 'Sold out' : 'Buy'}
+                  {sellingQuantity === 0 ? 'Sold out' : account === seller ? 'Stop Selling' : 'Buy'}
                 </LoadingButton>
               )}
             </Box>

@@ -101,8 +101,8 @@ const DetailSell: React.FC<DetailSellProps> = ({
         data?.data?.collection_id?.contract_type,
       );
       // TODO : Rental NFT Type ?
-      // const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 721 : 1155;
-      const nftType = data?.data?.collection_id?.contract_type === 'KIP37' ? 4907 : 721;
+      const nftType = data?.data?.collection_id?.contract_type === 'KIP17' ? 721 : 1155;
+      // const nftType = data?.data?.collection_id?.contract_type === 'KIP37' ? 4907 : 721;
       const payout =
         data?.data?.collection_id?.fee_payout ?? '0x0000000000000000000000000000000000000000';
       const rate = data?.data?.collection_id?.fee_percentage ?? 0;
@@ -276,23 +276,23 @@ const DetailSell: React.FC<DetailSellProps> = ({
               </>
             ) : (
               <>
-                {myNFT[0].nft_id.creator_id.admin_address === account ? (
-                  <LoadingButton
-                    loading={loading}
-                    variant="contained"
-                    // fullWidth
-                    onClick={openSchedule}
-                  >
-                    Sell as Rental NFT
-                  </LoadingButton>
-                ) : (
-                  <LoadingButton
-                    variant="contained"
-                    onClick={() => copyToClipBoard(myNFT[0].image_link)}
-                  >
-                    Copy Content Lint
-                  </LoadingButton>
-                )}
+                {/*{myNFT[0].nft_id.creator_id.admin_address === account ? (*/}
+                <LoadingButton
+                  loading={loading}
+                  variant="contained"
+                  // fullWidth
+                  onClick={openSchedule}
+                >
+                  Sell NFT
+                </LoadingButton>
+                {/*) : (*/}
+                {/*  <LoadingButton*/}
+                {/*    variant="contained"*/}
+                {/*    onClick={() => copyToClipBoard(myNFT[0].image_link)}*/}
+                {/*  >*/}
+                {/*    Copy Content Lint*/}
+                {/*  </LoadingButton>*/}
+                {/*)}*/}
               </>
             )}
           </Box>

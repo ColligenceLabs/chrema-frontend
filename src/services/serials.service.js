@@ -19,6 +19,19 @@ export const getSerialsData = (page, rowsPerPage, searchStatus, searchNftId) => 
     );
 };
 
+export const getSellingSerial = (nft_id, token_id) => {
+  let url = `${API_URL}/selling/${nft_id}/${token_id}`;
+
+  return axios
+    .get(url, { headers: authHeader() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) =>
+      error.response.status === 401 ? (window.location.href = '/auth/login') : console.log(error),
+    );
+};
+
 export const getNumberOfSales = (nftId, account) => {
   console.log(nftId);
   const url = `${API_URL}/sales-count/${nftId}?account=${account}`;
