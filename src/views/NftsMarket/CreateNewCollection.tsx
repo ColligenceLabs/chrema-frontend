@@ -131,7 +131,10 @@ const CardContentWrapper = styled(CardContent)`
   align-items: center;
 `;
 
-const NFT_TYPES = [{ value: 'KIP17' }, { value: 'KIP37' }];
+const NFT_TYPES = [
+  { value: 'KIP17', title: 'ERC-721' },
+  { value: 'KIP37', title: 'ERC-1155' },
+];
 
 type OptionalImageListTypes = {
   id: number;
@@ -595,7 +598,7 @@ const CreateNewCollection = () => {
               </FieldWrapper>
               <FieldWrapper>
                 <FiledTitle>NFT Type</FiledTitle>
-                <FieldSubscription>category</FieldSubscription>
+                <FieldSubscription>the type of NFT</FieldSubscription>
                 <CustomTextField
                   select
                   id="type"
@@ -613,7 +616,7 @@ const CreateNewCollection = () => {
                 >
                   {NFT_TYPES.map((item) => (
                     <MenuItem key={item.value} value={item.value}>
-                      {item.value}
+                      {item.title}
                     </MenuItem>
                   ))}
                 </CustomTextField>
