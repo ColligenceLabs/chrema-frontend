@@ -131,6 +131,8 @@ const CardContentWrapper = styled(CardContent)`
   align-items: center;
 `;
 
+const NFT_TYPES = [{ value: 'KIP17' }, { value: 'KIP37' }];
+
 type OptionalImageListTypes = {
   id: number;
   image: object | Blob | null;
@@ -296,7 +298,7 @@ const CreateNewCollection = () => {
           category: [],
           network: 'klaytn',
           contractAddress: undefined,
-          type: 'KIP37',
+          type: '',
           symbol: '',
         }}
         onSubmit={async (values, { setSubmitting }) => {
@@ -322,6 +324,7 @@ const CreateNewCollection = () => {
           formData.append('creator_id', id);
           formData.append('fee_payout', account);
           formData.append('fee_percentage', '2');
+          formData.append('type', values.type);
           console.log(optionalImageList);
           // formData.append('optional_images', optionalImageList);
           optionalImageList.forEach((image) => formData.append('optional_images', image.image));
@@ -589,6 +592,31 @@ const CreateNewCollection = () => {
                   maxRows={5}
                   minRows={5}
                 />
+              </FieldWrapper>
+              <FieldWrapper>
+                <FiledTitle>NFT Type</FiledTitle>
+                <FieldSubscription>category</FieldSubscription>
+                <CustomTextField
+                  select
+                  id="type"
+                  name="category"
+                  SelectProps={{
+                    multiple: false,
+                    value: values.type,
+                    onChange: (event: ChangeEvent<HTMLSelectElement>) => {
+                      setFieldValue('type', event.target.value);
+                    },
+                  }}
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="small"
+                >
+                  {NFT_TYPES.map((item) => (
+                    <MenuItem key={item.value} value={item.value}>
+                      {item.value}
+                    </MenuItem>
+                  ))}
+                </CustomTextField>
               </FieldWrapper>
               <FieldWrapper>
                 <FiledTitle>Category</FiledTitle>
