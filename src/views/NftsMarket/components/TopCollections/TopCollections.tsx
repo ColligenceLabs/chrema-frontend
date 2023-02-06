@@ -74,34 +74,41 @@ const TopCollections = () => {
     defaultMatches: true,
   });
 
+  const setEmptyArray = (loopCount: number) => {
+    return Array.from({ length: loopCount }, () => {
+      return {
+        network: null,
+        category: null,
+        maximum_supply: null,
+        status: null,
+        _id: null,
+        name: null,
+        cover_image: null,
+        creator_id: null,
+        contract_address: null,
+        contract_type: null,
+        path: null,
+        image_link: null,
+        description: null,
+        createdAt: null,
+        updatedAt: null,
+        __v: null,
+        total_volume: null,
+        total_volume_usd: null,
+        total_volume_krw: null,
+        floorPrice: null,
+      };
+    });
+  };
+
   useEffect(() => {
     if (data?.data && data?.data.length < 20) {
-      const loopCount = 20 - data?.data.length;
-      const arr = Array.from({ length: loopCount }, () => {
-        return {
-          network: null,
-          category: null,
-          maximum_supply: null,
-          status: null,
-          _id: null,
-          name: null,
-          cover_image: null,
-          creator_id: null,
-          contract_address: null,
-          contract_type: null,
-          path: null,
-          image_link: null,
-          description: null,
-          createdAt: null,
-          updatedAt: null,
-          __v: null,
-          total_volume: null,
-          total_volume_usd: null,
-          total_volume_krw: null,
-          floorPrice: null,
-        };
-      });
+      const loopCount = !data?.data ? 20 : 20 - data?.data.length;
+      const arr = setEmptyArray(loopCount);
       setItems([...data.data, ...arr]);
+    } else if (!data?.data) {
+      const arr = setEmptyArray(20);
+      setItems([...arr]);
     } else if (data?.data) {
       setItems([...data.data]);
     }
