@@ -86,31 +86,38 @@ const TitleWrapper = styled(Typography)`
 `;
 
 const FieldWrapper = styled(Box)`
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  //gap: 0.4rem;
 `;
 
 const FiledTitle = styled('label')<{ required?: boolean }>`
-  color: rgb(53, 56, 64);
-  font-weight: 600;
-  font-size: 16px;
+  margin-bottom: 20px;
+  color: #706c83;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
   ${({ required }) =>
     required === true &&
     `
     &:after {
     content: " *";
-    color: rgb(235, 87, 87)
+    color: #3749E9
     }
   `}
 `;
 
 const FieldSubscription = styled('span')`
+  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
-  color: rgb(112, 122, 131);
-  font-size: 12px;
-  font-weight: 500;
+  color: #b9b8bb;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
 const AddOptionalImage = styled('div')(({ theme }) => ({
@@ -453,13 +460,21 @@ const CreateNewCollection = () => {
                 <FieldSubscription>
                   This image will also be used for navigation. 350 x 350 recommended.
                 </FieldSubscription>
-                <ImageSelector
-                  image={values.logoImage}
-                  handleImageSelect={(image: any) => setFieldValue('logoImage', image)}
-                  width="160px"
-                  height="160px"
-                  viewerMode={false}
-                />
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ImageSelector
+                    image={values.logoImage}
+                    handleImageSelect={(image: any) => setFieldValue('logoImage', image)}
+                    width="250px"
+                    height="250px"
+                    viewerMode={false}
+                  />
+                </Box>
               </FieldWrapper>
 
               <FieldWrapper>
@@ -472,91 +487,91 @@ const CreateNewCollection = () => {
                 <ImageSelector
                   image={values.bannerImage}
                   handleImageSelect={(image: any) => setFieldValue('bannerImage', image)}
-                  width="600px"
+                  width="100%"
                   height="200px"
                   viewerMode={false}
                 />
               </FieldWrapper>
 
-              <FieldWrapper>
-                <FiledTitle>Optional Image</FiledTitle>
-                <FieldSubscription
-                  onClick={() => {
-                    console.log(values.optionalImage);
-                  }}
-                >
-                  This is the collection where your item will appear. {/*<AddOptionalImage*/}
-                </FieldSubscription>
-                <OptionalImageWrapper>
-                  <ImageSelector
-                    image={optionalImage}
-                    handleImageSelect={(image: any) => setOptionalImage(image)}
-                    width="200px"
-                    height="200px"
-                    viewerMode={false}
-                  />
-                  <Box
-                    sx={{
-                      flex: 1,
-                      marginLeft: 2,
-                      textAlign: 'right',
-                      width: '100%',
-                    }}
-                  >
-                    <CustomTextarea
-                      name="description"
-                      value={optionalImageDesc}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                        setOptionalImageDesc(e.target.value)
-                      }
-                      maxRows={5}
-                      minRows={5}
-                    />
-                    <Button
-                      variant="contained"
-                      disabled={optionalImage === null || optionalImageDesc === ''}
-                      onClick={() => {
-                        handleAddOptionalList(optionalImageID, optionalImage!, optionalImageDesc);
+              {/*<FieldWrapper>*/}
+              {/*  <FiledTitle>Optional Image</FiledTitle>*/}
+              {/*  <FieldSubscription*/}
+              {/*    onClick={() => {*/}
+              {/*      console.log(values.optionalImage);*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    This is the collection where your item will appear. /!*<AddOptionalImage*!/*/}
+              {/*  </FieldSubscription>*/}
+              {/*  <OptionalImageWrapper>*/}
+              {/*    <ImageSelector*/}
+              {/*      image={optionalImage}*/}
+              {/*      handleImageSelect={(image: any) => setOptionalImage(image)}*/}
+              {/*      width="200px"*/}
+              {/*      height="200px"*/}
+              {/*      viewerMode={false}*/}
+              {/*    />*/}
+              {/*    <Box*/}
+              {/*      sx={{*/}
+              {/*        flex: 1,*/}
+              {/*        marginLeft: 2,*/}
+              {/*        textAlign: 'right',*/}
+              {/*        width: '100%',*/}
+              {/*      }}*/}
+              {/*    >*/}
+              {/*      <CustomTextarea*/}
+              {/*        name="description"*/}
+              {/*        value={optionalImageDesc}*/}
+              {/*        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>*/}
+              {/*          setOptionalImageDesc(e.target.value)*/}
+              {/*        }*/}
+              {/*        maxRows={5}*/}
+              {/*        minRows={5}*/}
+              {/*      />*/}
+              {/*      <Button*/}
+              {/*        variant="contained"*/}
+              {/*        disabled={optionalImage === null || optionalImageDesc === ''}*/}
+              {/*        onClick={() => {*/}
+              {/*          handleAddOptionalList(optionalImageID, optionalImage!, optionalImageDesc);*/}
 
-                        setOptionalImageID(optionalImageID + 1);
-                        setOptionalImage(null);
-                        setOptionalImageDesc('');
-                      }}
-                    >
-                      Add
-                    </Button>
-                  </Box>
-                </OptionalImageWrapper>
-                <ImageList sx={{ width: '100%', maxHeight: 500 }}>
-                  {optionalImageList.map((item) => (
-                    <ImageListItem key={item.id} cols={smDown ? 2 : 1}>
-                      <ImageSelector
-                        image={item.image}
-                        handleImageSelect={() => null}
-                        width="100%"
-                        // height="200px"
-                        viewerMode={true}
-                      />
-                      <ImageListItemBar
-                        title={
-                          item.description?.length > 30
-                            ? `${item.description.slice(0, 30)}...`
-                            : item.description
-                        }
-                        subtitle={''}
-                        actionIcon={
-                          <IconButton
-                            onClick={() => handleRemoveOptionalList(item.id)}
-                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                          >
-                            <HighlightOffIcon sx={{ color: 'white' }} />
-                          </IconButton>
-                        }
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-              </FieldWrapper>
+              {/*          setOptionalImageID(optionalImageID + 1);*/}
+              {/*          setOptionalImage(null);*/}
+              {/*          setOptionalImageDesc('');*/}
+              {/*        }}*/}
+              {/*      >*/}
+              {/*        Add*/}
+              {/*      </Button>*/}
+              {/*    </Box>*/}
+              {/*  </OptionalImageWrapper>*/}
+              {/*  <ImageList sx={{ width: '100%', maxHeight: 500 }}>*/}
+              {/*    {optionalImageList.map((item) => (*/}
+              {/*      <ImageListItem key={item.id} cols={smDown ? 2 : 1}>*/}
+              {/*        <ImageSelector*/}
+              {/*          image={item.image}*/}
+              {/*          handleImageSelect={() => null}*/}
+              {/*          width="100%"*/}
+              {/*          // height="200px"*/}
+              {/*          viewerMode={true}*/}
+              {/*        />*/}
+              {/*        <ImageListItemBar*/}
+              {/*          title={*/}
+              {/*            item.description?.length > 30*/}
+              {/*              ? `${item.description.slice(0, 30)}...`*/}
+              {/*              : item.description*/}
+              {/*          }*/}
+              {/*          subtitle={''}*/}
+              {/*          actionIcon={*/}
+              {/*            <IconButton*/}
+              {/*              onClick={() => handleRemoveOptionalList(item.id)}*/}
+              {/*              sx={{ color: 'rgba(255, 255, 255, 0.54)' }}*/}
+              {/*            >*/}
+              {/*              <HighlightOffIcon sx={{ color: 'white' }} />*/}
+              {/*            </IconButton>*/}
+              {/*          }*/}
+              {/*        />*/}
+              {/*      </ImageListItem>*/}
+              {/*    ))}*/}
+              {/*  </ImageList>*/}
+              {/*</FieldWrapper>*/}
 
               <FieldWrapper>
                 <FiledTitle required={true}>Name</FiledTitle>
@@ -684,17 +699,25 @@ const CreateNewCollection = () => {
               {/*    </Grid>*/}
               {/*  </RadioGroup>*/}
               {/*</FieldWrapper>*/}
-              <FieldWrapper>
-                {account ? (
-                  <LoadingButton type="submit" loading={isSubmitting} variant="contained">
-                    Create
-                  </LoadingButton>
-                ) : (
-                  <Button variant="contained" onClick={() => setIsOpenConnectModal(true)}>
-                    Connect Wallet
-                  </Button>
-                )}
-              </FieldWrapper>
+
+              {account ? (
+                <LoadingButton
+                  sx={{ height: '54px', fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+                  type="submit"
+                  loading={isSubmitting}
+                  variant="contained"
+                >
+                  Create
+                </LoadingButton>
+              ) : (
+                <Button
+                  sx={{ height: '54px', fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+                  variant="contained"
+                  onClick={() => setIsOpenConnectModal(true)}
+                >
+                  Connect Wallet
+                </Button>
+              )}
             </MyCollectionContainer>
           </form>
         )}

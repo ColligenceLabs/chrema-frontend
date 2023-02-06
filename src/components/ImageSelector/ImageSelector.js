@@ -74,7 +74,7 @@ const ImageSelector = ({
   width = '400px',
   height = '250px',
   viewerMode = false,
-  borderRadius,
+  borderRadius = '10px',
 }) => {
   const [preview, setPreview] = useState(image ? image : null);
   const [previewType, setPreviewType] = useState('image/jpeg');

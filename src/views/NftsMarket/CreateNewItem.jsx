@@ -93,7 +93,7 @@ const FiledTitle = styled('label')`
     `
     &:after {
     content: " *";
-    color: rgb(235, 87, 87)
+    color: #3749E9
     }
   `}
 `;
