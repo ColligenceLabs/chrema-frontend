@@ -15,24 +15,29 @@ import ImageViewer from '../../components/ImageViewer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const MyCollectionContainer = styled(Container)`
-  max-width: 646px !important;
+  //max-width: 646px !important;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 10rem;
+  //gap: 0.5rem;
+  //margin-bottom: 10rem;
 `;
 
 const TitleWrapper = styled(Typography)`
-  font-size: 40px;
-  font-weight: 600;
-  letter-spacing: 0px;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 44px;
   margin-top: 2rem;
+  color: #191820;
   //margin-bottom: 1rem;
 `;
 
 const SubTitleWrapper = styled(Typography)`
   font-weight: 400;
-  color: rgb(53, 56, 64);
+  font-size: 18px;
+  color: #706c83;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const FieldWrapper = styled(Box)`
@@ -42,11 +47,10 @@ const FieldWrapper = styled(Box)`
 `;
 
 const CreateButton = styled(Button)`
-  max-width: 200px;
-  font-weight: 400;
-  padding: 15px 15px;
+  //max-width: 200px;
+  padding: 15px 70px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 const Collection: React.FC<CollectionItemType> = ({
@@ -70,8 +74,9 @@ const Collection: React.FC<CollectionItemType> = ({
           p: 0,
           m: smDown ? 0.5 : 1,
           textDecoration: 'none',
-          border: '0.1px solid #d6d6d6',
-          borderRadius: '25px',
+          border: '0.1px solid #DFDFDF',
+          borderRadius: '10px',
+          boxShadow: 0,
         }}
       >
         <Box
@@ -81,7 +86,7 @@ const Collection: React.FC<CollectionItemType> = ({
             alignItems: 'center',
           }}
         >
-          <ImageViewer src={cover_image} alt={name} height={smDown ? '150px' : '150px'} />
+          <ImageViewer src={cover_image} alt={name} height="280px" />
         </Box>
         <CardContent sx={{ textAlign: 'center' }}>
           <Typography variant={smDown ? 'caption' : 'h4'}>
@@ -132,22 +137,31 @@ const MyCollection = () => {
         <TitleWrapper>My Collections</TitleWrapper>
         <SubTitleWrapper>
           Create, curate, and manage collections of unique NFTs to share and sell.
-        </SubTitleWrapper>
-        <FieldWrapper>
           {account ? (
             <CreateButton variant="contained" onClick={moveToPage}>
-              Create a collection
+              + Create
             </CreateButton>
           ) : (
             <CreateButton variant="contained" onClick={() => setIsOpenConnectModal(true)}>
               Connect Wallet
             </CreateButton>
           )}
-        </FieldWrapper>
-        <Grid container>
+        </SubTitleWrapper>
+        {/*<FieldWrapper>*/}
+        {/*  {account ? (*/}
+        {/*    <CreateButton variant="contained" onClick={moveToPage}>*/}
+        {/*      Create a collection*/}
+        {/*    </CreateButton>*/}
+        {/*  ) : (*/}
+        {/*    <CreateButton variant="contained" onClick={() => setIsOpenConnectModal(true)}>*/}
+        {/*      Connect Wallet*/}
+        {/*    </CreateButton>*/}
+        {/*  )}*/}
+        {/*</FieldWrapper>*/}
+        <Grid container sx={{ marginTop: '15px' }}>
           {collectionList &&
             collectionList.map((item: any) => (
-              <Grid item xs={6} sm={6} md={6} lg={6} key={item.contract_address}>
+              <Grid item xs={12} sm={6} md={4} lg={4} key={item.contract_address}>
                 <Collection
                   id={item._id}
                   name={item.name}

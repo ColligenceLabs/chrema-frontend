@@ -22,7 +22,7 @@ const PreviewImage = styled('img')`
   border-radius: ${(props) => props.borderRadius};
   width: 100%;
   height: 100%;
-  //object-fit: cover;
+  object-fit: cover;
   &:hover {
     opacity: ${(props) => (props.viewerMode ? '1' : '0.5')};
     &:after {
