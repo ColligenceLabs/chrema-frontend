@@ -6,22 +6,23 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 const DropzoneWrapper = styled('div')`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  border: ${(props) => (props.viewerMode ? '0' : '3px dashed rgb(204, 204, 204)')};
+  border: ${(props) => (props.viewerMode ? '0' : '1px solid #DFDFDF')};
   border-radius: ${(props) => props.borderRadius};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background-color: #f7fbfd;
 `;
 
 const PreviewImage = styled('img')`
-  padding: ${(props) => (props.viewerMode ? '0' : '3px 5px')};
+  // padding: ${(props) => (props.viewerMode ? '0' : '3px 5px')};
   object-fit: ${(props) => (props.viewerMode ? 'cover' : 'default')};
   border-radius: ${(props) => props.borderRadius};
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  //object-fit: cover;
   &:hover {
     opacity: ${(props) => (props.viewerMode ? '1' : '0.5')};
     &:after {
@@ -32,7 +33,7 @@ const PreviewImage = styled('img')`
 
 const PreviewVideo = styled('video')`
   padding: 3px 5px;
-  borderradius: 16px;
+  border-radius: 16px;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -73,6 +74,7 @@ const ImageSelector = ({
   width = '400px',
   height = '250px',
   viewerMode = false,
+  borderRadius,
 }) => {
   const [preview, setPreview] = useState(image ? image : null);
   const [previewType, setPreviewType] = useState('image/jpeg');
@@ -132,6 +134,7 @@ const ImageSelector = ({
       width={width}
       height={height}
       viewerMode={viewerMode}
+      borderRadius={borderRadius}
       {...getRootProps({ className: 'dropzone' })}
     >
       <input {...getInputProps()} />
@@ -145,7 +148,12 @@ const ImageSelector = ({
             <source src={preview} type={previewType} />
           </PreviewAudio>
         ) : (
-          <PreviewImage src={preview} alt={'thumb'} viewerMode={viewerMode} />
+          <PreviewImage
+            src={preview}
+            alt={'thumb'}
+            viewerMode={viewerMode}
+            borderRadius={borderRadius}
+          />
         )
       ) : (
         <SelectWrapper>

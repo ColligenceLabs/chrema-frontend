@@ -12,6 +12,7 @@ const CustomTextarea = styled((props) => <TextareaAutosize {...props} />)(({ the
   padding: '10px',
   border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : '#dee3e9'}`,
   outlineColor: `${theme.palette.primary.main}`,
+  backgroundColor: '#F7FBFD',
 }));
 
 export default CustomTextarea;

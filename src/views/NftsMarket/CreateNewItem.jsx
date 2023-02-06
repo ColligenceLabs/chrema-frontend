@@ -23,17 +23,17 @@ import { getCollectionsByCreatorId } from '../../services/collections.service';
 import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import useUserInfo from '../../hooks/useUserInfo';
 import {
-  batchRegisterNFT,
   cancelCreateNft,
-  cancelCreateNfts,
   registerNFT,
-  registerRentalNFT,
-  registerSolanaNFT,
-  setNftOnchain,
+  // batchRegisterNFT,
+  // cancelCreateNfts,
+  // registerRentalNFT,
+  // registerSolanaNFT,
+  // setNftOnchain,
 } from '../../services/nft.service';
 import { FAILURE, SUCCESS } from '../../config/constants/consts';
 import { getChainId } from '../../utils/commonUtils';
-import { targetNetworkMsg } from '../../config';
+// import { targetNetworkMsg } from '../../config';
 import { setupNetwork } from '../../utils/wallet';
 import { useKipContract, useKipContractWithKaikas } from '../../hooks/useContract';
 import useNFT from '../../hooks/useNFT';
@@ -68,21 +68,26 @@ const TitleWrapper = styled(Typography)`
 `;
 
 const FieldWrapper = styled(Box)`
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  //gap: 0.4rem;
 `;
 
 const FiledTitleWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 `;
 
 const FiledTitle = styled('label')`
-  color: rgb(53, 56, 64);
-  font-weight: 600;
-  font-size: 16px;
+  margin-bottom: 20px;
+  color: #706c83;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
   ${({ required }) =>
     required === true &&
     `
@@ -94,11 +99,13 @@ const FiledTitle = styled('label')`
 `;
 
 const FieldSubscription = styled('span')`
+  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
-  color: rgb(112, 122, 131);
-  font-size: 12px;
-  font-weight: 500;
+  color: #b9b8bb;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
 `;
 
 const CreateCollection = styled('div')(({ theme }) => ({
@@ -417,6 +424,9 @@ const CreateNewItem = () => {
                     console.log(image);
                     setFieldValue('nftItem', image);
                   }}
+                  width="100%"
+                  height="350px"
+                  borderRadius="10px"
                 />
               </FieldWrapper>
 
@@ -622,6 +632,7 @@ const CreateNewItem = () => {
                       borderColor: 'rgba(255, 255, 255, 0.12)',
                       opacity: '1',
                       marginRight: '10px',
+                      backgroundColor: '#F7FBFD',
                     }}
                     value={values.quote}
                     size="small"
@@ -647,17 +658,26 @@ const CreateNewItem = () => {
                 </Box>
               </FieldWrapper>
 
-              <FieldWrapper>
-                {account ? (
-                  <LoadingButton type="submit" loading={isSubmitting} variant="contained">
-                    Create
-                  </LoadingButton>
-                ) : (
-                  <Button variant="contained" onClick={() => setIsOpenConnectModal(true)}>
-                    Connect Wallet
-                  </Button>
-                )}
-              </FieldWrapper>
+              {/*<FieldWrapper>*/}
+              {account ? (
+                <LoadingButton
+                  sx={{ height: '54px', fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+                  type="submit"
+                  loading={isSubmitting}
+                  variant="contained"
+                >
+                  Create
+                </LoadingButton>
+              ) : (
+                <Button
+                  sx={{ height: '54px', fontSize: '18px', fontWeight: 700, lineHeight: '24px' }}
+                  variant="contained"
+                  onClick={() => setIsOpenConnectModal(true)}
+                >
+                  Connect Wallet
+                </Button>
+              )}
+              {/*</FieldWrapper>*/}
             </CreateNewItemContainer>
           </form>
         )}

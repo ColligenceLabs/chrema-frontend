@@ -5,6 +5,7 @@ import { Select } from '@mui/material';
 const CustomSelect = styled((props) => <Select {...props} />)(({ theme }) => ({
   '& .MuiSelect-select': {
     color: '#767e89',
+    backgroundColor: '#F7FBFD',
   },
   '& .MuiOutlinedInput-notchedOutline': {
     borderColor: `${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : '#dee3e9'}`,
