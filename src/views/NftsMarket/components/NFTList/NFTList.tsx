@@ -73,15 +73,15 @@ const NFTList: React.FC<NFTListProps> = ({ onSale }) => {
         onClickViewMode={onClickViewMode}
       />
       <Grid item xs={12} sm={12} md={12} lg={12}>
-        <Typography
-          variant={'h5'}
-          sx={{
-            mb: '15px',
-            px: '15px',
-          }}
-          color={'primary'}
-          // onClick={() => setShowLarge((curr) => !curr)}
-        >{`${itemCount} items`}</Typography>
+        {/*<Typography*/}
+        {/*  variant={'h5'}*/}
+        {/*  sx={{*/}
+        {/*    mb: '15px',*/}
+        {/*    px: '15px',*/}
+        {/*  }}*/}
+        {/*  color={'primary'}*/}
+        {/*  // onClick={() => setShowLarge((curr) => !curr)}*/}
+        {/*>{`${itemCount} items`}</Typography>*/}
       </Grid>
       {!error &&
         data &&
