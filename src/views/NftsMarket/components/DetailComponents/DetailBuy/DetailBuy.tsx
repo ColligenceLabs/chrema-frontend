@@ -144,7 +144,8 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   const getSeller = async () => {
     const tokenId = `0x${data.data.metadata.tokenId.toString(16)}`;
     const serial = await getSellingSerial(data.data._id, tokenId);
-    setSeller(serial.data.seller);
+    console.log(serial);
+    if (serial) setSeller(serial.data.seller);
   };
 
   useEffect(() => {
