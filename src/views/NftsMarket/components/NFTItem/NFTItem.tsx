@@ -36,7 +36,6 @@ const NFTItem: React.FC<NFTItemProp> = ({ item, showLarge }) => {
     defaultMatches: true,
   });
 
-  console.log(item);
   return (
     <>
       <Link to={`/market/detail/${item._id}`} style={{ textDecoration: 'none' }}>

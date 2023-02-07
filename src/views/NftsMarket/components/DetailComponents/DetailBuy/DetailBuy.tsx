@@ -176,6 +176,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       console.log('!! stop selling error : ', err);
     }
     setBuyFlag(false);
+    await mutate();
   };
 
   const buy = async () => {
