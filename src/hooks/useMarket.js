@@ -39,10 +39,11 @@ const useMarket = () => {
     async (nftContract, nftType, tokenId, quantity, price, quote, payout, rate, targetNetwork) => {
       // TODO. kas 를 사용하는 경우 api 호출 로직 분리 필요
       console.log('sell!', nftType);
-      const gasPrice = await caver.klay.getGasPrice();
+      let gasPrice;
       const quoteToken = quoteTokens[quote][targetNetwork];
       const isKaikas =
         library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+      if (isKaikas) gasPrice = await caver.klay.getGasPrice();
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
         return;
@@ -105,14 +106,10 @@ const useMarket = () => {
         try {
           if (!isKaikas) {
             if (nftType === 721) {
-              let options;
-              if (targetNetwork > 1000)
-                options = { gasPrice, gasLimit: calculateGasMargin(gasLimit) };
-              else options = { gasLimit: calculateGasMargin(gasLimit) };
+              const options = { gasLimit: calculateGasMargin(gasLimit) };
               tx = await nftContract.approve(marketContract.address, tokenId, options);
             } else if (nftType === 1155 || nftType === 4907) {
               tx = await nftContract.setApprovalForAll(marketContract.address, 'true', {
-                gasPrice,
                 gasLimit: calculateGasMargin(gasLimit),
               });
             }
@@ -150,6 +147,18 @@ const useMarket = () => {
 
       const parsedPrice = parseUnits(price.toString(), 'ether').toString();
       console.log(parsedPrice);
+
+      console.log(
+        '======>',
+        nftContract.address,
+        nftType,
+        tokenId,
+        quantity,
+        parsedPrice,
+        quoteToken,
+        payout,
+        rate,
+      );
       // sell
       try {
         if (!isKaikas)
@@ -499,9 +508,10 @@ const useMarket = () => {
     // V4 : function cancelSellToken(address _nft, uint256 _tokenId, uint256 _quantity, uint256 _price, address _quote) external;
     async (contractAddress, tokenId, quantity, price, quote, targetNetwork) => {
       console.log('cancel!', tokenId);
-      const gasPrice = await caver.klay.getGasPrice();
+      let gasPrice;
       const isKaikas =
         library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+      if (isKaikas) gasPrice = await caver.klay.getGasPrice();
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
         return;
@@ -540,10 +550,7 @@ const useMarket = () => {
       try {
         let receipt;
         if (!isKaikas) {
-          let options;
-          if (targetNetwork > 1000)
-            options = { from: account, gasPrice, gasLimit: calculateGasMargin(gasLimit) };
-          else options = { from: account, gasLimit: calculateGasMargin(gasLimit) };
+          const options = { from: account, gasLimit: calculateGasMargin(gasLimit) };
           tx = await marketContract.cancelSellToken(
             contractAddress,
             tokenId,
