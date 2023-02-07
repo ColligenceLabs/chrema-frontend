@@ -23,6 +23,7 @@ export const RPC_URLS = {
   1: RPC_URL_1,
   3: RPC_URL_3,
   4: RPC_URL_4,
+  5: 'https://goerli.infura.io/v3/adb9c847d7114ee7bf83995e8f22e098',
   56: 'https://bsc-dataseed.binance.org',
   97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   1001: 'https://api.baobab.klaytn.net:8651',
@@ -42,6 +43,7 @@ export const network = new NetworkConnector({
     1: RPC_URLS[1],
     3: RPC_URLS[3],
     4: RPC_URLS[4],
+    5: RPC_URLS[5],
     56: RPC_URLS[56],
     97: RPC_URLS[97],
     1001: RPC_URLS[1001],
@@ -53,12 +55,13 @@ export const network = new NetworkConnector({
 export const walletconnect = (useQR) => {
   // const chainId = parseInt(targetNetwork, 16);
   return new WalletConnectConnector({
-    supportedChainIds: [1, 3, 4, 1001, 8217],
+    supportedChainIds: [1, 3, 4, 5, 1001, 8217],
     // rpc: { [chainId]: RPC_URLS[chainId] },
     rpc: {
       1: RPC_URLS[1],
       3: RPC_URLS[3],
       4: RPC_URLS[4],
+      5: RPC_URLS[5],
       1001: RPC_URLS[1001],
       8217: RPC_URLS[8217],
     },

@@ -5,6 +5,7 @@ const ChainId = {
   MAINNET: 1,
   ROPSTEN: 3,
   RINKEBY: 4,
+  GOERLI: 5,
   BSCMAINNET: 56,
   BSCTESTNET: 97,
   KLAYTN: 8217,
@@ -15,6 +16,7 @@ const NETWORK_NAME = {
   [ChainId.MAINNET]: 'Ethereum Mainnet',
   [ChainId.ROPSTEN]: 'Ethereum Ropsten',
   [ChainId.RINKEBY]: 'Ethereum Rinkeby',
+  [ChainId.GOERLI]: 'Goerli Testnet',
   [ChainId.KLAYTN]: 'Klaytn Cypress',
   [ChainId.BAOBAB]: 'Klaytn Baobab',
   [ChainId.BSCMAINNET]: 'Binance Smart Chain Mainnet',
@@ -25,6 +27,7 @@ const SCAN_URL = {
   [ChainId.MAINNET]: 'https://etherscan.io',
   [ChainId.ROPSTEN]: 'https://ropsten.etherscan.io',
   [ChainId.RINKEBY]: 'https://rinkeby.etherscan.io',
+  [ChainId.GOERLI]: 'https://goerli.etherscan.io',
   [ChainId.KLAYTN]: 'https://scope.klaytn.com',
   [ChainId.BAOBAB]: 'https://baobab.scope.klaytn.com',
   [ChainId.BSCMAINNET]: 'https://bscscan.com',
@@ -33,7 +36,7 @@ const SCAN_URL = {
 
 let provider;
 
-const addNetwork = async (chainId: number) => {
+const addNetwork = async (chainId) => {
   if (provider && provider.request) {
     try {
       if (
@@ -49,6 +52,23 @@ const addNetwork = async (chainId: number) => {
               chainName: NETWORK_NAME[chainId],
               nativeCurrency: {
                 name: 'ETH',
+                symbol: 'ETH',
+                decimals: 18,
+              },
+              rpcUrls: [`${process.env.REACT_APP_NETWORK_URL}`],
+              blockExplorerUrls: [`${SCAN_URL[chainId]}/`],
+            },
+          ],
+        });
+      } else if (chainId === ChainId.GOERLI) {
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: `0x${chainId.toString(16)}`,
+              chainName: NETWORK_NAME[chainId],
+              nativeCurrency: {
+                name: 'GoerliETH',
                 symbol: 'ETH',
                 decimals: 18,
               },
@@ -133,7 +153,7 @@ const addNetwork = async (chainId: number) => {
  * Prompt the user to add BSC as a network on Metamask, or switch to BSC if the wallet is on a different network
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
-export const setupNetwork = async (chainId: number) => {
+export const setupNetwork = async (chainId) => {
   provider = await detectEthereumProvider(true);
 
   let result;
@@ -171,12 +191,7 @@ export const setupNetwork = async (chainId: number) => {
  * @param tokenImage
  * @returns {boolean} true if the token has been added, false otherwise
  */
-export const registerToken = async (
-  tokenAddress: string,
-  tokenSymbol: string,
-  tokenDecimals: number,
-  tokenImage: string,
-) => {
+export const registerToken = async (tokenAddress, tokenSymbol, tokenDecimals, tokenImage) => {
   let tokenAdded;
   provider = await detectEthereumProvider(true);
 
