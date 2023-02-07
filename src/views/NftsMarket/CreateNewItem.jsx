@@ -11,6 +11,7 @@ import {
   Select,
   Snackbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
@@ -41,6 +42,7 @@ import contracts from '../../config/constants/contracts';
 import { LoadingButton } from '@mui/lab';
 import { getTokenURI } from '../../utils/transactions';
 import { useSelector } from 'react-redux';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
@@ -60,11 +62,12 @@ const ImportImageWrapper = styled(Box)`
   }
 `;
 const TitleWrapper = styled(Typography)`
-  font-size: 40px;
+  font-size: ${(props) => (props.smDown ? '32px' : '40px')};
   font-weight: 600;
   letter-spacing: 0px;
   margin-top: 2rem;
   margin-bottom: 1rem;
+  text-align: center;
 `;
 
 const FieldWrapper = styled(Box)`
@@ -78,12 +81,15 @@ const FieldWrapper = styled(Box)`
 
 const FiledTitleWrapper = styled('div')`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: ${(props) => (props.smDown ? 'column' : 'rows')};
+  justify-content: ${(props) => (props.smDown ? 'center' : 'space-between')};
+  align-items: ${(props) => (props.smDown ? 'flex-start' : 'center')};
+  gap: 1rem;
+  //margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const FiledTitle = styled('label')`
-  margin-bottom: 20px;
   color: #706c83;
   font-weight: 700;
   font-size: 24px;
@@ -99,7 +105,7 @@ const FiledTitle = styled('label')`
 `;
 
 const FieldSubscription = styled('span')`
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
   color: #b9b8bb;
@@ -109,6 +115,7 @@ const FieldSubscription = styled('span')`
 `;
 
 const CreateCollection = styled('div')(({ theme }) => ({
+  minWidth: '100px',
   fontSize: '14px',
   fontWeight: 600,
   color: theme.palette.primary.main,
@@ -135,6 +142,11 @@ const StyledMenuItem = styled(MenuItem)`
 const QUOTE_TOKEN = [{ value: 'klay', caption: 'KLAY' }];
 
 const CreateNewItem = () => {
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+    defaultMatches: true,
+  });
+
   const navigate = useNavigate();
   const { id } = useUserInfo();
   const { account, library, chainId } = useActiveWeb3React();
@@ -404,16 +416,16 @@ const CreateNewItem = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <CreateNewItemContainer>
-              <TitleWrapper>Create New Item</TitleWrapper>
+              <TitleWrapper smDown={smDown}>Create New Item</TitleWrapper>
               <FieldWrapper>
-                <FiledTitleWrapper>
+                <FiledTitleWrapper smDown={smDown}>
                   <FiledTitle required={true}>Image, Video, Audio</FiledTitle>
-                  <FormControlLabel
-                    value={useImport}
-                    onChange={() => setUseImport((cur) => !cur)}
-                    control={<CCheckbox size="small" />}
-                    label="Import Image"
-                  />
+                  {/*<FormControlLabel*/}
+                  {/*  value={useImport}*/}
+                  {/*  onChange={() => setUseImport((cur) => !cur)}*/}
+                  {/*  control={<CCheckbox size="small" />}*/}
+                  {/*  label="Import Image"*/}
+                  {/*/>*/}
                 </FiledTitleWrapper>
                 <FieldSubscription variant="h6">
                   File type supported: JPG, PNG, GIF, MP4, WAV. Max size: 100 MB
@@ -453,7 +465,9 @@ const CreateNewItem = () => {
                 <FieldWrapper>
                   <ImportImageWrapper>
                     <Box className="ImportImageFiled" sx={{ flex: 2 }}>
-                      <FiledTitle>Contract Address</FiledTitle>
+                      <FiledTitleWrapper>
+                        <FiledTitle>Contract Address</FiledTitle>
+                      </FiledTitleWrapper>
                       <FieldSubscription>
                         Input the contract address of NFT imported
                       </FieldSubscription>
@@ -467,7 +481,9 @@ const CreateNewItem = () => {
                       />
                     </Box>
                     <Box className="ImportImageFiled" sx={{ flex: 1 }}>
-                      <FiledTitle>Token ID</FiledTitle>
+                      <FiledTitleWrapper>
+                        <FiledTitle>Token ID</FiledTitle>
+                      </FiledTitleWrapper>
                       <FieldSubscription>Input the token ID imported</FieldSubscription>
                       <CustomTextField
                         name="tokenId"
@@ -498,10 +514,14 @@ const CreateNewItem = () => {
               )}
 
               <FieldWrapper>
-                <FiledTitle>Collection</FiledTitle>
+                <FiledTitleWrapper>
+                  <FiledTitle>Collection</FiledTitle>
+                </FiledTitleWrapper>
                 <FieldSubscription variant="h6">
-                  This is the collection where your item will appear.{' '}
-                  <CreateCollection onClick={moveToPage}>My Collection</CreateCollection>
+                  This is the collection where your item will appear.
+                  <CreateCollection sx={{ flex: 1 }} onClick={moveToPage}>
+                    My Collection
+                  </CreateCollection>
                 </FieldSubscription>
                 <CustomSelect
                   name="collection"
@@ -546,7 +566,9 @@ const CreateNewItem = () => {
               </FieldWrapper>
 
               <FieldWrapper>
-                <FiledTitle required={true}>Title</FiledTitle>
+                <FiledTitleWrapper>
+                  <FiledTitle required={true}>Title</FiledTitle>
+                </FiledTitleWrapper>
                 <CustomTextField
                   name="name"
                   value={values.name}
@@ -558,7 +580,9 @@ const CreateNewItem = () => {
               </FieldWrapper>
 
               <FieldWrapper>
-                <FiledTitle>Description</FiledTitle>
+                <FiledTitleWrapper>
+                  <FiledTitle>Description</FiledTitle>
+                </FiledTitleWrapper>
                 <FieldSubscription variant="h6">
                   The description will be included on the item&apos;s detail page underneath its
                   image.
@@ -574,7 +598,9 @@ const CreateNewItem = () => {
 
               {contractType === 'KIP37' ? (
                 <FieldWrapper>
-                  <FiledTitle>Supply</FiledTitle>
+                  <FiledTitleWrapper>
+                    <FiledTitle>Supply</FiledTitle>
+                  </FiledTitleWrapper>
                   <CustomTextField
                     name="quantity"
                     value={values.quantity}
@@ -596,7 +622,9 @@ const CreateNewItem = () => {
               )}
 
               <FieldWrapper>
-                <FiledTitle>External URL</FiledTitle>
+                <FiledTitleWrapper>
+                  <FiledTitle>External URL</FiledTitle>
+                </FiledTitleWrapper>
                 <CustomTextField
                   name="externalURL"
                   value={values.externalURL}
@@ -623,7 +651,9 @@ const CreateNewItem = () => {
               {/*</FieldWrapper>*/}
 
               <FieldWrapper>
-                <FiledTitle>Rental Price</FiledTitle>
+                <FiledTitleWrapper>
+                  <FiledTitle>Rental Price</FiledTitle>
+                </FiledTitleWrapper>
                 <FieldSubscription variant="h6">Price for rental per a day.</FieldSubscription>
                 <Box sx={{ display: 'flex' }}>
                   <Select

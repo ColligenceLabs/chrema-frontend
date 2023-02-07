@@ -13,6 +13,7 @@ const AllCategorySection = styled(Container)`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  margin-top: ${(props) => props.smDown && '180px'};
 `;
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -41,14 +42,14 @@ const AllCollectionList = () => {
     isEmpty || (data && data[data.length - 1]?.data?.headers?.x_pages_count <= size);
 
   return (
-    <AllCategorySection>
+    <AllCategorySection smDown={smDown}>
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
         }}
       >
-        <Typography fontSize={'38px'} fontWeight={500} color={'text.primary'}>
+        <Typography fontSize={smDown ? '30px' : '38px'} fontWeight={500} color={'text.primary'}>
           All Collections
         </Typography>
       </Box>
@@ -61,7 +62,7 @@ const AllCollectionList = () => {
           data &&
           data.map((result: CollectionResponse) => {
             return result.data?.items.map((item) => (
-              <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
+              <Grid item xs={12} sm={12} md={4} lg={3} key={item._id}>
                 <CollectionItem
                   id={item._id}
                   name={item.name}

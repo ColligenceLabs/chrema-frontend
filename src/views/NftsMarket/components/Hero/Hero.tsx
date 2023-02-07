@@ -25,6 +25,9 @@ const HeroSection = styled(Container)`
 const Hero = (): JSX.Element => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+    defaultMatches: true,
+  });
 
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -75,7 +78,7 @@ const Hero = (): JSX.Element => {
             </Box>
           </Grid>
           <Grid item alignItems={'center'} justifyContent={'center'} xs={12} md={6}>
-            <Box sx={{ px: '30px' }}>
+            <Box sx={{ px: smDown ? '0' : '30px' }}>
               <ImageViewer src={main} alt={'main'} style={{ borderRadius: '20px' }} />
             </Box>
           </Grid>

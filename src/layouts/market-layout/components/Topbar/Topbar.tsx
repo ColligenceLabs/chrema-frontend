@@ -138,7 +138,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
         }}
       >
         <LogoIcon />
-        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '82px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: smDown ? '10px' : '20px' }}>
           {!smDown ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <MenuItemWrapper minWidth="80px">
@@ -163,6 +163,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
                   </Typography>
                 </Link>
               </MenuItemWrapper>
+
               <MenuItemWrapper minWidth="100px">
                 <Link to="/market/create" style={{ textDecoration: 'none' }}>
                   <Typography
@@ -202,7 +203,14 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
         </Box>
       </Box>
       <Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: '2rem', gap: 4 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            marginLeft: smDown ? '0.5rem' : '2rem',
+            gap: smDown ? 1 : 4,
+          }}
+        >
           <IconButton
             onClick={handleClickProfile}
             size="small"
