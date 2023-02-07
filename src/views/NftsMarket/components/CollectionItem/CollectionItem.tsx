@@ -81,7 +81,7 @@ const CollectionItem: React.FC<CollectionItemType> = ({
             }}
           >
             <Avatar
-              src={avatarImage}
+              src={creator_image}
               alt={'avatarImage'}
               sx={{
                 width: '40px',
