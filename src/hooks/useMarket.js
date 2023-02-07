@@ -6,7 +6,7 @@ import { FAILURE, SUCCESS } from '../config/constants/consts';
 import { useMarketContract, useTokenContract } from './useContract';
 import { RPC_URLS } from '../connectors';
 import Caver from 'caver-js';
-const rpcUrl = RPC_URLS[process.env.REACT_APP_MAINNET === 'true' ? 8217 : 1001];
+const rpcUrl = RPC_URLS[process.env.REACT_APP_MAINNET === 'true' ? 1 : 5];
 const caver = new Caver(rpcUrl);
 import { setupNetwork } from '../utils/wallet';
 import quoteTokens from '../config/constants/quoteTokens';

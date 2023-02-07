@@ -126,11 +126,11 @@ const ItemActivity: React.FC<ItemActivityProps> = ({
     let url = '';
     switch (chain) {
       case '1':
-      case '3':
+      case '5':
         url =
           process.env.REACT_APP_MAINNET === 'true'
             ? `https://etherscan.io/address/${tx}`
-            : `https://ropsten.etherscan.io/address/${tx}`;
+            : `https://goerli.etherscan.io/address/${tx}`;
         break;
       case '8217':
       case '1001':

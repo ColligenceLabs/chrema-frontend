@@ -32,7 +32,7 @@ const AirDropMint = () => {
   const { t } = useTranslation();
 
   // TODO : change for mainnet 1001 -> 8217
-  const [contractAddr, setContractAddr] = useState(contracts.kip17[1001]);
+  const [contractAddr, setContractAddr] = useState(contracts.kip17[1]);
   const [contractType, setContractType] = useState('KIP17');
   const { account, activate, library } = useWeb3React();
   const kipContract = useKipContract(contractAddr, contractType);
@@ -142,7 +142,10 @@ const AirDropMint = () => {
                     // TODO : Actual NFT Minting here
                     let result = SUCCESS;
                     if (contractType === 'KIP17') {
-                      if (library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:') {
+                      if (
+                        library.connection.url !== 'metamask' &&
+                        library.connection.url !== 'eip-1193:'
+                      ) {
                         result = await mintNFT17WithKaikas(tokenId, tokenUri, nftId);
                       } else {
                         result = await mintNFT17(tokenId, tokenUri, nftId);
@@ -152,7 +155,10 @@ const AirDropMint = () => {
                         setSuccessRegister(false);
                       }
                     } else {
-                      if (library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:') {
+                      if (
+                        library.connection.url !== 'metamask' &&
+                        library.connection.url !== 'eip-1193:'
+                      ) {
                         result = await mintNFT37WithKaikas(tokenId, quantity, tokenUri, nftId);
                       } else {
                         result = await mintNFT37(tokenId, quantity, tokenUri, nftId);
@@ -257,7 +263,8 @@ const AirDropMint = () => {
                             return;
                           } else if (
                             collection.network === 'klaytn' &&
-                            klaytn.address === undefined && !useKAS
+                            klaytn.address === undefined &&
+                            !useKAS
                           ) {
                             setErrorMessage('connect wallet for klaytn');
                             return;
@@ -345,11 +352,7 @@ const AirDropMint = () => {
                     size="small"
                     disabled={isSubmitting || isMinting}
                     value={values.amount}
-                    onChange={
-                      useKAS === 'false' && contractType === 'KIP17'
-                        ? null
-                        : handleChange
-                    }
+                    onChange={useKAS === 'false' && contractType === 'KIP17' ? null : handleChange}
                   />
                   {touched.amount && errors.amount && (
                     <FormHelperText htmlFor="render-select" error>

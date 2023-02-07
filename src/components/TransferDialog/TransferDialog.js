@@ -26,7 +26,7 @@ const TransferDialog = ({ open, handleCloseModal, item, type }) => {
   const theme = useTheme();
   const { account, library } = useWeb3React();
 
-  const [contractAddr, setContractAddr] = useState(contracts.kip17[1001]);
+  const [contractAddr, setContractAddr] = useState(contracts.kip17[1]);
   const [contractType, setContractType] = useState('KIP17');
   const kipContract = useKipContract(contractAddr, contractType);
   const kipKaikasContract = useKipContractWithKaikas(contractAddr, contractType);

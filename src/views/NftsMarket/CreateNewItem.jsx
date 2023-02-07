@@ -144,7 +144,7 @@ const CreateNewItem = () => {
   const [collectionList, setCollectionList] = useState([]);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [targetNetwork, setTargetNetwork] = useState('klaytn');
-  const [contractAddr, setContractAddr] = useState(contracts.kip17[1001]);
+  const [contractAddr, setContractAddr] = useState(contracts.kip17[1]);
   const [contractType, setContractType] = useState('');
   const kipContract = useKipContract(contractAddr, contractType);
   const kasContract = useKipContractWithKaikas(contractAddr, contractType);

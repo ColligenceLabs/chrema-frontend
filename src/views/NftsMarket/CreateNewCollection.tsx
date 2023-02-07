@@ -411,7 +411,7 @@ const CreateNewCollection = () => {
               values.type,
               account,
               library,
-              chainId ?? parseInt(targetNetwork ?? '1001'), // TODO : check for multiple chains support
+              chainId ?? parseInt(targetNetwork ?? '5'), // TODO : check for multiple chains support
             );
           } else {
             newContract = values.contractAddress;

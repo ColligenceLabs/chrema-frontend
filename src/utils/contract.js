@@ -41,7 +41,7 @@ export const getKipContract = (library, contract, type) => {
 };
 
 export const getTokenContract = (library) => {
-  const tokenAddress = contracts.quoteToken[process.env.REACT_APP_MAINNET === 'true' ? 8217 : 1001];
+  const tokenAddress = contracts.quoteToken[process.env.REACT_APP_MAINNET === 'true' ? 1 : 5];
   if (library.connection.url === 'metamask' || library.connection.url === 'eip-1193:')
     return new ethers.Contract(tokenAddress, tokenAbi, library?.getSigner());
   else {

@@ -90,7 +90,7 @@ const NFTMint = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   // TODO : change for mainnet 1001 -> 8217
-  const [contractAddr, setContractAddr] = useState(contracts.kip17[1001]);
+  const [contractAddr, setContractAddr] = useState(contracts.kip17[1]);
   const [contractType, setContractType] = useState('');
   const { account, activate, library, chainId } = useWeb3React();
   const kipContract = useKipContract(contractAddr, contractType);
