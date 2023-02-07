@@ -139,7 +139,7 @@ const StyledMenuItem = styled(MenuItem)`
   }
 `;
 
-const QUOTE_TOKEN = [{ value: 'klay', caption: 'KLAY' }];
+const QUOTE_TOKEN = [{ value: 'klay', caption: 'ETH' }];
 
 const CreateNewItem = () => {
   const theme = useTheme();
@@ -652,7 +652,7 @@ const CreateNewItem = () => {
 
               <FieldWrapper>
                 <FiledTitleWrapper>
-                  <FiledTitle>Rental Price</FiledTitle>
+                  <FiledTitle>Price</FiledTitle>
                 </FiledTitleWrapper>
                 <FieldSubscription variant="h6">Price for rental per a day.</FieldSubscription>
                 <Box sx={{ display: 'flex' }}>
