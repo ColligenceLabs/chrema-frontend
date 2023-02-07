@@ -6,6 +6,6 @@ export function getChainId(targetNetworkName) {
   } else if (targetNetworkName === 'klaytn') {
     return parseInt(targetNetwork);
   } else if (targetNetworkName === 'ethereum') {
-    return parseInt('3');
+    return parseInt(targetNetwork);
   }
 }
