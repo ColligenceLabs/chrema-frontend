@@ -380,13 +380,13 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
               Connect Wallet
             </Button>
           )}
-          <Button
-            sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}
-            fullWidth
-            variant="outlined"
-          >
-            Offer
-          </Button>
+          {/*<Button*/}
+          {/*  sx={{ height: '54px', fontSize: '16px', fontWeight: 700, lineHeight: '24px' }}*/}
+          {/*  fullWidth*/}
+          {/*  variant="outlined"*/}
+          {/*>*/}
+          {/*  Offer*/}
+          {/*</Button>*/}
         </Box>
       </Box>
       {/*<Box sx={{ maxWidth: mdDown ? '100%' : '100%' }}>*/}

@@ -12,7 +12,7 @@ export const getTransactionData = (page, rowsPerPage) => {
       return response.data;
     })
     .catch((error) =>
-      error.response.status === 401 ? (window.location.href = '/auth/login') : console.log(error),
+      error.response.status === 401 ? (window.location.href = '/') : console.log(error),
     );
 };
 

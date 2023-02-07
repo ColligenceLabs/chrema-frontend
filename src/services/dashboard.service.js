@@ -11,7 +11,7 @@ export const getSummaryPie = () => {
       return response.data;
     })
     .catch((error) =>
-      error.response.status === 401 ? (window.location.href = '/auth/login') : console.log(error),
+      error.response.status === 401 ? (window.location.href = '/') : console.log(error),
     );
 };
 
@@ -23,7 +23,7 @@ export const getLas30Day = () => {
       return response.data;
     })
     .catch((error) =>
-      error.response.status === 401 ? (window.location.href = '/auth/login') : console.log(error),
+      error.response.status === 401 ? (window.location.href = '/') : console.log(error),
     );
 };
 
