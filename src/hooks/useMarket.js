@@ -803,12 +803,187 @@ const useMarket = () => {
     [library, account],
   );
 
+  const cancelOffer = useCallback(
+    async (nftContract, tokenId, amount, price, quote, targetNetwork) => {
+      console.log('cancel offer!', tokenId);
+      const gasPrice = await caver.klay.getGasPrice();
+      const isKaikas =
+        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+      console.log('===', targetNetwork);
+      if (chainId !== targetNetwork) {
+        await setupNetwork(targetNetwork);
+        return;
+      }
+      let tx;
+      let gasLimit;
+      // approve
+      console.log('===>', price, quote, quoteTokens[quote]);
+      const quoteToken = quoteTokens[quote][targetNetwork];
+      const parsedPrice = parseUnits(price.toString(), 'ether').toString();
+
+      // cancelBidToken
+      try {
+        if (!isKaikas) {
+          gasLimit = await marketContract.estimateGas.cancelBidToken(
+            nftContract.address,
+            tokenId,
+            amount,
+            parsedPrice,
+            quoteToken,
+          );
+        } else {
+          console.log(nftContract._address, nftType, tokenId, amount, parsedPrice, quoteToken);
+          gasLimit = await marketContract.methods
+            .cancelBidToken(nftContract._address, tokenId, amount, parsedPrice, quoteToken)
+            .estimateGas({ from: account });
+        }
+
+        console.log('cancel bidToken estimateGas', gasLimit);
+      } catch (e) {
+        console.log('cancel bidToken estimateGas fail.', e);
+        // return FAILURE;
+        throw e;
+      }
+
+      try {
+        let receipt;
+        if (!isKaikas) {
+          let options;
+          if (targetNetwork > 1000)
+            options = { from: account, gasPrice, gasLimit: calculateGasMargin(gasLimit) };
+          else options = { from: account, gasLimit: calculateGasMargin(gasLimit) };
+          tx = await marketContract.cancelBidToken(
+            nftContract.address,
+            tokenId,
+            amount,
+            parsedPrice,
+            quoteToken,
+            options,
+          );
+          receipt = await tx.wait();
+        } else {
+          receipt = await marketContract.methods
+            .cancelBidToken(nftContract._address, tokenId, amount, parsedPrice, quoteToken)
+            .send({
+              from: account,
+              gasPrice,
+              gasLimit: calculateGasMargin(BigNumber.from(gasLimit)),
+            });
+        }
+        console.log('cancel buyToken receipt', receipt);
+      } catch (e) {
+        console.log('cancel buyToken fail.', e);
+        // return FAILURE;
+        throw e;
+      }
+
+      return SUCCESS;
+    },
+    [library, account],
+  );
+
+  const acceptOffer = useCallback(
+    async (nftContract, bidder, creator, rate, tokenId, amount, price, quote, targetNetwork) => {
+      console.log('accept offer!', tokenId);
+      const gasPrice = await caver.klay.getGasPrice();
+      const isKaikas =
+        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+      console.log('===', targetNetwork);
+      if (chainId !== targetNetwork) {
+        await setupNetwork(targetNetwork);
+        return;
+      }
+      let tx;
+      let gasLimit;
+      // approve
+      console.log('===>', price, quote, quoteTokens[quote]);
+      const quoteToken = quoteTokens[quote][targetNetwork];
+      const parsedPrice = parseUnits(price.toString(), 'ether').toString();
+
+      // sellTokenTo
+      try {
+        if (!isKaikas) {
+          gasLimit = await marketContract.estimateGas.sellTokenTo(
+            nftContract.address,
+            tokenId,
+            bidder,
+            amount,
+            parsedPrice,
+            quoteToken,
+            creator,
+            rate,
+          );
+        } else {
+          console.log(nftContract._address, nftType, tokenId, amount, parsedPrice, quoteToken);
+          gasLimit = await marketContract.methods
+            .sellTokenTo(nftContract._address, tokenId, amount, parsedPrice, quoteToken)
+            .estimateGas({ from: account });
+        }
+
+        console.log('cancel bidToken estimateGas', gasLimit);
+      } catch (e) {
+        console.log('cancel bidToken estimateGas fail.', e);
+        // return FAILURE;
+        throw e;
+      }
+
+      try {
+        let receipt;
+        if (!isKaikas) {
+          let options;
+          if (targetNetwork > 1000)
+            options = { from: account, gasPrice, gasLimit: calculateGasMargin(gasLimit) };
+          else options = { from: account, gasLimit: calculateGasMargin(gasLimit) };
+          tx = await marketContract.sellTokenTo(
+            nftContract.address,
+            tokenId,
+            bidder,
+            amount,
+            parsedPrice,
+            quoteToken,
+            creator,
+            rate,
+            options,
+          );
+          receipt = await tx.wait();
+        } else {
+          receipt = await marketContract.methods
+            .sellTokenTo(
+              nftContract._address,
+              tokenId,
+              bidder,
+              amount,
+              parsedPrice,
+              quoteToken,
+              creator,
+              rate,
+            )
+            .send({
+              from: account,
+              gasPrice,
+              gasLimit: calculateGasMargin(BigNumber.from(gasLimit)),
+            });
+        }
+        console.log('cancel buyToken receipt', receipt);
+      } catch (e) {
+        console.log('cancel buyToken fail.', e);
+        // return FAILURE;
+        throw e;
+      }
+
+      return SUCCESS;
+    },
+    [library, account],
+  );
+
   return {
     sellNFT,
     buyNFT,
     stopSelling,
     listNFT,
     offerNFT,
+    cancelOffer,
+    acceptOffer,
   };
 };
 
