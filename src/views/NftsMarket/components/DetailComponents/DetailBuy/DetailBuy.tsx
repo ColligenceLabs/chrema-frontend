@@ -153,23 +153,29 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   }, [data]);
 
   const stop = async () => {
-    // const result = await stopSelling(
-    //   data.data.collection_id.contract_address,
-    //   parseInt(data.data.metadata.tokenId, 10),
-    //   data.data.sell_amount,
-    //   data.data.price,
-    //   data.data.quote,
-    //   getChainId(data.data.collection_id.network),
-    // );
-    //
-    // if (result === SUCCESS) {
-    const res = await setStopSelling(data.data._id, false, account);
+    setBuyFlag(true);
+    try {
+      const result = await stopSelling(
+        data.data.collection_id.contract_address,
+        parseInt(data.data.metadata.tokenId, 10),
+        data.data.sell_amount,
+        data.data.price,
+        data.data.quote,
+        getChainId(data.data.collection_id.network),
+      );
 
-    if (res.data.status !== 1) {
-      console.log('!!! stop selling ... failed');
+      if (result === SUCCESS) {
+        const res = await setStopSelling(data.data._id, false, account);
+
+        if (res.data.status !== 1) {
+          console.log('!!! stop selling ... failed');
+        }
+        console.log('!!! stop selling ... success');
+      }
+    } catch (err) {
+      console.log('!! stop selling error : ', err);
     }
-    console.log('!!! stop selling ... success');
-    // }
+    setBuyFlag(false);
   };
 
   const buy = async () => {
