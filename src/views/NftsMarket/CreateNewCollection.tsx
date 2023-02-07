@@ -78,8 +78,8 @@ const MyCollectionContainer = styled(Container)`
   margin-bottom: 10rem;
 `;
 
-const TitleWrapper = styled(Typography)`
-  font-size: 40px;
+const TitleWrapper = styled(Typography)<{ smDown: boolean }>`
+  font-size: ${(props) => (props.smDown ? '32px' : '40px')};
   font-weight: 600;
   letter-spacing: 0px;
   margin-top: 2rem;
@@ -453,7 +453,7 @@ const CreateNewCollection = () => {
         {({ values, handleSubmit, setFieldValue, handleChange, isSubmitting }) => (
           <form onSubmit={handleSubmit}>
             <MyCollectionContainer>
-              <TitleWrapper>Create a Collection</TitleWrapper>
+              <TitleWrapper smDown={smDown}>Create a Collection</TitleWrapper>
 
               <FieldWrapper>
                 <FiledTitle required={true}>Logo image</FiledTitle>

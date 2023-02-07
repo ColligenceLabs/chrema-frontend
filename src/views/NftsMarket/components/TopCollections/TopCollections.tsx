@@ -130,7 +130,7 @@ const TopCollections = () => {
           mb: '50px',
         }}
       >
-        <Typography sx={{ fontSize: '38px', fontWeight: 500, lineHeight: '44px' }}>
+        <Typography fontSize={smDown ? '30px' : '38px'} fontWeight={500} color={'text.primary'}>
           Top Collections over
         </Typography>
         <Button

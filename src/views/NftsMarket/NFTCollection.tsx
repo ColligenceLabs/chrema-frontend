@@ -29,7 +29,7 @@ const CollectionLogo = styled(Box)`
   justify-content: center;
   width: 200px;
   height: 200px;
-  margin-top: -200px;
+  margin-top: -100px;
   //margin-left: 30px;
 
   & img {
@@ -51,7 +51,6 @@ const CollectionName = styled(Box)`
   align-items: center;
   margin-top: 30px;
   margin-bottom: 16px;
-  margin-left: 30px;
 `;
 
 const CollectionCreator = styled(Box)`
@@ -94,54 +93,54 @@ const NFTCollection = () => {
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </Box>
-            <Box
-              sx={{
-                py: '30px',
-                px: '60px',
-                width: '1500px',
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <SNSButtons />
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '30px',
-                }}
-              >
-                <Box
-                  sx={{
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '50%',
-                    backgroundColor: '#F7FBFD',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  {/*<img src={twt_icon} alt="twitter" width="20px" />*/}
-                  <FavoriteIcon sx={{ color: '#706C83' }} />
-                </Box>
-                <Box
-                  sx={{
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '50%',
-                    backgroundColor: '#F7FBFD',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  {/*<img src={twt_icon} alt="twitter" width="20px" />*/}
-                  <ShareIcon sx={{ color: '#706C83' }} />
-                </Box>
-              </Box>
-            </Box>
+            {/*<Box*/}
+            {/*  sx={{*/}
+            {/*    py: '30px',*/}
+            {/*    px: '60px',*/}
+            {/*    width: smDown ? '100%' : '1500px',*/}
+            {/*    display: 'flex',*/}
+            {/*    justifyContent: 'space-between',*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  <SNSButtons />*/}
+            {/*  <Box*/}
+            {/*    sx={{*/}
+            {/*      display: 'flex',*/}
+            {/*      justifyContent: 'center',*/}
+            {/*      alignItems: 'center',*/}
+            {/*      gap: '30px',*/}
+            {/*    }}*/}
+            {/*  >*/}
+            {/*    <Box*/}
+            {/*      sx={{*/}
+            {/*        width: '50px',*/}
+            {/*        height: '50px',*/}
+            {/*        borderRadius: '50%',*/}
+            {/*        backgroundColor: '#F7FBFD',*/}
+            {/*        display: 'flex',*/}
+            {/*        justifyContent: 'center',*/}
+            {/*        alignItems: 'center',*/}
+            {/*      }}*/}
+            {/*    >*/}
+            {/*      /!*<img src={twt_icon} alt="twitter" width="20px" />*!/*/}
+            {/*      <FavoriteIcon sx={{ color: '#706C83' }} />*/}
+            {/*    </Box>*/}
+            {/*    <Box*/}
+            {/*      sx={{*/}
+            {/*        width: '50px',*/}
+            {/*        height: '50px',*/}
+            {/*        borderRadius: '50%',*/}
+            {/*        backgroundColor: '#F7FBFD',*/}
+            {/*        display: 'flex',*/}
+            {/*        justifyContent: 'center',*/}
+            {/*        alignItems: 'center',*/}
+            {/*      }}*/}
+            {/*    >*/}
+            {/*      /!*<img src={twt_icon} alt="twitter" width="20px" />*!/*/}
+            {/*      <ShareIcon sx={{ color: '#706C83' }} />*/}
+            {/*    </Box>*/}
+            {/*  </Box>*/}
+            {/*</Box>*/}
             <CollectionLogo>
               <img src={data?.logo_image} alt="" />
             </CollectionLogo>
@@ -177,7 +176,7 @@ const NFTCollection = () => {
                   pt: '40px',
                   pb: '15px',
                   px: '30px',
-                  width: '1500px',
+                  width: smDown ? '100%' : '1500px',
                   textAlign: 'center',
                   backgroundColor: '#F7FBFD',
                 }}

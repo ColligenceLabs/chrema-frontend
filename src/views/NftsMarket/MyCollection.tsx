@@ -22,8 +22,8 @@ const MyCollectionContainer = styled(Container)`
   //margin-bottom: 10rem;
 `;
 
-const TitleWrapper = styled(Typography)`
-  font-size: 38px;
+const TitleWrapper = styled(Typography)<{ smDown: boolean }>`
+  font-size: ${(props: any) => (props.smDown ? '32px' : '40px')};
   font-weight: 500;
   line-height: 44px;
   margin-top: 2rem;
@@ -99,6 +99,10 @@ const Collection: React.FC<CollectionItemType> = ({
 };
 
 const MyCollection = () => {
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+    defaultMatches: true,
+  });
   const navigate = useNavigate();
   const { id } = useUserInfo();
   const { account, activate } = useActiveWeb3React();
@@ -134,19 +138,34 @@ const MyCollection = () => {
   return (
     <MarketLayout>
       <MyCollectionContainer>
-        <TitleWrapper>My Collections</TitleWrapper>
-        <SubTitleWrapper>
-          Create, curate, and manage collections of unique NFTs to share and sell.
+        <TitleWrapper smDown={smDown}>My Collections</TitleWrapper>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: smDown ? 'column' : 'rows',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '1rem',
+          }}
+        >
+          <SubTitleWrapper>
+            Create, curate, and manage collections of unique NFTs to share and sell.
+          </SubTitleWrapper>
           {account ? (
-            <CreateButton variant="contained" onClick={moveToPage}>
+            <CreateButton variant="contained" fullWidth={smDown} onClick={moveToPage}>
               + Create
             </CreateButton>
           ) : (
-            <CreateButton variant="contained" onClick={() => setIsOpenConnectModal(true)}>
+            <CreateButton
+              variant="contained"
+              fullWidth={smDown}
+              onClick={() => setIsOpenConnectModal(true)}
+            >
               Connect Wallet
             </CreateButton>
           )}
-        </SubTitleWrapper>
+        </Box>
+
         {/*<FieldWrapper>*/}
         {/*  {account ? (*/}
         {/*    <CreateButton variant="contained" onClick={moveToPage}>*/}

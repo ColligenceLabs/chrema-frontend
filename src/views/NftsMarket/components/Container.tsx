@@ -13,7 +13,7 @@ const Container = ({ children, ...rest }: Props): JSX.Element => (
     maxWidth={{ sm: 720, md: 1400 }}
     width={1}
     margin={'0 auto'}
-    paddingX={5}
+    paddingX={{ xs: 1, sm: 1, md: 5 }}
     paddingY={{ xs: 4, sm: 6, md: 8 }}
     {...rest}
   >
