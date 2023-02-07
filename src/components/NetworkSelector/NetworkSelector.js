@@ -8,7 +8,7 @@ const NetworkSelector = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const currentNetwork = localStorage.getItem('cur_network') || 'klaytn';
+  const currentNetwork = localStorage.getItem('cur_network') || 'ethereum';
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

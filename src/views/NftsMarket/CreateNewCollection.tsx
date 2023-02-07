@@ -306,7 +306,7 @@ const CreateNewCollection = () => {
           url: '',
           description: '',
           category: [],
-          network: 'klaytn',
+          network: 'ethereum',
           contractAddress: undefined,
           type: '',
           symbol: '',
