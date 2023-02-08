@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Snackbar, Typography, useTheme } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import ethLogo from '../../../../../assets/images/network_icon/ethereum-eth-logo.png';
 import klayLogo from '../../../../../assets/images/network_icon/klaytn-klay-logo.png';
 import talkLogo from '../../../../../assets/images/logos/talken_icon.png';
 import bnbLogo from '../../../../../assets/images/network_icon/binance-bnb-logo.png';
@@ -309,7 +310,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
               }}
             >
               <Box>
-                {data?.data?.quote === 'klay' && <img src={klayLogo} alt="klay" height="30px" />}
+                {data?.data?.quote === 'klay' && <img src={ethLogo} alt="klay" height="30px" />}
                 {data?.data?.quote === 'talk' && <img src={talkLogo} alt="talk" height="30px" />}
                 {data?.data?.quote === 'bnb' && <img src={bnbLogo} alt="bnb" height="30px" />}
               </Box>
@@ -323,7 +324,9 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
                       data?.data?.last_price,
                     )
                   : sliceFloatNumber(data?.data?.price.toString())}{' '}
-                {data?.data?.quote.replace(/^[a-z]/, (char: string) => char.toUpperCase())}
+                {data?.data?.quote === 'klay'
+                  ? 'Eth'
+                  : data?.data?.quote.replace(/^[a-z]/, (char: string) => char.toUpperCase())}
               </Typography>
             </Box>
           </Box>
