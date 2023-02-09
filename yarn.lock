@@ -5942,6 +5942,18 @@ chownr@^2.0.0:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-2.0.0.tgz#15bfbe53d2eab4cf70f18a8cd68ebe5b3cb1dece"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
 
+chrema-qrcode-modal@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/chrema-qrcode-modal/-/chrema-qrcode-modal-1.7.7.tgz#9db47eb58c40a09e3b0ce9e7ae4dcdad566f95bc"
+  integrity sha512-q19aLrYgf3TSRw6XRB97mEnEC99yty1pATehlOOr2cVCoaNOQiMRKz9bNTHtS/ZeVlgMHjsroi4inDkI07wpIQ==
+  dependencies:
+    "@walletconnect/browser-utils" "^1.7.1"
+    "@walletconnect/mobile-registry" "^1.4.0"
+    "@walletconnect/types" "^1.7.1"
+    copy-to-clipboard "^3.3.1"
+    preact "10.4.1"
+    qrcode "1.4.4"
+
 chrome-trace-event@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
@@ -15930,18 +15942,6 @@ table@^6.0.9:
     slice-ansi "^4.0.0"
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
-
-talken-qrcode-modal@^1.7.3:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/talken-qrcode-modal/-/talken-qrcode-modal-1.7.3.tgz#7d64237c3920734231acb0ab219456a65565216a"
-  integrity sha512-Nm4dPDlBEFYkoebWRSq1FIfiQ0UUoAfcXF3Yvtgko3+flLvsHFkLfrzwFL36y3Nh/CIyvI8MayiIzpLo0hZiJg==
-  dependencies:
-    "@walletconnect/browser-utils" "^1.7.1"
-    "@walletconnect/mobile-registry" "^1.4.0"
-    "@walletconnect/types" "^1.7.1"
-    copy-to-clipboard "^3.3.1"
-    preact "10.4.1"
-    qrcode "1.4.4"
 
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"

@@ -12,7 +12,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 // import { PortisConnector } from '@web3-react/portis-connector';
 // import { TorusConnector } from '@web3-react/torus-connector';
 import { KlaytnConnector } from '@colligence/klaytn-connector';
-import QRCodeModal from 'talken-qrcode-modal';
+import QRCodeModal from 'chrema-qrcode-modal';
 import { targetNetwork, infuraApiKey } from './config';
 
 const RPC_URL_1 = `https://mainnet.infura.io/v3/${infuraApiKey}`;
@@ -24,7 +24,7 @@ export const RPC_URLS = {
   1: RPC_URL_1,
   3: RPC_URL_3,
   4: RPC_URL_4,
-  5: 'https://goerli.infura.io/v3/',
+  5: 'https://goerli.infura.io/v3/adb9c847d7114ee7bf83995e8f22e098',
   56: 'https://bsc-dataseed.binance.org',
   97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   1001: 'https://api.baobab.klaytn.net:8651',
@@ -32,7 +32,7 @@ export const RPC_URLS = {
 };
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 56, 97, 1001, 8217],
+  supportedChainIds: [1, 5, 56, 97, 1001, 8217],
 });
 
 export const kaikas = new KlaytnConnector({
@@ -59,12 +59,10 @@ export const walletconnect = (useQR) => {
     supportedChainIds: [1, 3, 4, 5, 1001, 8217],
     // rpc: { [chainId]: RPC_URLS[chainId] },
     rpc: {
-      1: RPC_URLS[1],
-      3: RPC_URLS[3],
-      4: RPC_URLS[4],
-      5: RPC_URLS[5],
-      1001: RPC_URLS[1001],
-      8217: RPC_URLS[8217],
+      [1]: RPC_URLS[1],
+      [5]: RPC_URLS[5],
+      [1001]: RPC_URLS[1001],
+      [8217]: RPC_URLS[8217],
     },
     bridge: 'https://bridge.walletconnect.org',
     qrcode: useQR,

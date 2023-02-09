@@ -60,23 +60,23 @@ const addNetwork = async (chainId) => {
             },
           ],
         });
-      } else if (chainId === ChainId.GOERLI) {
-        await provider.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: `0x${chainId.toString(16)}`,
-              chainName: NETWORK_NAME[chainId],
-              nativeCurrency: {
-                name: 'GoerliETH',
-                symbol: 'ETH',
-                decimals: 18,
-              },
-              rpcUrls: [`${process.env.REACT_APP_NETWORK_URL}`],
-              blockExplorerUrls: [`${SCAN_URL[chainId]}/`],
-            },
-          ],
-        });
+        // } else if (chainId === ChainId.GOERLI) {
+        //   await provider.request({
+        //     method: 'wallet_addEthereumChain',
+        //     params: [
+        //       {
+        //         chainId: `0x${chainId.toString(16)}`,
+        //         chainName: NETWORK_NAME[chainId],
+        //         nativeCurrency: {
+        //           name: 'GoerliETH',
+        //           symbol: 'ETH',
+        //           decimals: 18,
+        //         },
+        //         rpcUrls: [`${process.env.REACT_APP_NETWORK_URL}`],
+        //         blockExplorerUrls: [`${SCAN_URL[chainId]}/`],
+        //       },
+        //     ],
+        //   });
       } else if (chainId === ChainId.BAOBAB) {
         await provider.request({
           method: 'wallet_addEthereumChain',

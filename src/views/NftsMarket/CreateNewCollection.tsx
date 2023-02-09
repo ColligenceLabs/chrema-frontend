@@ -42,7 +42,7 @@ import splitAddress from '../../utils/splitAddress';
 //   useConnection,
 //   useConnectionConfig,
 // } from '@colligence/metaplex-common';
-import { mintNFT } from '../../solana/actions/nft';
+// import { mintNFT } from '../../solana/actions/nft';
 // import { useWallet } from '@solana/wallet-adapter-react';
 import { MintLayout } from '@solana/spl-token';
 import { Uses } from '@metaplex-foundation/mpl-token-metadata';
