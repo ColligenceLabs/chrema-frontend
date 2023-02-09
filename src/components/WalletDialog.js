@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 const walletEBHList = [
   {
-    name: 'CHREMA WALLET',
+    name: 'Chrema Wallet',
     icons: crmcIcon,
   },
   {
@@ -182,25 +182,27 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
           <DialogContent>
             {walletEBHList.map((wallet, index) => (
               <Card
+                sx={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }}
                 key={index}
-                className={classes.walletBoxWrapper}
                 onClick={() => onClickWallet(wallet)}
               >
-                <Box className={classes.chipWrapper}>
-                  <EthChip />
-                  {/*<BscChip />*/}
-                  {/*<HecoChip />*/}
-                </Box>
                 <Box
-                  component="img"
-                  alt="logo"
-                  src={wallet.icons}
-                  height={30}
-                  className={classes.walletBoxIcon}
-                  id="logo_icon"
-                />
-                <Box className={classes.walletBoxContent}>
-                  <Typography>{wallet.name}</Typography>
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    gap: smDown ? '0.5rem' : '1rem',
+                  }}
+                >
+                  <EthChip />
+                  <Box
+                    component="img"
+                    alt="logo"
+                    src={wallet.icons}
+                    height={smDown ? 20 : 30}
+                    id="logo_icon"
+                  />
+                  <Typography sx={{ fontSize: smDown ? '12px' : '18px' }}>{wallet.name}</Typography>
                 </Box>
                 <ArrowForwardIosIcon />
               </Card>
