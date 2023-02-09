@@ -56,7 +56,7 @@ export const kaikas = new KlaytnConnector({
 export const walletconnect = (useQR) => {
   // const chainId = parseInt(targetNetwork, 16);
   return new WalletConnectConnector({
-    supportedChainIds: [1, 3, 4, 5, 1001, 8217],
+    supportedChainIds: [1, 5, 1001, 8217],
     // rpc: { [chainId]: RPC_URLS[chainId] },
     rpc: {
       [1]: RPC_URLS[1],
@@ -73,6 +73,7 @@ export const walletconnect = (useQR) => {
 export const talkenwallet = (useQR) => {
   // const chainId = parseInt(targetNetwork, 16);
   return new WalletConnectConnector({
+    supportedChainIds: [1, 5, 1001, 8217],
     // supportedChainIds: [ChainId.TMP, ChainId.BAOBAB, ChainId.KLAYTN],
     // rpc: { [chainId]: RPC_URLS[chainId] },
     rpc: {
