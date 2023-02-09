@@ -176,7 +176,7 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
           <DialogContent>
             {walletEBHList.map((wallet, index) => (
               <Card
-                sx={{ display: 'flex', justifyContent: 'space-between' }}
+                sx={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }}
                 key={index}
                 onClick={() => onClickWallet(wallet)}
               >
