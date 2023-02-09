@@ -19,7 +19,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import talkenIcon from '../assets/images/wallet_icons/wallet_icon_talk.png';
 import bibanceIcon from '../assets/images/wallet_icons/wallet_icon_binance.png';
 import decntIcon from '../assets/images/wallet_icons/wallet_icon_dcent.png';
-import kaikasIcon from '../assets/images/wallet_icons/wallet_icon_kaikas.png';
+import crmcIcon from '../assets/images/wallet_icons/wallet_icon_crmc.svg';
+
 import metamaskIcon from '../assets/images/wallet_icons/wallet_icon_metamask.png';
 import walletconnectIcon from '../assets/images/wallet_icons/wallet_icon_walletconnect.png';
 import useActiveWeb3React from '../hooks/useActiveWeb3React';
@@ -71,11 +72,13 @@ const useStyles = makeStyles((theme) => ({
 
 const walletEBHList = [
   {
+    name: 'CHREMA WALLET',
+    icons: crmcIcon,
+  },
+  {
     name: 'MetaMask',
     icons: metamaskIcon,
   },
-];
-const walletETHList = [
   {
     name: 'WalletConnect',
     icons: walletconnectIcon,
@@ -197,29 +200,29 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
               </Card>
             ))}
 
-            {walletETHList.map((wallet, index) => (
-              <Card
-                key={index}
-                className={classes.walletBoxWrapper}
-                onClick={() => onClickWallet(wallet)}
-              >
-                <Box className={classes.chipWrapper}>
-                  <EthChip />
-                </Box>
-                <Box
-                  component="img"
-                  alt="logo"
-                  src={wallet.icons}
-                  height={30}
-                  className={classes.walletBoxIcon}
-                  id="logo_icon"
-                />
-                <Box className={classes.walletBoxContent}>
-                  <Typography>{wallet.name}</Typography>
-                </Box>
-                <ArrowForwardIosIcon />
-              </Card>
-            ))}
+            {/*{walletETHList.map((wallet, index) => (*/}
+            {/*  <Card*/}
+            {/*    key={index}*/}
+            {/*    className={classes.walletBoxWrapper}*/}
+            {/*    onClick={() => onClickWallet(wallet)}*/}
+            {/*  >*/}
+            {/*    <Box className={classes.chipWrapper}>*/}
+            {/*      <EthChip />*/}
+            {/*    </Box>*/}
+            {/*    <Box*/}
+            {/*      component="img"*/}
+            {/*      alt="logo"*/}
+            {/*      src={wallet.icons}*/}
+            {/*      height={30}*/}
+            {/*      className={classes.walletBoxIcon}*/}
+            {/*      id="logo_icon"*/}
+            {/*    />*/}
+            {/*    <Box className={classes.walletBoxContent}>*/}
+            {/*      <Typography>{wallet.name}</Typography>*/}
+            {/*    </Box>*/}
+            {/*    <ArrowForwardIosIcon />*/}
+            {/*  </Card>*/}
+            {/*))}*/}
           </DialogContent>
         )}
       </Dialog>
