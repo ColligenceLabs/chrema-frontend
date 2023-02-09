@@ -13,13 +13,13 @@ import './localization';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
-import {
-  AccountsProvider,
-  ConnectionProvider,
-  StoreProvider,
-  WalletProvider,
-  MetaProvider,
-} from '@colligence/metaplex-common';
+// import {
+//   AccountsProvider,
+//   ConnectionProvider,
+//   StoreProvider,
+//   WalletProvider,
+//   MetaProvider,
+// } from '@colligence/metaplex-common';
 
 // function getLibrary(provider) {
 //   const library = new Web3Provider(provider);
@@ -42,41 +42,41 @@ const getLibrary = (provider) => {
 ReactDOM.render(
   process.env.REACT_APP_USE_SOLANA === 'true' ? (
     <BrowserRouter>
-      <ConnectionProvider>
-        <WalletProvider>
-          <AccountsProvider>
-            <StoreProvider
-              ownerAddress={process.env.REACT_APP_STORE_OWNER_ADDRESS_ADDRESS}
-              storeAddress={process.env.REACT_APP_STORE_ADDRESS}
-            >
-              <MetaProvider>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                  <Provider store={configureStore()}>
-                    <Suspense fallback={<Spinner />}>
-                      <App />
-                    </Suspense>
-                  </Provider>
-                </Web3ReactProvider>
-              </MetaProvider>
-            </StoreProvider>
-          </AccountsProvider>
-        </WalletProvider>
-      </ConnectionProvider>
+      {/*<ConnectionProvider>*/}
+      {/*<WalletProvider>*/}
+      {/*<AccountsProvider>*/}
+      {/*<StoreProvider*/}
+      {/*  ownerAddress={process.env.REACT_APP_STORE_OWNER_ADDRESS_ADDRESS}*/}
+      {/*  storeAddress={process.env.REACT_APP_STORE_ADDRESS}*/}
+      {/*>*/}
+      {/*<MetaProvider>*/}
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Provider store={configureStore()}>
+          <Suspense fallback={<Spinner />}>
+            <App />
+          </Suspense>
+        </Provider>
+      </Web3ReactProvider>
+      {/*</MetaProvider>*/}
+      {/*</StoreProvider>*/}
+      {/*</AccountsProvider>*/}
+      {/*</WalletProvider>*/}
+      {/*</ConnectionProvider>*/}
     </BrowserRouter>
   ) : (
     <BrowserRouter>
-      <StoreProvider
-        ownerAddress={process.env.REACT_APP_STORE_OWNER_ADDRESS_ADDRESS}
-        storeAddress={process.env.REACT_APP_STORE_ADDRESS}
-      >
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <Provider store={configureStore()}>
-            <Suspense fallback={<Spinner />}>
-              <App />
-            </Suspense>
-          </Provider>
-        </Web3ReactProvider>
-      </StoreProvider>
+      {/*<StoreProvider*/}
+      {/*  ownerAddress={process.env.REACT_APP_STORE_OWNER_ADDRESS_ADDRESS}*/}
+      {/*  storeAddress={process.env.REACT_APP_STORE_ADDRESS}*/}
+      {/*>*/}
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Provider store={configureStore()}>
+          <Suspense fallback={<Spinner />}>
+            <App />
+          </Suspense>
+        </Provider>
+      </Web3ReactProvider>
+      {/*</StoreProvider>*/}
     </BrowserRouter>
   ),
   document.getElementById('root'),

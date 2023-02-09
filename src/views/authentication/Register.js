@@ -23,9 +23,9 @@ import CustomSelect from '../../components/forms/custom-elements/CustomSelect';
 import DriveFileMoveOutlinedIcon from '@mui/icons-material/DriveFileMoveOutlined';
 import adminRegisterSchema from '../../config/schema/adminRegisterSchema';
 import CustomCheckbox from '../../components/forms/custom-elements/CustomCheckbox';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@colligence/metaplex-common';
-import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
+// import { useWallet } from '@solana/wallet-adapter-react';
+// import { useWalletModal } from '@colligence/metaplex-common';
+// import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
 import { useNavigate } from 'react-router';
 
 const Register = () => {

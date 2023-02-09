@@ -4,11 +4,11 @@ import phantom_icon from '../../assets/images/wallet_icons/wallet-phantom-logo.p
 import WalletCard from './WalletCard';
 import { useDispatch } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@colligence/metaplex-common';
+// import { useWallet } from '@solana/wallet-adapter-react';
+// import { useWalletModal } from '@colligence/metaplex-common';
 import { setSolana } from '../../redux/slices/wallets';
 import { getUserData } from '../../services/user.service';
-import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
+// import { getPhantomWallet } from '@solana/wallet-adapter-wallets';
 
 const SolWalletList = [
   {

@@ -116,12 +116,10 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
         dispatch(setActivatingConnector(kaikas));
         window.localStorage.setItem('wallet', 'kaikas');
       } else if (wallet.name === 'WalletConnect') {
-        console.log('####################################');
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
         window.localStorage.setItem('wallet', 'walletconnect');
-      } else if (wallet.name === 'CHREMA WALLET') {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      } else if (wallet.name === 'Chrema Wallet') {
         const wc = talkenwallet(true);
         await activate(wc, undefined, true);
         window.localStorage.setItem('wallet', 'walletconnect');

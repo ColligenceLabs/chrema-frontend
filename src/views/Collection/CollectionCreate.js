@@ -41,17 +41,17 @@ import NETWORKS from '../../components/NetworkSelector/networks';
 import { useSelector } from 'react-redux';
 import { injected, kaikas, walletconnect } from '../../connectors';
 import splitAddress from '../../utils/splitAddress';
-import {
-  MAX_METADATA_LEN,
-  useConnection,
-  getAssetCostToStore,
-  Creator,
-  LAMPORT_MULTIPLIER,
-  useConnectionConfig,
-} from '@colligence/metaplex-common';
-import { mintNFT } from '../../solana/actions/nft';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { MintLayout } from '@solana/spl-token';
+// import {
+//   MAX_METADATA_LEN,
+//   useConnection,
+//   getAssetCostToStore,
+//   Creator,
+//   LAMPORT_MULTIPLIER,
+//   useConnectionConfig,
+// } from '@colligence/metaplex-common';
+// import { mintNFT } from '../../solana/actions/nft';
+// import { useWallet } from '@solana/wallet-adapter-react';
+// import { MintLayout } from '@solana/spl-token';
 import CustomTextarea from '../../components/forms/custom-elements/CustomTextarea';
 import { COLLECTION_CATEGORY } from './catetories';
 import { setupNetwork } from '../../utils/wallet';
@@ -85,9 +85,9 @@ const CollectionCreate = () => {
   const useKAS = process.env.REACT_APP_USE_KAS ?? 'false';
   const { ethereum, klaytn, solana, binance } = useSelector((state) => state.wallets);
 
-  const wallet = useWallet();
-  const connection = useConnection();
-  const { endpoint } = useConnectionConfig();
+  // const wallet = useWallet();
+  // const connection = useConnection();
+  // const { endpoint } = useConnectionConfig();
   // Solana Transaction Progress Callback
   const [nftCreateProgress, setNFTcreateProgress] = useState(0);
   const [cost, setCost] = useState(0);
@@ -144,11 +144,11 @@ const CollectionCreate = () => {
         const wc = walletconnect(true);
         await activate(wc, undefined, true);
       }
-    } else if (name === 'solana') {
-      if (!solana.wallet && !solana.address) {
-        alert('지갑연결 필요');
-        return;
-      }
+      // } else if (name === 'solana') {
+      //   if (!solana.wallet && !solana.address) {
+      //     alert('지갑연결 필요');
+      //     return;
+      //   }
     } else {
       return;
     }
@@ -156,110 +156,110 @@ const CollectionCreate = () => {
     console.log('지갑연결 완료');
   };
 
-  const calCost = (files, metadata) => {
-    const rentCall = Promise.all([
-      connection.getMinimumBalanceForRentExemption(MintLayout.span),
-      connection.getMinimumBalanceForRentExemption(MAX_METADATA_LEN),
-    ]);
-    if (files.length)
-      getAssetCostToStore([...files, new File([JSON.stringify(metadata)], 'metadata.json')]).then(
-        async (lamports) => {
-          const sol = lamports / LAMPORT_MULTIPLIER;
+  // const calCost = (files, metadata) => {
+  //   const rentCall = Promise.all([
+  //     connection.getMinimumBalanceForRentExemption(MintLayout.span),
+  //     connection.getMinimumBalanceForRentExemption(MAX_METADATA_LEN),
+  //   ]);
+  //   if (files.length)
+  //     getAssetCostToStore([...files, new File([JSON.stringify(metadata)], 'metadata.json')]).then(
+  //       async (lamports) => {
+  //         const sol = lamports / LAMPORT_MULTIPLIER;
+  //
+  //         // TODO: cache this and batch in one call
+  //         const [mintRent, metadataRent] = await rentCall;
+  //
+  //         // const uriStr = 'x';
+  //         // let uriBuilder = '';
+  //         // for (let i = 0; i < MAX_URI_LENGTH; i++) {
+  //         //   uriBuilder += uriStr;
+  //         // }
+  //
+  //         const additionalSol = (metadataRent + mintRent) / LAMPORT_MULTIPLIER;
+  //
+  //         // TODO: add fees based on number of transactions and signers
+  //         setCost(sol + additionalSol);
+  //       },
+  //     );
+  // };
 
-          // TODO: cache this and batch in one call
-          const [mintRent, metadataRent] = await rentCall;
-
-          // const uriStr = 'x';
-          // let uriBuilder = '';
-          // for (let i = 0; i < MAX_URI_LENGTH; i++) {
-          //   uriBuilder += uriStr;
-          // }
-
-          const additionalSol = (metadataRent + mintRent) / LAMPORT_MULTIPLIER;
-
-          // TODO: add fees based on number of transactions and signers
-          setCost(sol + additionalSol);
-        },
-      );
-  };
-
-  const mintCollection = async (attributes) => {
-    const fixedCreators = [
-      {
-        key: wallet.publicKey.toBase58(),
-        label: splitAddress(wallet.publicKey.toBase58()),
-        value: wallet.publicKey.toBase58(),
-      },
-    ];
-    // TODO : artCreate/index.tsx 1091 라인 참고하여 share 값 계산 등등 처리할 것
-    const creatorStructs = [...fixedCreators].map(
-      (c) =>
-        new Creator({
-          address: c.value,
-          verified: c.value === wallet.publicKey?.toBase58(),
-          share: 100, // TODO: UI에서 입력받게 할 것인지?
-          // share:
-          //   royalties.find(r => r.creatorKey === c.value)?.amount ||
-          //   Math.round(100 / royalties.length),
-        }),
-    );
-
-    const metadata = {
-      name: attributes.name,
-      symbol: attributes.symbol,
-      // creators: attributes.creators,
-      creators: creatorStructs,
-      // collection: attributes.collection,
-      collection: '',
-      description: attributes.description,
-      // sellerFeeBasisPoints: attributes.seller_fee_basis_points,
-      sellerFeeBasisPoints: 500,
-      // image: attributes.image,
-      image: attributes.image.name,
-      // animation_url: attributes.animation_url,
-      nimation_url: undefined,
-      // attributes: attributes.attributes,
-      attributes: undefined,
-      // external_url: attributes.external_url,
-      external_url: '',
-      properties: {
-        // files: attributes.properties.files,
-        files: [{ uri: attributes.image.name, type: attributes.image.type }],
-        // category: attributes.properties?.category,
-        category: 'image',
-      },
-    };
-
-    const files = [];
-    files.push(attributes.image);
-
-    calCost(files, metadata);
-
-    const ret = {};
-    let newCollection;
-    try {
-      newCollection = await mintNFT(
-        connection,
-        wallet,
-        endpoint.name,
-        files,
-        metadata,
-        setNFTcreateProgress,
-        attributes.maximum_supply,
-      );
-
-      if (newCollection) {
-        setCollection(newCollection);
-        ret.address = newCollection.metadataAccount;
-      }
-    } catch (e) {
-      console.log('mintCollection error : ', e);
-    } finally {
-      console.log('mintCollection success : ', newCollection);
-    }
-
-    return ret;
-  };
+  // const mintCollection = async (attributes) => {
+  //   const fixedCreators = [
+  //     {
+  //       key: wallet.publicKey.toBase58(),
+  //       label: splitAddress(wallet.publicKey.toBase58()),
+  //       value: wallet.publicKey.toBase58(),
+  //     },
+  //   ];
+  //   // TODO : artCreate/index.tsx 1091 라인 참고하여 share 값 계산 등등 처리할 것
+  //   const creatorStructs = [...fixedCreators].map(
+  //     (c) =>
+  //       new Creator({
+  //         address: c.value,
+  //         verified: c.value === wallet.publicKey?.toBase58(),
+  //         share: 100, // TODO: UI에서 입력받게 할 것인지?
+  //         // share:
+  //         //   royalties.find(r => r.creatorKey === c.value)?.amount ||
+  //         //   Math.round(100 / royalties.length),
+  //       }),
+  //   );
+  //
+  //   const metadata = {
+  //     name: attributes.name,
+  //     symbol: attributes.symbol,
+  //     // creators: attributes.creators,
+  //     creators: creatorStructs,
+  //     // collection: attributes.collection,
+  //     collection: '',
+  //     description: attributes.description,
+  //     // sellerFeeBasisPoints: attributes.seller_fee_basis_points,
+  //     sellerFeeBasisPoints: 500,
+  //     // image: attributes.image,
+  //     image: attributes.image.name,
+  //     // animation_url: attributes.animation_url,
+  //     nimation_url: undefined,
+  //     // attributes: attributes.attributes,
+  //     attributes: undefined,
+  //     // external_url: attributes.external_url,
+  //     external_url: '',
+  //     properties: {
+  //       // files: attributes.properties.files,
+  //       files: [{ uri: attributes.image.name, type: attributes.image.type }],
+  //       // category: attributes.properties?.category,
+  //       category: 'image',
+  //     },
+  //   };
+  //
+  //   const files = [];
+  //   files.push(attributes.image);
+  //
+  //   calCost(files, metadata);
+  //
+  //   const ret = {};
+  //   let newCollection;
+  //   try {
+  //     newCollection = await mintNFT(
+  //       connection,
+  //       wallet,
+  //       endpoint.name,
+  //       files,
+  //       metadata,
+  //       setNFTcreateProgress,
+  //       attributes.maximum_supply,
+  //     );
+  //
+  //     if (newCollection) {
+  //       setCollection(newCollection);
+  //       ret.address = newCollection.metadataAccount;
+  //     }
+  //   } catch (e) {
+  //     console.log('mintCollection error : ', e);
+  //   } finally {
+  //     console.log('mintCollection success : ', newCollection);
+  //   }
+  //
+  //   return ret;
+  // };
 
   return (
     <PageContainer title="Collection Create" description="this is Collection Create Form page">
@@ -339,43 +339,43 @@ const CollectionCreate = () => {
               if (useKAS === 'false') {
                 // TODO: 스미트컨트랙 배포하고 새로운 스마트컨트랙 주소 획득
                 let result;
-                if (values.network === 'solana') {
-                  // TODO : Call Solana mint collection here ...
-                  // console.log('== create solana collection ==>', values);
-                  result = await mintCollection(values);
-                } else {
-                  if (values.type === 'KIP17') {
-                    if (
-                      library.connection.url !== 'metamask' &&
-                      library.connection.url !== 'eip-1193:'
-                    ) {
-                      result = await deployKIP17WithKaikas(
-                        values.name,
-                        values.symbol,
-                        account,
-                        library,
-                      );
-                    } else {
-                      result = await deployKIP17(values.name, values.symbol, account, library);
-                    }
-                  } else if (values.type === 'KIP37') {
-                    if (
-                      library.connection.url !== 'metamask' &&
-                      library.connection.url !== 'eip-1193:'
-                    ) {
-                      result = await deployKIP37WithKaikas(directory, account, library);
-                    } else {
-                      result = await deployKIP37(
-                        values.symbol, // TODO : ERC-1155 for Binance
-                        values.name,
-                        directory,
-                        account,
-                        library,
-                      );
-                      // result = await deployKIP37(values.name, account, library);
-                    }
+                // if (values.network === 'solana') {
+                //   // TODO : Call Solana mint collection here ...
+                //   // console.log('== create solana collection ==>', values);
+                //   result = await mintCollection(values);
+                // } else {
+                if (values.type === 'KIP17') {
+                  if (
+                    library.connection.url !== 'metamask' &&
+                    library.connection.url !== 'eip-1193:'
+                  ) {
+                    result = await deployKIP17WithKaikas(
+                      values.name,
+                      values.symbol,
+                      account,
+                      library,
+                    );
+                  } else {
+                    result = await deployKIP17(values.name, values.symbol, account, library);
+                  }
+                } else if (values.type === 'KIP37') {
+                  if (
+                    library.connection.url !== 'metamask' &&
+                    library.connection.url !== 'eip-1193:'
+                  ) {
+                    result = await deployKIP37WithKaikas(directory, account, library);
+                  } else {
+                    result = await deployKIP37(
+                      values.symbol, // TODO : ERC-1155 for Binance
+                      values.name,
+                      directory,
+                      account,
+                      library,
+                    );
+                    // result = await deployKIP37(values.name, account, library);
                   }
                 }
+                // }
                 newContract = result.address;
               } else {
                 // TODO: KAS로 스마트컨트랙 배포

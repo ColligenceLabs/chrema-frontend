@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useConnection, useMeta } from '@colligence/metaplex-common/dist/lib';
+// import { useWallet } from '@solana/wallet-adapter-react';
+// import { useConnection, useMeta } from '@colligence/metaplex-common/dist/lib';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Box, Button, Menu, Typography, useMediaQuery } from '@mui/material';
 import FeatherIcon from 'feather-icons-react';
-import { saveAdmin } from '../../solana/actions/saveAdmin';
-import { WhitelistedCreator } from '@colligence/metaplex-common/dist/lib/models/metaplex';
+// import { saveAdmin } from '../../solana/actions/saveAdmin';
+// import { WhitelistedCreator } from '@colligence/metaplex-common/dist/lib/models/metaplex';
 import { Link } from 'react-router-dom';
 import { loginWithAddress, logout } from '../../redux/slices/auth';
 import creatorImage from '../../assets/images/users/creator.png';
@@ -210,41 +210,41 @@ const ProfileButton = ({ useMarket }) => {
           level={level}
           image={image}
         />
-        {level?.toLowerCase() === 'administrator' && process.env.REACT_APP_USE_SOLANA === 'true' && (
-          <Button
-            sx={{
-              mt: 2,
-              display: 'block',
-              width: '100%',
-            }}
-            variant="contained"
-            color="primary"
-            disabled={showInitStore}
-            onClick={async () => {
-              console.log('init solana store');
-              if (!wallet.publicKey) {
-                return;
-              }
+        {/*{level?.toLowerCase() === 'administrator' && process.env.REACT_APP_USE_SOLANA === 'true' && (*/}
+        {/*  <Button*/}
+        {/*    sx={{*/}
+        {/*      mt: 2,*/}
+        {/*      display: 'block',*/}
+        {/*      width: '100%',*/}
+        {/*    }}*/}
+        {/*    variant="contained"*/}
+        {/*    color="primary"*/}
+        {/*    disabled={showInitStore}*/}
+        {/*    onClick={async () => {*/}
+        {/*      console.log('init solana store');*/}
+        {/*      if (!wallet.publicKey) {*/}
+        {/*        return;*/}
+        {/*      }*/}
 
-              if (wallet.connected && !isLoading && !isFetching && !store) {
-                await saveAdmin(connection, wallet, false, [
-                  new WhitelistedCreator({
-                    address: wallet.publicKey.toBase58(),
-                    activated: true,
-                  }),
-                ]);
-              } else {
-                console.log('Store already initialized.');
-              }
-            }}
-          >
-            {isLoading
-              ? t('Wait while Solana Store Loading...')
-              : store === null
-              ? t('Solana Init Store')
-              : t('Solana Store Initialized')}
-          </Button>
-        )}
+        {/*      if (wallet.connected && !isLoading && !isFetching && !store) {*/}
+        {/*        await saveAdmin(connection, wallet, false, [*/}
+        {/*          new WhitelistedCreator({*/}
+        {/*            address: wallet.publicKey.toBase58(),*/}
+        {/*            activated: true,*/}
+        {/*          }),*/}
+        {/*        ]);*/}
+        {/*      } else {*/}
+        {/*        console.log('Store already initialized.');*/}
+        {/*      }*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    {isLoading*/}
+        {/*      ? t('Wait while Solana Store Loading...')*/}
+        {/*      : store === null*/}
+        {/*      ? t('Solana Init Store')*/}
+        {/*      : t('Solana Store Initialized')}*/}
+        {/*  </Button>*/}
+        {/*)}*/}
 
         <Link
           style={{

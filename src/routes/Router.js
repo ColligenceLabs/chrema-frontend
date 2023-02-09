@@ -31,7 +31,7 @@ const CollectionUpdate = Loadable(lazy(() => import('../views/Collection/Collect
 const Reward = Loadable(lazy(() => import('../views/Reward')));
 const RewardCreate = Loadable(lazy(() => import('../views/Reward/RewardCreate')));
 const UserProfile = Loadable(lazy(() => import('../views/UserProfile/UserProfile')));
-const Solana = Loadable(lazy(() => import('../views/Solana')));
+// const Solana = Loadable(lazy(() => import('../views/Solana')));
 const CollectionRequest = Loadable(lazy(() => import('../views/CollectionRequest')));
 
 const NftMarketHome = Loadable(lazy(() => import('../views/NftsMarket/Home')));
@@ -81,7 +81,7 @@ const Router = (isLoggedIn, level) => [
       { path: '/creator/update', exact: true, element: <CreatorUpdate /> },
       { path: '/trace', exact: true, element: <Serials /> },
       { path: '/trace/create', exact: true, element: <SerialsCreate /> },
-      { path: '/solana', exact: true, element: <Solana /> },
+      // { path: '/solana', exact: true, element: <Solana /> },
       { path: '/collection-request', exact: true, element: <CollectionRequest /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],

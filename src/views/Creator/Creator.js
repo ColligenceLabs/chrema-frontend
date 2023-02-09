@@ -29,10 +29,10 @@ import { getCreatorData } from '../../services/creator.service';
 import { updateAdminsStatus, updateMultiAdminsStatus } from '../../services/admins.service';
 import AdminsDetailModal from '../Admins/AdminsDetailModal';
 import useUserInfo from '../../hooks/useUserInfo';
-import { WhitelistedCreator } from '@colligence/metaplex-common/dist/lib/models/metaplex';
-import { saveAdmin } from '../../solana/actions/saveAdmin';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useConnection } from '@colligence/metaplex-common';
+// import { WhitelistedCreator } from '@colligence/metaplex-common/dist/lib/models/metaplex';
+// import { saveAdmin } from '../../solana/actions/saveAdmin';
+// import { useWallet } from '@solana/wallet-adapter-react';
+// import { useConnection } from '@colligence/metaplex-common';
 import { useNavigate } from 'react-router-dom';
 
 const Creator = () => {
@@ -54,8 +54,8 @@ const Creator = () => {
   const [searchStatus, setSearchStatus] = useState('');
   const [adminDetailModal, setAdminDetailModal] = useState(false);
 
-  const connection = useConnection();
-  const wallet = useWallet();
+  // const connection = useConnection();
+  // const wallet = useWallet();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -139,17 +139,17 @@ const Creator = () => {
     });
 
     // TODO : In case of Solana creator add creator here
-    if (newStatus === 'active' && solana !== '' && solana !== undefined) {
-      const newWhitelistedCreator = new WhitelistedCreator({
-        activated: true,
-        address: solana,
-      });
-      const updatedCreators = { [solana]: newWhitelistedCreator };
-      if (connection && wallet) {
-        // isPublic = always false : we don't permit a public store.
-        await saveAdmin(connection, wallet, false, Object.values(updatedCreators));
-      }
-    }
+    // if (newStatus === 'active' && solana !== '' && solana !== undefined) {
+    //   const newWhitelistedCreator = new WhitelistedCreator({
+    //     activated: true,
+    //     address: solana,
+    //   });
+    //   const updatedCreators = { [solana]: newWhitelistedCreator };
+    //   if (connection && wallet) {
+    //     // isPublic = always false : we don't permit a public store.
+    //     await saveAdmin(connection, wallet, false, Object.values(updatedCreators));
+    //   }
+    // }
 
     setStatusOpen(false);
   };
