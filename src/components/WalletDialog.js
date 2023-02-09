@@ -13,7 +13,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { injected, kaikas, walletconnect } from '../connectors';
+import { injected, kaikas, talkenwallet, walletconnect } from '../connectors';
 import { setActivatingConnector } from '../redux/slices/wallet';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import talkenIcon from '../assets/images/wallet_icons/wallet_icon_talk.png';
@@ -116,7 +116,13 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
         dispatch(setActivatingConnector(kaikas));
         window.localStorage.setItem('wallet', 'kaikas');
       } else if (wallet.name === 'WalletConnect') {
+        console.log('####################################');
         const wc = walletconnect(true);
+        await activate(wc, undefined, true);
+        window.localStorage.setItem('wallet', 'walletconnect');
+      } else if (wallet.name === 'CHREMA WALLET') {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        const wc = talkenwallet(true);
         await activate(wc, undefined, true);
         window.localStorage.setItem('wallet', 'walletconnect');
       }
