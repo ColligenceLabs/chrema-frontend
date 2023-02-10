@@ -5958,10 +5958,10 @@ chownr@^2.0.0:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-2.0.0.tgz#15bfbe53d2eab4cf70f18a8cd68ebe5b3cb1dece"
   integrity sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==
 
-chrema-qrcode-modal@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/chrema-qrcode-modal/-/chrema-qrcode-modal-1.8.1.tgz#73f72d7161ee9eb5cf2f8618766f3e79050e787e"
-  integrity sha512-g8tHiSYtyZdSI0RmmlpwhYRwlR+mw92A7ZZTp35cBq1eH4rbYgocVIRp1tA5nIVtiadmp3NqMgzxIv3CBa0IHg==
+chrema-qrcode-modal@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/chrema-qrcode-modal/-/chrema-qrcode-modal-1.8.2.tgz#8f4e897bc4469b71d1e56a98685aa8a2d3860932"
+  integrity sha512-mh3pa2joGdj6QDcqTat885yDm+ueN0iXssZqbIKs7m96as2A0UBbDB2KISG+8KvxaBJ1KYIxvtKWqtoCCv1aQg==
   dependencies:
     "@walletconnect/browser-utils" "1.7.1"
     "@walletconnect/mobile-registry" "1.4.0"
