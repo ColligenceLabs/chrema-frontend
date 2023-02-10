@@ -42,7 +42,7 @@
     "axios": "^0.25.0",
     "axios-mock-adapter": "^1.18.1",
     "caver-js": "^1.6.8",
-    "chrema-qrcode-modal": "^1.8.1",
+    "chrema-qrcode-modal": "^1.8.2",
     "date-fns": "^2.21.3",
     "ethers": "^5.5.3",
     "feather-icons-react": "^0.4.3",
