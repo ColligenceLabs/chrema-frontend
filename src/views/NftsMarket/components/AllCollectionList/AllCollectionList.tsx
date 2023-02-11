@@ -13,7 +13,7 @@ const AllCategorySection = styled(Container)`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  margin-top: ${(props) => props.smDown && '180px'};
+  margin-top: ${(props) => props.smdown && '180px'};
 `;
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -21,7 +21,7 @@ const PAGE_SIZE = 12;
 
 const AllCollectionList = () => {
   const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+  const smdown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -42,14 +42,14 @@ const AllCollectionList = () => {
     isEmpty || (data && data[data.length - 1]?.data?.headers?.x_pages_count <= size);
 
   return (
-    <AllCategorySection smDown={smDown}>
+    <AllCategorySection smdown={smdown.toString()}>
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
         }}
       >
-        <Typography fontSize={smDown ? '30px' : '38px'} fontWeight={500} color={'text.primary'}>
+        <Typography fontSize={smdown ? '30px' : '38px'} fontWeight={500} color={'text.primary'}>
           All Collections
         </Typography>
       </Box>

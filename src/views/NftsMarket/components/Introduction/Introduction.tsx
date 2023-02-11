@@ -8,11 +8,11 @@ import intro_icon_03 from '../../../../assets/images/logos/intro-icon-03.png';
 import intro_icon_04 from '../../../../assets/images/logos/intro-icon-04.png';
 import Container from '../Container';
 
-const IntroductionSection = styled(Container)(({ theme, smDown }) => ({
+const IntroductionSection = styled(Container)(({ theme, smdown }) => ({
   maxWidth: '1500px',
   display: 'flex',
   backgroundColor: theme.palette.primary.main,
-  borderRadius: smDown ? '0' : '38px',
+  borderRadius: smdown ? '0' : '38px',
   zIndex: '2000',
 }));
 
@@ -49,11 +49,11 @@ const IntroData = [
 
 const Introduction = () => {
   const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+  const smdown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
   return (
-    <IntroductionSection smDown={smDown}>
+    <IntroductionSection smdown={smdown.toString()}>
       <Grid container>
         {IntroData.map((item: any) => (
           <Grid
