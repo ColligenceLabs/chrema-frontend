@@ -10,7 +10,7 @@ import BinanceWallet from './BinanceWallet';
 const WalletConnectorDialog = ({
   isOpenConnectModal,
   handleCloseModal,
-  activate,
+  provider,
   selectedNetworkIndex,
   ethereum,
   klaytn,

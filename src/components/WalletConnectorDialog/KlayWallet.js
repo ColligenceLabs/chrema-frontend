@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import metamask_icon from '../../assets/images/wallet_icons/wallet_icon_metamask.png';
 import walletConnect_icon from '../../assets/images/wallet_icons/wallet_icon_walletconnect.png';
 import talken_icon from '../../assets/images/wallet_icons/wallet_icon_talk.png';
 import kaikas_icon from '../../assets/images/wallet_icons/wallet_icon_kaikas.png';
 import WalletCard from './WalletCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { useWeb3React } from '@web3-react/core';
-import { injected, kaikas, walletconnect } from '../../connectors';
+
 import { setActivatingConnector } from '../../redux/slices/wallet';
 import { setKlaytn } from '../../redux/slices/wallets';
 import { loginWithAddress } from '../../redux/slices/auth';
+
+import { metaMask } from '../../connectors/metaMask';
+import { walletConnect } from '../../connectors/walletConnect';
+import { kaikas } from '../../connectors/kaikas';
+import { getConnectorHooks } from '../../utils';
+import { getAddChainParameters } from '../../chains';
 
 const KlayWalletList = [
   {
@@ -41,8 +46,11 @@ const KlayWalletList = [
 
 const KlayWallet = ({ klaytn }) => {
   const dispatch = useDispatch();
-  const context = useWeb3React();
-  const { activate, account, chainId } = context;
+
+  const chainId = parseInt(process.env.REACT_APP_KLAYTN_TARGET_NETWORK ?? '0x2019', 10);
+  const { useAccounts } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
 
   const { user } = useSelector((state) => state.auth);
 
@@ -56,16 +64,18 @@ const KlayWallet = ({ klaytn }) => {
 
   const handleWalletCardClick = async (wallet) => {
     setWalletName(wallet.name);
+    await window.localStorage.setItem('wallet', wallet.name);
 
     try {
       if (wallet.name === 'metamask') {
-        await activate(injected, null, true);
-        await dispatch(setActivatingConnector(injected));
+        await metaMask.activate(1001);
+        await dispatch(setActivatingConnector(metaMask));
       } else if (wallet.name === 'walletConnector') {
-        const wc = walletconnect(true);
-        await activate(wc, undefined, true);
+        await walletConnect.activate(1001);
+        await dispatch(setActivatingConnector(walletConnect));
       } else if (wallet.name === 'kaikas') {
-        await activate(kaikas, null, true);
+        console.log('##############################################', getAddChainParameters(1001));
+        await kaikas.activate(getAddChainParameters(1001));
         await dispatch(setActivatingConnector(kaikas));
       }
     } catch (e) {

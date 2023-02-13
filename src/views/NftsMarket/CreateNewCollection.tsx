@@ -30,7 +30,6 @@ import {
 import { deployNFT17 } from '../../services/nft.service';
 import { createCollection } from '../../services/collections.service';
 import useUserInfo from '../../hooks/useUserInfo';
-import { useWeb3React } from '@web3-react/core';
 import WalletDialog from '../../components/WalletDialog';
 import splitAddress from '../../utils/splitAddress';
 // import {
@@ -51,6 +50,8 @@ import { COLLECTION_CATEGORY } from '../Collection/catetories';
 import { addMinter } from '../../utils/transactions';
 import { targetNetwork } from '../../config';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { getConnectorHooks } from '../../utils';
 
 // type metadataTypes = {
 //   name: string;
@@ -149,7 +150,12 @@ type OptionalImageListTypes = {
   description: string;
 };
 const CreateNewCollection = () => {
-  const { library, account, activate, chainId } = useWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+
   const { level, id, full_name } = useUserInfo();
   // const wallet = useWallet();
   // const connection = useConnection();
@@ -361,37 +367,43 @@ const CreateNewCollection = () => {
               //   result = await mintCollection(values);
               // } else {
               if (values.type === 'KIP17') {
+                console.log('======rovider.connection.url=====', provider.connection.url);
                 if (
-                  library.connection.url !== 'metamask' &&
-                  library.connection.url !== 'eip-1193:'
+                  provider.connection.url !== 'metamask' &&
+                  provider.connection.url !== 'eip-1193:'
                 ) {
                   result = await deployKIP17WithKaikas(
                     values.name,
                     values.symbol,
                     account,
-                    library,
+                    provider,
                   );
                 } else {
-                  result = await deployKIP17(values.name, values.symbol, account, library);
+                  result = await deployKIP17(
+                    values.name,
+                    values.symbol,
+                    account,
+                    chainId,
+                    provider,
+                  );
                 }
               } else if (values.type === 'KIP37') {
                 if (
-                  library.connection.url !== 'metamask' &&
-                  library.connection.url !== 'eip-1193:'
+                  provider.connection.url !== 'metamask' &&
+                  provider.connection.url !== 'eip-1193:'
                 ) {
-                  result = await deployKIP37WithKaikas(directory, account, library);
+                  result = await deployKIP37WithKaikas(directory, account, provider);
                 } else {
                   result = await deployKIP37(
                     values.symbol, // TODO : ERC-1155 for Binance
                     values.name,
                     directory,
                     account,
-                    library,
+                    chainId,
+                    provider,
                   );
-                  // result = await deployKIP37(values.name, account, library);
                 }
               }
-              // }
               newContract = result?.address;
             } else {
               // TODO: KAS로 스마트컨트랙 배포
@@ -410,7 +422,8 @@ const CreateNewCollection = () => {
               newContract,
               values.type,
               account,
-              library,
+              // library,
+              provider,
               chainId ?? parseInt(targetNetwork ?? '5'), // TODO : check for multiple chains support
             );
           } else {
@@ -722,11 +735,7 @@ const CreateNewCollection = () => {
           </form>
         )}
       </Formik>
-      <WalletDialog
-        isOpenConnectModal={isOpenConnectModal}
-        handleCloseModal={handleCloseModal}
-        activate={activate}
-      />
+      <WalletDialog isOpenConnectModal={isOpenConnectModal} handleCloseModal={handleCloseModal} />
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={openSnackbar}

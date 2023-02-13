@@ -26,6 +26,8 @@ import { verifyMessage } from '../../utils/verifyMessage';
 import ImageSelector from '../../components/ImageSelector/ImageSelector';
 import { styled } from '@mui/material/styles';
 
+import { getConnectorHooks } from '../../utils';
+
 const ProfileContainer = styled(Container)`
   max-width: 646px !important;
   display: flex;
@@ -36,8 +38,14 @@ const ProfileContainer = styled(Container)`
 
 const UserProfileSetting = () => {
   const navigate = useNavigate();
-  const context = useWeb3React();
-  const { library, account, chainId } = context;
+  // const context = useWeb3React();
+  // const { library, account, chainId } = context;
+  // const { account, chainId } = context;
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
 
   const [errorMessage, setErrorMessage] = useState<any>();
   const [successRegister, setSuccessRegister] = useState(false);
@@ -70,14 +78,16 @@ const UserProfileSetting = () => {
 
               let signedMessage;
               try {
-                signedMessage = await signMessage(library, account);
+                // signedMessage = await signMessage(library, account);
+                signedMessage = await signMessage(provider, account);
                 console.log(typeof signedMessage);
                 if (typeof signedMessage === 'object') {
                   // Todo 에러 메세지 처리 필요
-                  throw new Error(signedMessage.message);
+                  // throw new Error(signedMessage.message);
                   return;
                 }
-                const verifyResult = await verifyMessage(library, account, signedMessage);
+                // const verifyResult = await verifyMessage(library, account, signedMessage);
+                const verifyResult = await verifyMessage(undefined, account, signedMessage);
                 if (verifyResult !== account) {
                   console.log(account, verifyResult);
                   throw new Error('verify fail.');

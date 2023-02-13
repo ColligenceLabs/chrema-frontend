@@ -19,6 +19,7 @@ const Home = (): JSX.Element => {
       <Box bgcolor={'alternate.main'}>
         <AllCollectionList />
       </Box>
+
       <Box bgcolor={'alternate.main'}>
         <TopCollections />
       </Box>

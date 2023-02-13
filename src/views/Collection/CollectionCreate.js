@@ -32,14 +32,15 @@ import {
   deployKIP37,
   deployKIP37WithKaikas,
 } from '../../utils/deploy';
-import { useWeb3React } from '@web3-react/core';
+// import { useWeb3React } from '@web3-react/core';
 import collectionCreateSchema from '../../config/schema/collectionCreateSchema';
 import useCreator from '../../hooks/useCreator';
 import { deployNFT17 } from '../../services/nft.service';
 import useUserInfo from '../../hooks/useUserInfo';
 import NETWORKS from '../../components/NetworkSelector/networks';
 import { useSelector } from 'react-redux';
-import { injected, kaikas, walletconnect } from '../../connectors';
+
+import { kaikas } from '../../connectors';
 import splitAddress from '../../utils/splitAddress';
 // import {
 //   MAX_METADATA_LEN,
@@ -57,6 +58,7 @@ import { COLLECTION_CATEGORY } from './catetories';
 import { setupNetwork } from '../../utils/wallet';
 import { bnbTargetNetwork, targetNetwork, targetNetworkMsg } from '../../config';
 import WalletConnectorDialog from '../../components/WalletConnectorDialog';
+import { getConnectorHooks } from '../../utils';
 
 const Container = styled(Paper)(() => ({
   padding: '20px',
@@ -74,7 +76,13 @@ const WarningBox = styled(Box)(({ theme }) => ({
 }));
 
 const CollectionCreate = () => {
-  const { library, account, activate, chainId } = useWeb3React();
+  // const { library, account, activate, chainId } = useWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+
   const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState();
   const [successRegister, setSuccessRegister] = useState(false);
@@ -97,64 +105,65 @@ const CollectionCreate = () => {
     setIsOpenConnectModal(false);
   };
 
-  const activateNetwork = async (name, setFieldValue) => {
-    console.log('??');
-    if (name === 'ethereum') {
-      if (!ethereum.wallet && !ethereum.address) {
-        alert('지갑연결 필요');
-        return;
-      }
-      if (ethereum.wallet === 'metamask') {
-        await activate(injected, null, true);
-      } else if (ethereum.wallet === 'walletConnector') {
-        const wc = walletconnect(true);
-        await activate(wc, undefined, true);
-      }
-    } else if (name === 'klaytn') {
-      if (!klaytn.wallet && !klaytn.address) {
-        setSelectedNetworkIndex(1);
-        setIsOpenConnectModal(true);
-        return;
-      }
-      const network = parseInt(targetNetwork);
-      if (klaytn.wallet === 'metamask') {
-        if (chainId !== network) await setupNetwork(network);
-        await activate(injected, null, true);
-      } else if (klaytn.wallet === 'walletConnector') {
-        const wc = walletconnect(true);
-        await activate(wc, undefined, true);
-      } else if (klaytn.wallet === 'kaikas') {
-        if (chainId !== network) {
-          alert(targetNetworkMsg);
-          return;
-        }
-        await activate(kaikas, null, true);
-      }
-    } else if (name === 'binance') {
-      if (!binance.wallet && !binance.address) {
-        setSelectedNetworkIndex(3);
-        setIsOpenConnectModal(true);
-        return;
-      }
-      if (binance.wallet === 'metamask') {
-        const network = parseInt(bnbTargetNetwork);
-        if (chainId !== network) await setupNetwork(network);
-        await activate(injected, null, true);
-      } else if (binance.wallet === 'walletConnector') {
-        const wc = walletconnect(true);
-        await activate(wc, undefined, true);
-      }
-      // } else if (name === 'solana') {
-      //   if (!solana.wallet && !solana.address) {
-      //     alert('지갑연결 필요');
-      //     return;
-      //   }
-    } else {
-      return;
-    }
-    setFieldValue('network', name);
-    console.log('지갑연결 완료');
-  };
+  // TODO : 여기는 어떻게 바꿔야 하지 ???
+  // const activateNetwork = async (name, setFieldValue) => {
+  //   console.log('??');
+  //   if (name === 'ethereum') {
+  //     if (!ethereum.wallet && !ethereum.address) {
+  //       alert('지갑연결 필요');
+  //       return;
+  //     }
+  //     if (ethereum.wallet === 'metamask') {
+  //       await activate(injected, null, true);
+  //     } else if (ethereum.wallet === 'walletConnector') {
+  //       const wc = walletconnect(true);
+  //       await activate(wc, undefined, true);
+  //     }
+  //   } else if (name === 'klaytn') {
+  //     if (!klaytn.wallet && !klaytn.address) {
+  //       setSelectedNetworkIndex(1);
+  //       setIsOpenConnectModal(true);
+  //       return;
+  //     }
+  //     const network = parseInt(targetNetwork);
+  //     if (klaytn.wallet === 'metamask') {
+  //       if (chainId !== network) await setupNetwork(network);
+  //       await activate(injected, null, true);
+  //     } else if (klaytn.wallet === 'walletConnector') {
+  //       const wc = walletconnect(true);
+  //       await activate(wc, undefined, true);
+  //     } else if (klaytn.wallet === 'kaikas') {
+  //       if (chainId !== network) {
+  //         alert(targetNetworkMsg);
+  //         return;
+  //       }
+  //       await activate(kaikas, null, true);
+  //     }
+  //   } else if (name === 'binance') {
+  //     if (!binance.wallet && !binance.address) {
+  //       setSelectedNetworkIndex(3);
+  //       setIsOpenConnectModal(true);
+  //       return;
+  //     }
+  //     if (binance.wallet === 'metamask') {
+  //       const network = parseInt(bnbTargetNetwork);
+  //       if (chainId !== network) await setupNetwork(network);
+  //       await activate(injected, null, true);
+  //     } else if (binance.wallet === 'walletConnector') {
+  //       const wc = walletconnect(true);
+  //       await activate(wc, undefined, true);
+  //     }
+  //     // } else if (name === 'solana') {
+  //     //   if (!solana.wallet && !solana.address) {
+  //     //     alert('지갑연결 필요');
+  //     //     return;
+  //     //   }
+  //   } else {
+  //     return;
+  //   }
+  //   setFieldValue('network', name);
+  //   console.log('지갑연결 완료');
+  // };
 
   // const calCost = (files, metadata) => {
   //   const rentCall = Promise.all([
@@ -345,34 +354,41 @@ const CollectionCreate = () => {
                 //   result = await mintCollection(values);
                 // } else {
                 if (values.type === 'KIP17') {
+                  console.log('=========provider.connection.url ====', provider.connection);
                   if (
-                    library.connection.url !== 'metamask' &&
-                    library.connection.url !== 'eip-1193:'
+                    provider.connection.url !== 'metamask' &&
+                    provider.connection.url !== 'eip-1193:'
                   ) {
                     result = await deployKIP17WithKaikas(
                       values.name,
                       values.symbol,
                       account,
-                      library,
+                      provider,
                     );
                   } else {
-                    result = await deployKIP17(values.name, values.symbol, account, library);
+                    result = await deployKIP17(
+                      values.name,
+                      values.symbol,
+                      account,
+                      chainId,
+                      provider,
+                    );
                   }
                 } else if (values.type === 'KIP37') {
                   if (
-                    library.connection.url !== 'metamask' &&
-                    library.connection.url !== 'eip-1193:'
+                    provider.connection.url !== 'metamask' &&
+                    provider.connection.url !== 'eip-1193:'
                   ) {
-                    result = await deployKIP37WithKaikas(directory, account, library);
+                    result = await deployKIP37WithKaikas(directory, account, provider);
                   } else {
                     result = await deployKIP37(
                       values.symbol, // TODO : ERC-1155 for Binance
                       values.name,
                       directory,
                       account,
-                      library,
+                      provider,
                     );
-                    // result = await deployKIP37(values.name, account, library);
+                    // result = await deployKIP37(values.name, account, provider);
                   }
                 }
                 // }
@@ -444,9 +460,10 @@ const CollectionCreate = () => {
                     value={values.network}
                     disabled={isSubmitting}
                     onChange={async (event) => {
-                      if (useKAS === 'false')
-                        await activateNetwork(event.target.value, setFieldValue);
-                      else setFieldValue('network', event.target.value);
+                      // if (useKAS === 'false')
+                      //   await activateNetwork(event.target.value, setFieldValue);
+                      // else setFieldValue('network', event.target.value);
+                      setFieldValue('network', event.target.value);
                     }}
                     fullWidth
                     size="small"
@@ -870,7 +887,7 @@ const CollectionCreate = () => {
           selectedNetworkIndex={selectedNetworkIndex}
           isOpenConnectModal={isOpenConnectModal}
           handleCloseModal={handleCloseModal}
-          activate={activate}
+          provider={provider}
           ethereum={ethereum}
           klaytn={klaytn}
           solana={solana}

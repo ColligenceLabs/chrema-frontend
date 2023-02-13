@@ -7,9 +7,10 @@ import { ethers } from 'ethers';
 import contracts from '../config/constants/contracts';
 import tokenAbi from '../config/abi/erc20.json';
 
-export const getNftContract = (library, contract, type) => {
-  const isKaikas = library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
-  const chainId = library._network.chainId;
+export const getNftContract = (chainId, account, provider, contract, type) => {
+  const isKaikas =
+    provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
+  // const chainId = library._network.chainId;
   if (isKaikas) {
     const caver = new Caver(window.klaytn);
     return new caver.klay.Contract(type === 'KIP17' ? kip17Abi : kip37Abi, contract);
@@ -23,14 +24,15 @@ export const getNftContract = (library, contract, type) => {
         : chainId === 1001 || chainId === 8217
         ? kip37Abi
         : erc1155Abi,
-      library?.getSigner(),
+      provider.getSigner(account),
     );
   }
 };
 
-export const getKipContract = (library, contract, type) => {
+export const getKipContract = (provider, contract, type) => {
   if (type === 'SPLToken' || !contract) return;
-  const isKaikas = library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+  const isKaikas =
+    provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
   const abi = type === 'KIP17' ? kip17Abi : kip37Abi;
   if (isKaikas) {
     const caver = new Caver(window.klaytn);
@@ -40,10 +42,10 @@ export const getKipContract = (library, contract, type) => {
   }
 };
 
-export const getTokenContract = (library) => {
+export const getTokenContract = (provider, account) => {
   const tokenAddress = contracts.quoteToken[process.env.REACT_APP_MAINNET === 'true' ? 1 : 5];
-  if (library.connection.url === 'metamask' || library.connection.url === 'eip-1193:')
-    return new ethers.Contract(tokenAddress, tokenAbi, library?.getSigner());
+  if (provider.connection.url === 'metamask' || provider.connection.url === 'eip-1193:')
+    return new ethers.Contract(tokenAddress, tokenAbi, provider.getSigner(account));
   else {
     const caver = new Caver(window.klaytn);
     return new caver.klay.Contract(tokenAbi, tokenAddress);

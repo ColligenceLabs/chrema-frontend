@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import metamask_icon from '../../assets/images/wallet_icons/wallet_icon_metamask.png';
 import WalletCard from './WalletCard';
-import { injected } from '../../connectors';
+// import { injected } from '../../connectors';
 import { setActivatingConnector } from '../../redux/slices/wallet';
 import { setBinance } from '../../redux/slices/wallets';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,8 +35,8 @@ const BinanceWallet = ({ binance }) => {
     try {
       // Todo change bsc target network chain id to config
       // await setupNetwork(97);
-      await activate(injected, null, true);
-      await dispatch(setActivatingConnector(injected));
+      // await activate(injected, null, true);
+      // await dispatch(setActivatingConnector(injected));
       console.log(wallet);
     } catch (e) {
       console.log('connect wallet error', e);

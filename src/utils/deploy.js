@@ -6,16 +6,16 @@ import { mkDirIPFS } from '../hooks/useNFT';
 import { IPFS_URL, ALT_URL } from '../config/constants/consts';
 import { parseUnits } from 'ethers/lib/utils';
 
-export async function deployKIP17(name, symbol, account, library) {
+export async function deployKIP17(name, symbol, account, chainId, provider) {
   // hooks can not be called from inside a function
   // const { account, library } = useWeb3React();
 
-  const chainId = library._network.chainId;
+  console.log('========', chainId);
   let factory;
   if (chainId === 8217 || chainId === 1001) {
-    factory = new ContractFactory(kip17Data.abi, kip17Data.bytecode, library.getSigner(account));
+    factory = new ContractFactory(kip17Data.abi, kip17Data.bytecode, provider.getSigner(account));
   } else {
-    factory = new ContractFactory(erc721Data.abi, erc721Data.bytecode, library.getSigner(account));
+    factory = new ContractFactory(erc721Data.abi, erc721Data.bytecode, provider.getSigner(account));
   }
 
   const ret = {};
@@ -52,19 +52,18 @@ export async function deployKIP17(name, symbol, account, library) {
   return ret;
 }
 
-export async function deployKIP37(symbol, name, directory, account, library) {
+export async function deployKIP37(symbol, name, directory, account, chainId, provider) {
   // hooks can not be called from inside a function
   // const { account, library } = useWeb3React();
 
-  const chainId = library._network.chainId;
   let factory;
   if (chainId === 8217 || chainId === 1001) {
-    factory = new ContractFactory(kip37Data.abi, kip37Data.bytecode, library.getSigner(account));
+    factory = new ContractFactory(kip37Data.abi, kip37Data.bytecode, provider.getSigner(account));
   } else {
     factory = new ContractFactory(
       erc1155Data.abi,
       erc1155Data.bytecode,
-      library.getSigner(account),
+      provider.getSigner(account),
     );
   }
 
@@ -122,7 +121,7 @@ export async function deployKIP37(symbol, name, directory, account, library) {
   return ret;
 }
 
-export async function deployKIP17WithKaikas(name, symbol, account, library) {
+export async function deployKIP17WithKaikas(name, symbol, account, provider) {
   // hooks can not be called from inside a function
   // const { account, library } = useWeb3React();
 
@@ -155,7 +154,7 @@ export async function deployKIP17WithKaikas(name, symbol, account, library) {
   return ret;
 }
 
-export async function deployKIP37WithKaikas(name, account, library) {
+export async function deployKIP37WithKaikas(name, account, provider) {
   // hooks can not be called from inside a function
   // const { account, library } = useWeb3React();
 

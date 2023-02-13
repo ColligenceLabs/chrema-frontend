@@ -21,11 +21,12 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import { LoadingButton } from '@mui/lab';
 import useMarket from '../../hooks/useMarket';
 import { getNumberOfSales } from '../../services/serials.service';
-import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import { nftDetail } from '../../services/market.service';
 import { getNftContract } from '../../utils/contract';
 import { FAILURE, SUCCESS } from '../../config/constants/consts';
 import { getChainId } from '../../utils/commonUtils';
+
+import { getConnectorHooks } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -80,8 +81,14 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
   const [successFlag, setSuccessFlag] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { library, account } = useActiveWeb3React();
-  const { sellNFT } = useMarket();
+
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+
+  const { sellNFT } = useMarket(account, chainId, provider);
   const useKAS = process.env.REACT_APP_USE_KAS ?? 'false';
 
   const handleChangeStart = (newValue) => {
@@ -118,7 +125,9 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
     console.log(nftInfo);
     try {
       const nftContract = getNftContract(
-        library,
+        chainId,
+        account,
+        provider,
         nftInfo.data.collection_id.contract_address,
         nftInfo.data.collection_id.contract_type,
       );
@@ -153,7 +162,7 @@ const ScheduleDialog = ({ open, handleCloseModal, selected }) => {
   };
 
   const handleSchedule = async () => {
-    if (useKAS !== 'true' && !library) {
+    if (useKAS !== 'true' && !provider) {
       // 지갑 연결 확인 필요.
       alert('지갑을 연결하세요.');
       handleCloseModal();

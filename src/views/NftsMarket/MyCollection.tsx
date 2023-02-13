@@ -3,7 +3,6 @@ import MarketLayout from '../../layouts/market-layout/MarketLayout';
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import login, { register } from '../../services/auth.service';
 import { useSelector } from 'react-redux';
 import { CollectionItemType, CollectionResponse, StoreTypes } from './types';
@@ -13,6 +12,8 @@ import useUserInfo from '../../hooks/useUserInfo';
 import CollectionItem from './components/CollectionItem';
 import ImageViewer from '../../components/ImageViewer';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { getConnectorHooks } from '../../utils';
 
 const MyCollectionContainer = styled(Container)`
   //max-width: 646px !important;
@@ -105,7 +106,9 @@ const MyCollection = () => {
   });
   const navigate = useNavigate();
   const { id } = useUserInfo();
-  const { account, activate } = useActiveWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [collectionList, setCollectionList] = useState<CollectionItemType[]>([]);
 
@@ -194,11 +197,7 @@ const MyCollection = () => {
             ))}
         </Grid>
       </MyCollectionContainer>
-      <WalletDialog
-        isOpenConnectModal={isOpenConnectModal}
-        handleCloseModal={handleCloseModal}
-        activate={activate}
-      />
+      <WalletDialog isOpenConnectModal={isOpenConnectModal} handleCloseModal={handleCloseModal} />
     </MarketLayout>
   );
 };

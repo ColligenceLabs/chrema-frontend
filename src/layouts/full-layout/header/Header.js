@@ -7,7 +7,8 @@ import LanguageSelector from '../../../components/LanguageSelector/LanguageSelec
 import ThemeSelector from '../../../components/ThemeSelector/ThemeSelector';
 import WalletDialog from '../../../components/WalletDialog';
 import { useSelector } from 'react-redux';
-import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
+// import { useEagerConnect, useInactiveListener } from '../../../hooks/useWallet';
+import { useEagerConnect } from '../../../hooks/useWallet';
 import { targetNetworkMsg } from '../../../config';
 import { useTheme } from '@mui/styles';
 import NetworkSelector from '../../../components/NetworkSelector';
@@ -30,7 +31,7 @@ const Header = ({ sx, customClass, toggleSidebar, toggleMobileSidebar }) => {
   const { activatingConnector } = useSelector((state) => state.wallet);
 
   const triedEager = useEagerConnect();
-  useInactiveListener(!triedEager || !!activatingConnector);
+  // useInactiveListener(!triedEager || !!activatingConnector);
 
   const handleCloseModal = async () => {
     setIsOpenConnectModal(false);

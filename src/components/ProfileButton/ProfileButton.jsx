@@ -19,7 +19,7 @@ import { updateWallet } from '../../services/admins.service';
 import { getWalletBalance, setActivatingConnector, setBalance } from '../../redux/slices/wallet';
 import { targetNetwork } from '../../config';
 import { setupNetwork } from '../../utils/wallet';
-import { useEagerConnect, useInactiveListener } from '../../hooks/useWallet';
+// import { useEagerConnect, useInactiveListener } from '../../hooks/useWallet';
 
 const ProfileButton = ({ useMarket }) => {
   const [anchorEl4, setAnchorEl4] = React.useState(null);
@@ -42,21 +42,21 @@ const ProfileButton = ({ useMarket }) => {
 
   const [showInitStore, setShowInitStore] = useState(false);
   const [userimg, setUserimg] = useState('');
-  const wallet = useWallet();
-  const { store, isFetching, isLoading } = useMeta();
-  const connection = useConnection();
+  // const wallet = useWallet();
+  // const { store, isFetching, isLoading } = useMeta();
+  // const connection = useConnection();
 
-  useEffect(() => {
-    if (store === null) {
-      if (isLoading) {
-        setShowInitStore(true); // Disable
-      } else {
-        setShowInitStore(false); // Enable
-      }
-    } else {
-      setShowInitStore(true); // Disable
-    }
-  }, [store, isLoading]);
+  // useEffect(() => {
+  //   if (store === null) {
+  //     if (isLoading) {
+  //       setShowInitStore(true); // Disable
+  //     } else {
+  //       setShowInitStore(false); // Enable
+  //     }
+  //   } else {
+  //     setShowInitStore(true); // Disable
+  //   }
+  // }, [store, isLoading]);
 
   useEffect(() => {
     if (image === undefined || image === null || image === '') {
@@ -114,9 +114,9 @@ const ProfileButton = ({ useMarket }) => {
   }, [activatingConnector, connector, account, library]);
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
-  const triedEager = useEagerConnect();
+  // const triedEager = useEagerConnect();
   // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
-  useInactiveListener(!triedEager || !!activatingConnector);
+  // useInactiveListener(!triedEager || !!activatingConnector);
 
   const handleClick4 = (event) => {
     setAnchorEl4(event.currentTarget);

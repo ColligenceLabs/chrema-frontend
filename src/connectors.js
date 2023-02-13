@@ -1,6 +1,6 @@
-import { InjectedConnector } from '@web3-react/injected-connector';
+// import { InjectedConnector } from '@web3-react/injected-connector';
 // import { NetworkConnector } from '@web3-react/network-connector';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+// import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 // import { WalletLinkConnector } from '@web3-react/walletlink-connector';
 // import { LedgerConnector } from '@web3-react/ledger-connector';
 // import { TrezorConnector } from '@web3-react/trezor-connector';
@@ -11,8 +11,8 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 // import { MagicConnector } from '@web3-react/magic-connector';
 // import { PortisConnector } from '@web3-react/portis-connector';
 // import { TorusConnector } from '@web3-react/torus-connector';
-import { KlaytnConnector } from '@colligence/klaytn-connector';
-import QRCodeModal from 'chrema-qrcode-modal';
+// import { KlaytnConnector } from '@colligence/klaytn-connector';
+// import QRCodeModal from 'chrema-qrcode-modal';
 import { targetNetwork, infuraApiKey } from './config';
 
 const RPC_URL_1 = `https://mainnet.infura.io/v3/${infuraApiKey}`;
@@ -31,13 +31,13 @@ export const RPC_URLS = {
   8217: 'https://public-en.kaikas.io/v1/cypress',
 };
 
-export const injected = new InjectedConnector({
-  supportedChainIds: [1, 5, 56, 97, 1001, 8217],
-});
+// export const injected = new InjectedConnector({
+//   supportedChainIds: [1, 5, 56, 97, 1001, 8217],
+// });
 
-export const kaikas = new KlaytnConnector({
-  supportedChainIds: [1001, 8217],
-});
+// export const kaikas = new KlaytnConnector({
+//   supportedChainIds: [1001, 8217],
+// });
 
 // export const network = new NetworkConnector({
 //   urls: {
@@ -53,40 +53,40 @@ export const kaikas = new KlaytnConnector({
 //   defaultChainId: parseInt(targetNetwork),
 // });
 
-export const walletconnect = (useQR) => {
-  // const chainId = parseInt(targetNetwork, 16);
-  return new WalletConnectConnector({
-    supportedChainIds: [1, 5, 1001, 8217],
-    // rpc: { [chainId]: RPC_URLS[chainId] },
-    rpc: {
-      [1]: RPC_URLS[1],
-      [5]: RPC_URLS[5],
-      [1001]: RPC_URLS[1001],
-      [8217]: RPC_URLS[8217],
-    },
-    bridge: 'https://bridge.walletconnect.org',
-    qrcode: useQR,
-    pollingInterval: POLLING_INTERVAL,
-  });
-};
+// export const walletconnect = (useQR) => {
+//   // const chainId = parseInt(targetNetwork, 16);
+//   return new WalletConnectConnector({
+//     supportedChainIds: [1, 5, 1001, 8217],
+//     // rpc: { [chainId]: RPC_URLS[chainId] },
+//     rpc: {
+//       [1]: RPC_URLS[1],
+//       [5]: RPC_URLS[5],
+//       [1001]: RPC_URLS[1001],
+//       [8217]: RPC_URLS[8217],
+//     },
+//     bridge: 'https://bridge.walletconnect.org',
+//     qrcode: useQR,
+//     pollingInterval: POLLING_INTERVAL,
+//   });
+// };
 
-export const talkenwallet = (useQR) => {
-  // const chainId = parseInt(targetNetwork, 16);
-  return new WalletConnectConnector({
-    supportedChainIds: [1, 5, 1001, 8217],
-    // supportedChainIds: [ChainId.TMP, ChainId.BAOBAB, ChainId.KLAYTN],
-    // rpc: { [chainId]: RPC_URLS[chainId] },
-    rpc: {
-      [1]: RPC_URLS[1],
-      [5]: RPC_URLS[5],
-      [1001]: RPC_URLS[1001],
-      [8217]: RPC_URLS[8217],
-    },
-    bridge: 'https://bridge.walletconnect.org',
-    qrcode: useQR,
-    qrcodeModal: QRCodeModal,
-  });
-};
+// export const talkenwallet = (useQR) => {
+//   // const chainId = parseInt(targetNetwork, 16);
+//   return new WalletConnectConnector({
+//     supportedChainIds: [1, 5, 1001, 8217],
+//     // supportedChainIds: [ChainId.TMP, ChainId.BAOBAB, ChainId.KLAYTN],
+//     // rpc: { [chainId]: RPC_URLS[chainId] },
+//     rpc: {
+//       [1]: RPC_URLS[1],
+//       [5]: RPC_URLS[5],
+//       [1001]: RPC_URLS[1001],
+//       [8217]: RPC_URLS[8217],
+//     },
+//     bridge: 'https://bridge.walletconnect.org',
+//     qrcode: useQR,
+//     qrcodeModal: QRCodeModal,
+//   });
+// };
 
 // export const walletlink = new WalletLinkConnector({
 //   url: RPC_URLS[1],

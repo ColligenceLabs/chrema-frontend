@@ -2,17 +2,20 @@ import { useState, useRef } from 'react';
 import { ethers } from 'ethers';
 import ErrorMessage from './ErrorMessage';
 import useActiveWeb3React from '../../hooks/useActiveWeb3React';
+import { getConnectorHooks } from '../../utils';
 
-const signMessage = async ({ library, setError, message }) => {
+const signMessage = async ({ account, provider, setError, message }) => {
   try {
     if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.');
 
     // await window.ethereum.send('eth_requestAccounts');
     // const provider = new ethers.providers.Web3Provider(window.ethereum);
     // const signer = provider.getSigner();
-    const signer = library.getSigner();
-    const signature = await signer.signMessage(message);
-    const address = await signer.getAddress();
+    // const signer = library.getSigner();
+    // const signature = await signer.signMessage(message);
+    // const address = await signer.getAddress();
+    const signature = await provider.signMessage(message);
+    const address = await provider.getSigner(account).getAddress();
 
     return {
       message,
@@ -25,7 +28,12 @@ const signMessage = async ({ library, setError, message }) => {
 };
 
 export default function SignMessage() {
-  const { library } = useActiveWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+
   const resultBox = useRef();
   const [signatures, setSignatures] = useState([]);
   const [error, setError] = useState();
@@ -35,7 +43,8 @@ export default function SignMessage() {
     const data = new FormData(e.target);
     setError();
     const sig = await signMessage({
-      library,
+      account,
+      provider,
       setError,
       message: data.get('message'),
     });

@@ -38,7 +38,7 @@ const SellingClock: React.FC<SellingClockProps> = ({
   };
 
   useEffect(() => {
-    clearInterval();
+    clearInterval(100000);
     const interval = setInterval(() => getTimeUntil(deadline), 1000);
     getTimeUntil(deadline);
     return () => clearInterval(interval);

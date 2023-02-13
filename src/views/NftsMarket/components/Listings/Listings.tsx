@@ -31,6 +31,8 @@ import { LoadingButton } from '@mui/lab';
 import sliceFloatNumber from '../../../../utils/sliceFloatNumber';
 import { getChainId } from '../../../../utils/commonUtils';
 
+import { getConnectorHooks } from '../../../../utils';
+
 interface SaleItemTypes {
   _id: string;
   collection_id: string;
@@ -64,8 +66,12 @@ const Listings: React.FC<ListingsProps> = ({
   setMyNftMutateHandler,
   setItemActivityMutateHandler,
 }) => {
-  const context = useWeb3React();
-  const { account, library } = context;
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = (accounts && accounts[0]) ?? '';
+  const chainId = useChainId() ?? 5;
+  const provider = useProvider();
+
   const [selectedID, setSelectedID] = useState<string | null>(null);
   const [saleList, setSaleList] = useState<SaleItemTypes[]>([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -107,7 +113,9 @@ const Listings: React.FC<ListingsProps> = ({
 
       // 사용자가 판매한 Nft를 지갑을 통해 구매
       const nftContract = getNftContract(
-        library,
+        chainId,
+        account,
+        provider,
         nft.collection_id.contract_address,
         nft.collection_id.contract_type,
       );

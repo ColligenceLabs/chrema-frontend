@@ -20,6 +20,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import marketService from '../../services/market.service';
 import { targetNetwork } from '../../config';
 
+import { getConnectorHooks } from '../../utils';
+
 const UserProfileWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -64,8 +66,9 @@ const UserProfile = () => {
   });
 
   const { copyToClipBoard, copyResult, copyMessage, copyDone, setCopyDone } = useCopyToClipBoard();
-  const context = useWeb3React();
-  const { activate, account } = context;
+  const { useAccounts } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -239,7 +242,6 @@ const UserProfile = () => {
             <WalletDialog
               isOpenConnectModal={isOpenConnectModal}
               handleCloseModal={handleCloseModal}
-              activate={activate}
             />
             <Snackbar
               anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

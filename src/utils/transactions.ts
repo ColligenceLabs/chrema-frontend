@@ -22,7 +22,7 @@ export async function addMinter(
   address: string,
   type: string,
   account: string | undefined | null,
-  library: any,
+  provider: any,
   chainId: number,
 ): Promise<number> {
   const caver = new Caver(
@@ -34,7 +34,8 @@ export async function addMinter(
   // @ts-ignore
   const market = contracts.market[chainId];
   const gasPrice = await caver.rpc.klay.getGasPrice();
-  const isKaikas = library.connection.url !== 'metamask' || library.connection.url === 'eip-1193:';
+  const isKaikas =
+    provider.connection.url !== 'metamask' || provider.connection.url === 'eip-1193:';
 
   console.log(isKaikas);
   let contract: any;
@@ -53,7 +54,7 @@ export async function addMinter(
     const klaytnAbi: AbiItem[] = abi as AbiItem[];
     contract = new caver.klay.Contract(klaytnAbi, address);
   } else {
-    contract = new ethers.Contract(address, abi, library?.getSigner());
+    contract = new ethers.Contract(address, abi, provider.getSigner(account));
   }
 
   let tx;
@@ -110,7 +111,7 @@ export async function getOwner(
   address: string,
   type: string,
   account: string | undefined | null,
-  library: any,
+  provider: any,
   chainId: number,
 ): Promise<string> {
   const caver = new Caver(
@@ -122,7 +123,8 @@ export async function getOwner(
   // @ts-ignore
   const market = contracts.market[chainId];
   const gasPrice = await caver.rpc.klay.getGasPrice();
-  const isKaikas = library.connection.url !== 'metamask' || library.connection.url === 'eip-1193:';
+  const isKaikas =
+    provider.connection.url !== 'metamask' || provider.connection.url === 'eip-1193:';
 
   console.log(isKaikas);
   let contract: any;
@@ -141,7 +143,7 @@ export async function getOwner(
     const klaytnAbi: AbiItem[] = abi as AbiItem[];
     contract = new caver.klay.Contract(klaytnAbi, address);
   } else {
-    contract = new ethers.Contract(address, abi, library?.getSigner());
+    contract = new ethers.Contract(address, abi, provider.getSigner(account));
   }
 
   let owner: string = '';
@@ -167,7 +169,7 @@ export async function getTokenURI(
   tokenId: number,
   type: string,
   account: string | undefined | null,
-  library: any,
+  provider: any,
   chainId: number,
 ): Promise<string> {
   const caver = new Caver(
@@ -176,7 +178,8 @@ export async function getTokenURI(
       : 'https://api.baobab.klaytn.net:8651',
   );
   // @ts-ignore
-  const isKaikas = library.connection.url !== 'metamask' || library.connection.url === 'eip-1193:';
+  const isKaikas =
+    provider.connection.url !== 'metamask' || provider.connection.url === 'eip-1193:';
 
   console.log(isKaikas);
   let contract: any;
@@ -195,7 +198,7 @@ export async function getTokenURI(
     const klaytnAbi: AbiItem[] = abi as AbiItem[];
     contract = new caver.klay.Contract(klaytnAbi, address);
   } else {
-    contract = new ethers.Contract(address, abi, library?.getSigner());
+    contract = new ethers.Contract(address, abi, provider.getSigner(account));
   }
 
   let uri: string = '';

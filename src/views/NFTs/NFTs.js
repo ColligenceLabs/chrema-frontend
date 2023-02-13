@@ -40,10 +40,11 @@ import useCopyToClipBoard from '../../hooks/useCopyToClipBoard';
 import Caver from 'caver-js';
 import kip17Abi from '../../config/abi/kip17.json';
 import { ethers } from 'ethers';
-import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import useMarket from '../../hooks/useMarket';
 import { getChainId } from '../../utils/commonUtils';
 import MintDialog from '../../components/MintDialog/MintDialog';
+
+import { getConnectorHooks } from '../../utils';
 
 const NFTs = () => {
   const { t } = useTranslation();
@@ -68,8 +69,14 @@ const NFTs = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertErrorMessage, setAlertErrorMessage] = useState(null);
 
-  const { library, account } = useActiveWeb3React();
-  const { stopSelling } = useMarket();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+
+  const { stopSelling } = useMarket(account, chainId, provider);
+
   const useKAS = process.env.REACT_APP_USE_KAS ?? 'false';
 
   const {

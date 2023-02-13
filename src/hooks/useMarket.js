@@ -1,7 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { parseUnits } from 'ethers/lib/utils';
 import { BigNumber, ethers } from 'ethers';
-import useActiveWeb3React from './useActiveWeb3React';
 import { FAILURE, SUCCESS } from '../config/constants/consts';
 import { useMarketContract, useTokenContract } from './useContract';
 import { RPC_URLS } from '../connectors';
@@ -13,20 +12,28 @@ import quoteTokens from '../config/constants/quoteTokens';
 // import contracts from '../config/constants/contracts';
 import tokenAbi from '../config/abi/erc20.json';
 
+import { getConnectorHooks } from '../utils';
+
 // add 10%
 export function calculateGasMargin(value) {
   return value.mul(BigNumber.from(10000).add(BigNumber.from(1000))).div(BigNumber.from(10000));
 }
 
 const useMarket = () => {
-  const marketContract = useMarketContract();
+  // const { library, account, chainId } = useActiveWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = (accounts && accounts[0]) ?? '';
+  const chainId = useChainId() ?? 5;
+  const provider = useProvider();
+
+  const marketContract = useMarketContract(account, chainId, provider);
   // const tokenContract = useTokenContract();
-  const { library, account, chainId } = useActiveWeb3React();
 
   const getTokenContract = (tokenAddress) => {
-    if (!library) return;
-    if (library.connection.url === 'metamask' || library.connection.url === 'eip-1193:')
-      return new ethers.Contract(tokenAddress, tokenAbi, library?.getSigner());
+    if (!provider) return;
+    if (provider.connection.url === 'metamask' || provider.connection.url === 'eip-1193:')
+      return new ethers.Contract(tokenAddress, tokenAbi, provider.getSigner(account));
     else {
       const caver = new Caver(window.klaytn);
       return new caver.klay.Contract(tokenAbi, tokenAddress);
@@ -42,7 +49,7 @@ const useMarket = () => {
       let gasPrice;
       const quoteToken = quoteTokens[quote][targetNetwork];
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       if (isKaikas) gasPrice = await caver.klay.getGasPrice();
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
@@ -101,7 +108,7 @@ const useMarket = () => {
           throw e;
         }
         console.log('gasLimit:', gasLimit);
-        console.log('library:', library);
+        console.log('provider:', provider);
 
         try {
           if (!isKaikas) {
@@ -239,7 +246,7 @@ const useMarket = () => {
       }
       return SUCCESS;
     },
-    [library, account],
+    [provider, account],
   );
 
   const buyNFT = useCallback(
@@ -249,7 +256,7 @@ const useMarket = () => {
       console.log('buy!', tokenId);
       let gasPrice;
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       if (isKaikas) gasPrice = await caver.klay.getGasPrice();
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
@@ -487,7 +494,7 @@ const useMarket = () => {
 
       return SUCCESS;
     },
-    [library, account],
+    [provider, account],
   );
 
   const stopSelling = useCallback(
@@ -496,7 +503,7 @@ const useMarket = () => {
       console.log('cancel!', tokenId);
       let gasPrice;
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       if (isKaikas) gasPrice = await caver.klay.getGasPrice();
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
@@ -564,14 +571,14 @@ const useMarket = () => {
 
       return SUCCESS;
     },
-    [library, account],
+    [provider, account],
   );
 
   const listNFT = useCallback(
     async (nftContractAddress) => {
       let nfts;
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       console.log(isKaikas);
       if (!isKaikas) {
         nfts = await marketContract.getNftAllAsks(nftContractAddress);
@@ -581,7 +588,7 @@ const useMarket = () => {
       console.log(nfts);
       return nfts;
     },
-    [library, account],
+    [provider, account],
   );
 
   const offerNFT = useCallback(
@@ -591,7 +598,7 @@ const useMarket = () => {
       console.log('offer!', tokenId);
       const gasPrice = await caver.klay.getGasPrice();
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       console.log('===', targetNetwork);
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
@@ -793,7 +800,7 @@ const useMarket = () => {
 
       return SUCCESS;
     },
-    [library, account],
+    [provider, account],
   );
 
   const cancelOffer = useCallback(
@@ -801,7 +808,7 @@ const useMarket = () => {
       console.log('cancel offer!', tokenId);
       const gasPrice = await caver.klay.getGasPrice();
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       console.log('===', targetNetwork);
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
@@ -872,7 +879,7 @@ const useMarket = () => {
 
       return SUCCESS;
     },
-    [library, account],
+    [provider, account],
   );
 
   const acceptOffer = useCallback(
@@ -880,7 +887,7 @@ const useMarket = () => {
       console.log('accept offer!', tokenId);
       const gasPrice = await caver.klay.getGasPrice();
       const isKaikas =
-        library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+        provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
       console.log('===', targetNetwork);
       if (chainId !== targetNetwork) {
         await setupNetwork(targetNetwork);
@@ -966,7 +973,7 @@ const useMarket = () => {
 
       return SUCCESS;
     },
-    [library, account],
+    [provider, account],
   );
 
   return {

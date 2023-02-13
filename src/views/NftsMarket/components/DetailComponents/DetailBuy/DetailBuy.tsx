@@ -13,7 +13,6 @@ import {
   selectSerials,
   setStopSelling,
 } from '../../../../../services/nft.service';
-import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import useMarket from '../../../../../hooks/useMarket';
 import { useKipContract, useKipContractWithKaikas } from '../../../../../hooks/useContract';
 import useSWR from 'swr';
@@ -29,6 +28,8 @@ import sliceFloatNumber from '../../../../../utils/sliceFloatNumber';
 import OfferDialog from '../../OfferDialog';
 import { SUCCESS } from '../../../../../config';
 import { getSellingSerial, setIpfsLink } from '../../../../../services/serials.service';
+
+import { getConnectorHooks } from '../../../../../utils';
 
 interface DetailBuyProps {
   id: string;
@@ -83,7 +84,15 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   itemActivityMutateHandler,
 }) => {
   const theme = useTheme();
-  const { library, account, activate } = useActiveWeb3React();
+
+  // const { library, account, activate } = useActiveWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+  console.log('!!!!!! DetailBuy : ', account, chainId);
+
   // @ts-ignore
   const { ethereum, klaytn, solana, binance } = useSelector<WalletsTypes>(
     (state: WalletsTypes) => state.wallets,
@@ -124,8 +133,13 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   );
 
   const contractAddress = data?.data?.collection_id?.contract_address;
-  const nftContract = useKipContract(contractAddress, 'KIP17');
-  const nftContractWithKaikas = useKipContractWithKaikas(contractAddress, 'KIP17');
+  const nftContract = useKipContract(contractAddress, 'KIP17', chainId, account, provider);
+  const nftContractWithKaikas = useKipContractWithKaikas(
+    contractAddress,
+    'KIP17',
+    chainId,
+    provider,
+  );
 
   const [sellingQuantity, setSellingQuantity] = useState(0);
   const [buyFlag, setBuyFlag] = useState(false);
@@ -193,7 +207,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
     setBuyFlag(true);
     setSellingQuantity((curr: number) => curr - parseInt(amount));
     const isKaikas =
-      library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+      provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
     // tokenId 를 구해온다.
     const serials = await selectSerials(id, account, amount);
 
@@ -566,7 +580,7 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
         selectedNetworkIndex={selectedNetworkId}
         isOpenConnectModal={isOpenConnectModal}
         handleCloseModal={handleCloseModal}
-        activate={activate}
+        provider={provider}
         ethereum={ethereum}
         klaytn={klaytn}
         solana={solana}

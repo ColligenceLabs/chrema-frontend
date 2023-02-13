@@ -21,7 +21,6 @@ import CustomSelect from '../../components/forms/custom-elements/CustomSelect';
 import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import { getCollectionsByCreatorId } from '../../services/collections.service';
-import useActiveWeb3React from '../../hooks/useActiveWeb3React';
 import useUserInfo from '../../hooks/useUserInfo';
 import {
   cancelCreateNft,
@@ -44,6 +43,8 @@ import { getTokenURI } from '../../utils/transactions';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+import { getConnectorHooks } from '../../utils';
+
 const CreateNewItemContainer = styled(Container)`
   max-width: 646px !important;
   display: flex;
@@ -62,7 +63,7 @@ const ImportImageWrapper = styled(Box)`
   }
 `;
 const TitleWrapper = styled(Typography)`
-  font-size: ${(props) => (props.smDown ? '32px' : '40px')};
+  font-size: ${(props) => (props.smdown ? '32px' : '40px')};
   font-weight: 600;
   letter-spacing: 0px;
   margin-top: 2rem;
@@ -81,9 +82,9 @@ const FieldWrapper = styled(Box)`
 
 const FiledTitleWrapper = styled('div')`
   display: flex;
-  flex-direction: ${(props) => (props.smDown ? 'column' : 'rows')};
-  justify-content: ${(props) => (props.smDown ? 'center' : 'space-between')};
-  align-items: ${(props) => (props.smDown ? 'flex-start' : 'center')};
+  flex-direction: ${(props) => (props.smdown ? 'column' : 'rows')};
+  justify-content: ${(props) => (props.smdown ? 'center' : 'space-between')};
+  align-items: ${(props) => (props.smdown ? 'flex-start' : 'center')};
   gap: 1rem;
   //margin-bottom: 20px;
   margin-bottom: 15px;
@@ -143,13 +144,19 @@ const QUOTE_TOKEN = [{ value: 'klay', caption: 'ETH' }];
 
 const CreateNewItem = () => {
   const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
+  const smdown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
 
   const navigate = useNavigate();
   const { id } = useUserInfo();
-  const { account, library, chainId } = useActiveWeb3React();
+
+  // const { account, library, chainId } = useActiveWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
 
   const { ethereum, klaytn, solana, binance } = useSelector((state) => state.wallets);
 
@@ -158,8 +165,8 @@ const CreateNewItem = () => {
   const [targetNetwork, setTargetNetwork] = useState('klaytn');
   const [contractAddr, setContractAddr] = useState(contracts.kip17[1]);
   const [contractType, setContractType] = useState('');
-  const kipContract = useKipContract(contractAddr, contractType);
-  const kasContract = useKipContractWithKaikas(contractAddr, contractType);
+  const kipContract = useKipContract(contractAddr, contractType, chainId, account, provider);
+  const kasContract = useKipContractWithKaikas(contractAddr, contractType, chainId, provider);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   // const [useImport, setUseImport] = useState('select');
@@ -174,7 +181,7 @@ const CreateNewItem = () => {
     mintNFT37WithKaikas,
     isMinting,
     mintNFTBatch,
-  } = useNFT(kipContract, kasContract, account);
+  } = useNFT(kipContract, kasContract, account, chainId, provider);
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -203,7 +210,8 @@ const CreateNewItem = () => {
       parseInt(tokenId, 10),
       'KIP17', // ERC1155는 ?
       account,
-      library,
+      // library,
+      provider,
       parseInt(chainId, 10),
     );
     if (meta_link === '') return undefined;
@@ -326,7 +334,7 @@ const CreateNewItem = () => {
           }
           // check minter
           const isKaikas =
-            library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+            provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
 
           let test;
           if (!isKaikas) test = await kipContract.isMinter(account);
@@ -416,9 +424,9 @@ const CreateNewItem = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <CreateNewItemContainer>
-              <TitleWrapper smDown={smDown}>Create New Item</TitleWrapper>
+              <TitleWrapper smdown={smdown.toString()}>Create New Item</TitleWrapper>
               <FieldWrapper>
-                <FiledTitleWrapper smDown={smDown}>
+                <FiledTitleWrapper smdown={smdown.toString()}>
                   <FiledTitle required={true}>Image, Video, Audio</FiledTitle>
                   {/*<FormControlLabel*/}
                   {/*  value={useImport}*/}
@@ -544,7 +552,7 @@ const CreateNewItem = () => {
                   }}
                   fullWidth
                   size="small"
-                  PaperProps={{
+                  paperprops={{
                     elevation: 0,
                     sx: {
                       minWidth: '250px',

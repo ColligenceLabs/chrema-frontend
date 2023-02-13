@@ -26,6 +26,9 @@ export const infuraChainId = process.env.REACT_APP_INFURA_CHAIN_ID;
 export const targetNetwork = process.env.REACT_APP_TARGET_NETWORK;
 export const targetNetworkMsg = process.env.REACT_APP_TARGET_NETWORK_MSG;
 
+export const klayTargetNetwork = process.env.REACT_APP_KLAYTN_TARGET_NETWORK;
+export const klayTargetNetworkMsg = process.env.REACT_APP_KLAYTN_TARGET_NETWORK_MSG;
+
 export const bnbTargetNetwork = process.env.REACT_APP_BINANCE_TARGET_NETWORK;
 export const bnbTargetNetworkMsg = process.env.REACT_APP_BINANCE_TARGET_NETWORK_MSG;
 

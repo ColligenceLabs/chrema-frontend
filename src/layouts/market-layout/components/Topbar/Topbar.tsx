@@ -25,11 +25,13 @@ import { useNavigate } from 'react-router';
 import WalletDialog from '../../../../components/WalletDialog';
 import { logout } from '../../../../redux/slices/auth';
 import marketService from '../../../../services/market.service';
-import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
+// import { useEagerConnect, useInactiveListener } from '../../../../hooks/useWallet';
 import useUserInfo from '../../../../hooks/useUserInfo';
 import { setupNetwork } from '../../../../utils/wallet';
 import { targetNetwork } from '../../../../config';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+
+import { getConnector, getConnectorHooks } from '../../../../utils';
 
 interface MenuItemWrapperProps {
   minWidth: string;
@@ -74,8 +76,13 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
-  const context = useWeb3React();
-  const { activate, deactivate, account, chainId } = context;
+
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
+  const chainId = useChainId();
+  const provider = useProvider();
+
   const [anchorProfileEl, setAnchorProfileEl] = React.useState<null | HTMLElement>(null);
   const [isOpenConnectModal, setIsOpenConnectModal] = useState(false);
   const [userImage, setUserImage] = useState<string | null>();
@@ -89,9 +96,9 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
   });
 
   // handle logic to eagerly connect to the injected ethereum provider, if it exists and has granted access already
-  const triedEager = useEagerConnect();
+  // const triedEager = useEagerConnect();
   // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
-  useInactiveListener(!triedEager || !!activatingConnector);
+  // useInactiveListener(!triedEager || !!activatingConnector);
 
   const handleCloseModal = () => {
     setIsOpenConnectModal(false);
@@ -269,7 +276,12 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
             </StyledMenuItem>
             <StyledMenuItem
               onClick={async () => {
-                await deactivate();
+                const connector = getConnector();
+                if (connector?.deactivate) {
+                  void connector.deactivate();
+                } else {
+                  void connector.resetState();
+                }
                 await dispatch(logout());
                 window.localStorage.removeItem('user');
                 navigate('/');
@@ -294,7 +306,6 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
           <WalletDialog
             isOpenConnectModal={isOpenConnectModal}
             handleCloseModal={handleCloseModal}
-            activate={activate}
           />
         </Box>
       </Box>

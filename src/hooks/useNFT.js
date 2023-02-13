@@ -3,7 +3,6 @@ import request from 'request';
 import { parseUnits } from 'ethers/lib/utils';
 import testMeta from '../config/constants/test.json';
 import { BigNumber } from 'ethers';
-import useActiveWeb3React from './useActiveWeb3React';
 import fs from 'fs';
 import { IPFS_URL, ALT_URL, FAILURE, SUCCESS } from '../config/constants/consts';
 import { create } from 'ipfs-http-client';
@@ -60,12 +59,12 @@ export const mkDirIPFS = async function (directory) {
   return result;
 };
 
-const useNFT = (contract, kasContract, account) => {
+const useNFT = (contract, kasContract, account, chainId, provider) => {
   // TODO: library 를 dependencies 에 추가하지 않으먄 같은 에러가 발생함.
   const [isMinting, setIsMinting] = useState();
   const [isTransfering, setIsTransfering] = useState();
 
-  const { library, chainId } = useActiveWeb3React();
+  // const { library, chainId } = useActiveWeb3React();
 
   // const createNFT = useCallback(
   //   async (mintData) => {
@@ -262,7 +261,7 @@ const useNFT = (contract, kasContract, account) => {
         }
       }
     },
-    [library, account, contract],
+    [provider, account, contract],
   );
 
   const mintNFT17WithKaikas = useCallback(
@@ -303,7 +302,7 @@ const useNFT = (contract, kasContract, account) => {
       await setIsMinting(false);
       return SUCCESS;
     },
-    [library, account, kasContract],
+    [provider, account, kasContract],
   );
 
   const mintNFT17 = useCallback(
@@ -342,7 +341,7 @@ const useNFT = (contract, kasContract, account) => {
         return FAILURE;
       }
     },
-    [library, account, contract],
+    [provider, account, contract],
   );
 
   const mintNFT37 = useCallback(
@@ -430,7 +429,7 @@ const useNFT = (contract, kasContract, account) => {
         }
       }
     },
-    [library, account, contract],
+    [provider, account, contract],
   );
 
   const mintNFT37WithKaikas = useCallback(
@@ -501,7 +500,7 @@ const useNFT = (contract, kasContract, account) => {
         await setIsMinting(false);
       }
     },
-    [library, account, kasContract],
+    [provider, account, kasContract],
   );
 
   const transferNFT = useCallback(
@@ -588,7 +587,7 @@ const useNFT = (contract, kasContract, account) => {
       await setIsTransfering(false);
       return [receipt?.status, errMessage];
     },
-    [library, account, contract],
+    [provider, account, contract],
   );
 
   const transferNFTWithKaikas = useCallback(
@@ -670,7 +669,7 @@ const useNFT = (contract, kasContract, account) => {
       await setIsTransfering(false);
       return [tx?.status, errMessage];
     },
-    [library, account, kasContract],
+    [provider, account, kasContract],
   );
 
   // return { createNFT, mintNFT };

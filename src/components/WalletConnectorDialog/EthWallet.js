@@ -4,7 +4,7 @@ import metamask_icon from '../../assets/images/wallet_icons/wallet_icon_metamask
 import walletConnect_icon from '../../assets/images/wallet_icons/wallet_icon_walletconnect.png';
 import talken_icon from '../../assets/images/wallet_icons/wallet_icon_talk.png';
 import WalletCard from './WalletCard';
-import { injected, walletconnect } from '../../connectors';
+// import { injected, walletconnect } from '../../connectors';
 import { setActivatingConnector } from '../../redux/slices/wallet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWeb3React } from '@web3-react/core';
@@ -54,16 +54,15 @@ const EthWallet = ({ ethereum }) => {
     setWalletName(wallet.name);
     try {
       if (wallet.name === 'metamask') {
-        await activate(injected, null, true);
+        // await activate(injected, null, true);
         dispatch(setActivatingConnector(injected));
       } else if (wallet.name === 'walletConnector') {
-        const wc = walletconnect(true);
+        // const wc = walletconnect(true);
         await activate(wc, undefined, true);
       }
     } catch (e) {
       console.log('connect wallet error', e);
     }
-
   };
 
   return (

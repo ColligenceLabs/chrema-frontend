@@ -76,6 +76,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
           {COLLECTION_CATEGORY.map((item, index) => (
             <BoxChip
+              theme={theme}
               key={index}
               selected={selectedCategory === item.value}
               onClick={() => setSelectedCategory(item.value)}

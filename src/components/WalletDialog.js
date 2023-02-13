@@ -13,7 +13,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { injected, kaikas, talkenwallet, walletconnect } from '../connectors';
+
 import { setActivatingConnector } from '../redux/slices/wallet';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import talkenIcon from '../assets/images/wallet_icons/wallet_icon_talk.png';
@@ -23,11 +23,16 @@ import crmcIcon from '../assets/images/wallet_icons/wallet_icon_crmc.svg';
 
 import metamaskIcon from '../assets/images/wallet_icons/wallet_icon_metamask.png';
 import walletconnectIcon from '../assets/images/wallet_icons/wallet_icon_walletconnect.png';
-import useActiveWeb3React from '../hooks/useActiveWeb3React';
+
 import { logout } from '../redux/slices/auth';
 import splitAddress from '../utils/splitAddress';
 import { useNavigate } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+import { metaMask } from '../connectors/metaMask';
+import { walletConnect } from '../connectors/walletConnect';
+import { kaikas } from '../connectors/kaikas';
+import { getConnector, getConnectorHooks } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -94,13 +99,16 @@ const EthChip = () => (
   />
 );
 
-const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
+const WalletDialog = ({ isOpenConnectModal, handleCloseModal }) => {
   const theme = useTheme();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { account, deactivate } = useActiveWeb3React();
+
+  const { useAccounts } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = accounts && accounts[0];
   const smDown = useMediaQuery(theme.breakpoints.down('sm'), {
     defaultMatches: true,
   });
@@ -108,20 +116,20 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
   const onClickWallet = async (wallet) => {
     try {
       if (wallet.name === 'MetaMask') {
-        await activate(injected, null, true);
-        dispatch(setActivatingConnector(injected));
+        await metaMask.activate(5);
+        dispatch(setActivatingConnector(metaMask));
         window.localStorage.setItem('wallet', 'injected');
       } else if (wallet.name === 'Kaikas') {
-        await activate(kaikas, null, true);
+        await kaikas.activate(1001);
         dispatch(setActivatingConnector(kaikas));
         window.localStorage.setItem('wallet', 'kaikas');
       } else if (wallet.name === 'WalletConnect') {
-        const wc = walletconnect(true);
-        await activate(wc, undefined, true);
+        await walletConnect.activate(5);
+        dispatch(setActivatingConnector(walletConnect));
         window.localStorage.setItem('wallet', 'walletconnect');
       } else if (wallet.name === 'Chrema Wallet') {
-        const wc = talkenwallet(true);
-        await activate(wc, undefined, true);
+        await walletConnect.activate(5);
+        dispatch(setActivatingConnector(walletConnect));
         window.localStorage.setItem('wallet', 'walletconnect');
       }
     } catch (e) {
@@ -166,7 +174,12 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal, activate }) => {
               <Button
                 variant={'contained'}
                 onClick={async () => {
-                  await deactivate();
+                  const connector = getConnector();
+                  if (connector?.deactivate) {
+                    void connector.deactivate();
+                  } else {
+                    void connector.resetState();
+                  }
                   await dispatch(logout());
                   handleCloseModal();
                   navigate('/');

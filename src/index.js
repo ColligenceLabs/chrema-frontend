@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { ethers } from 'taalswap-ethers';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,8 +10,17 @@ import reportWebVitals from './reportWebVitals';
 import Spinner from './components/spinner/Spinner';
 import './localization';
 
-import { Web3ReactProvider } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/core';
+
+import { coinbaseWallet, hooks as coinbaseWalletHooks } from './connectors/coinbaseWallet';
+import { hooks as metaMaskHooks, metaMask } from './connectors/metaMask';
+import { hooks as networkHooks, network } from './connectors/network';
+import { hooks as walletConnectHooks, walletConnect } from './connectors/walletConnect';
+import { hooks as kaikasHooks, kaikas } from './connectors/kaikas';
+import { getConnector, getName } from './utils';
+
+// import { Web3ReactProvider } from '@web3-react/core';
+// import { Web3Provider } from '@ethersproject/providers';
 
 // import {
 //   AccountsProvider,
@@ -39,6 +48,28 @@ const getLibrary = (provider) => {
   return library;
 };
 
+const connectors = [
+  [metaMask, metaMaskHooks],
+  [walletConnect, walletConnectHooks],
+  [coinbaseWallet, coinbaseWalletHooks],
+  [network, networkHooks],
+  [kaikas, kaikasHooks],
+];
+
+function Child() {
+  const { connector } = useWeb3React();
+  console.log('=========== connector ===>', connector);
+  console.log(`Priority Connector is: ${getName(connector)}`);
+  useEffect(() => {
+    // const connection = getConnector();
+    console.log('..... Rune Eager Connect .....');
+    void connector.connectEagerly().catch(() => {
+      console.debug('Failed to connect eagerly to metamask');
+    });
+  }, []);
+  return null;
+}
+
 ReactDOM.render(
   process.env.REACT_APP_USE_SOLANA === 'true' ? (
     <BrowserRouter>
@@ -50,7 +81,8 @@ ReactDOM.render(
       {/*  storeAddress={process.env.REACT_APP_STORE_ADDRESS}*/}
       {/*>*/}
       {/*<MetaProvider>*/}
-      <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ReactProvider connectors={connectors}>
+        <Child />
         <Provider store={configureStore()}>
           <Suspense fallback={<Spinner />}>
             <App />
@@ -69,7 +101,8 @@ ReactDOM.render(
       {/*  ownerAddress={process.env.REACT_APP_STORE_OWNER_ADDRESS_ADDRESS}*/}
       {/*  storeAddress={process.env.REACT_APP_STORE_ADDRESS}*/}
       {/*>*/}
-      <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ReactProvider connectors={connectors}>
+        <Child />
         <Provider store={configureStore()}>
           <Suspense fallback={<Spinner />}>
             <App />

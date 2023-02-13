@@ -4,7 +4,6 @@ import CustomTextField from '../../../../../components/forms/custom-elements/Cus
 import { LoadingButton } from '@mui/lab';
 import useSWR from 'swr';
 import { getUserNftSerialsData } from '../../../../../services/nft.service';
-import useActiveWeb3React from '../../../../../hooks/useActiveWeb3React';
 import { useLocation } from 'react-router-dom';
 import { nftDetail, sellUserNft } from '../../../../../services/market.service';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -14,6 +13,8 @@ import { getNftContract } from '../../../../../utils/contract';
 import { getChainId } from '../../../../../utils/commonUtils';
 import ScheduleDialog from '../../../../NFTs/ScheduleDialog';
 import useCopyToClipBoard from '../../../../../hooks/useCopyToClipBoard';
+
+import { getConnectorHooks } from '../../../../../utils';
 
 interface DetailSellProps {
   id: string;
@@ -30,7 +31,14 @@ const DetailSell: React.FC<DetailSellProps> = ({
   myNftMutateHandler,
   setItemActivityMutateHandler,
 }) => {
-  const { account, library } = useActiveWeb3React();
+  // const { account, library } = useActiveWeb3React();
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = (accounts && accounts[0]) ?? '';
+  const chainId = useChainId() ?? 5;
+  const provider = useProvider();
+  console.log('!!!!!! DetailSell : ', account, chainId);
+
   const { copyToClipBoard, copyResult, copyMessage, copyDone, setCopyDone } = useCopyToClipBoard();
   const params = useLocation();
   const theme = useTheme();
@@ -96,7 +104,9 @@ const DetailSell: React.FC<DetailSellProps> = ({
     try {
       // 사용자 지갑을 사용 마켓에 readyToSell 실행
       const nftContract = getNftContract(
-        library,
+        chainId,
+        account,
+        provider,
         myNftData.data[0].contract_address,
         data?.data?.collection_id?.contract_type,
       );

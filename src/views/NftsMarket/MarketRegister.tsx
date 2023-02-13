@@ -18,16 +18,15 @@ import { useNavigate } from 'react-router';
 const MarketRegister = () => {
   const [errorMessage, setErrorMessage] = useState<any>();
   const [successRegister, setSuccessRegister] = useState(false);
-  const wallet = useWallet();
   const navigate = useNavigate();
-  const { setVisible } = useWalletModal();
-  const phatomWallet = useMemo(() => getPhantomWallet(), []);
+  // const { setVisible } = useWalletModal();
+  // const phatomWallet = useMemo(() => getPhantomWallet(), []);
   const { t } = useTranslation();
 
-  const connectPhantom = useCallback(async () => {
-    await wallet.select(phatomWallet.name);
-    await (wallet.wallet ? wallet.connect().catch() : setVisible(true));
-  }, [wallet.wallet, wallet.connect, setVisible]);
+  // const connectPhantom = useCallback(async () => {
+  //   await wallet.select(phatomWallet.name);
+  //   await (wallet.wallet ? wallet.connect().catch() : setVisible(true));
+  // }, [wallet.wallet, wallet.connect, setVisible]);
 
   const initialValue: RegisterForm = {
     full_name: '',
@@ -269,7 +268,7 @@ const MarketRegister = () => {
                                   variant="outlined"
                                   fullWidth
                                   size="small"
-                                  value={values.image == null ? '' : values.image.name}
+                                  value={values.image == null ? '' : values.image}
                                   // onChange={handleChange}
                                   InputProps={{
                                     startAdornment: (
@@ -304,7 +303,7 @@ const MarketRegister = () => {
                                   <CardMedia
                                     component="img"
                                     sx={{ width: 250, mt: 3 }}
-                                    image={URL.createObjectURL(values.image)}
+                                    image={URL.createObjectURL(values.image as Blob)}
                                     alt="Live from space album cover"
                                   />
                                 )}

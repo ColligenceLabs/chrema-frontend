@@ -27,6 +27,8 @@ import { getChainId } from '../../../../utils/commonUtils';
 import { offerUserNft } from '../../../../services/market.service';
 import { LoadingButton } from '@mui/lab';
 
+import { getConnectorHooks } from '../../../../utils';
+
 interface OfferInfo {
   quantity: string;
   quote: string;
@@ -41,11 +43,20 @@ interface OfferDialogProps {
 }
 
 const OfferDialog: React.FC<OfferDialogProps> = ({ open, handleCloseOffer, nft }) => {
-  const context = useWeb3React();
-  const { account, library } = context;
+  const { useAccounts, useChainId, useProvider } = getConnectorHooks();
+  const accounts = useAccounts();
+  const account = (accounts && accounts[0]) ?? '';
+  const chainId = useChainId() ?? 5;
+  const provider = useProvider();
+
   const contractAddress = nft.collection_id.contract_address;
-  const nftContract = useKipContract(contractAddress, 'KIP17');
-  const nftContractWithKaikas = useKipContractWithKaikas(contractAddress, 'KIP17');
+  const nftContract = useKipContract(contractAddress, 'KIP17', chainId, account, provider);
+  const nftContractWithKaikas = useKipContractWithKaikas(
+    contractAddress,
+    'KIP17',
+    chainId,
+    provider,
+  );
 
   const theme = useTheme();
   const { offerNFT } = useMarket();
@@ -55,7 +66,7 @@ const OfferDialog: React.FC<OfferDialogProps> = ({ open, handleCloseOffer, nft }
   const [expiration, setExpiration] = useState(new Date());
   const [agree, setAgree] = useState(false);
 
-  const [isOffering, setIsOffering] = useState();
+  const [isOffering, setIsOffering] = useState(false);
 
   const makeOffer = async () => {
     console.log(`quantity: ${quantity}`);
@@ -68,7 +79,7 @@ const OfferDialog: React.FC<OfferDialogProps> = ({ open, handleCloseOffer, nft }
     setIsOffering(true);
 
     const isKaikas =
-      library.connection.url !== 'metamask' && library.connection.url !== 'eip-1193:';
+      provider.connection.url !== 'metamask' && provider.connection.url !== 'eip-1193:';
 
     try {
       await offerNFT(
