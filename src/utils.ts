@@ -36,9 +36,9 @@ export function getConnector(): any {
 export function getConnectorHooks(): any {
   const wallet = window.localStorage.getItem('wallet');
   console.log('--- wallet ----------------------->', wallet);
-  if (wallet === 'injected') {
+  if (wallet === 'injected' || wallet === 'metamask') {
     return metaMaskHooks;
-  } else if (wallet === 'walletconnect') {
+  } else if (wallet === 'walletconnect' || wallet === 'walletConnector') {
     return walletConnectHooks;
   } else if (wallet === 'kaikas') {
     return kaikasHooks;
