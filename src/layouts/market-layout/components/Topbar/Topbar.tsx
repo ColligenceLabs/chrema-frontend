@@ -156,7 +156,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
                 <Link to="/market" style={{ textDecoration: 'none' }}>
                   <Typography
                     variant="subtitle1"
-                    color={pathname === '/market' ? 'text.primary' : 'text.secondary'}
+                    color={pathname === '/market' ? 'primary' : 'text.secondary'}
                     fontWeight={700}
                   >
                     Marketplace
@@ -168,7 +168,7 @@ const Topbar = ({ toggleSidebar }: any): JSX.Element => {
                 <Link to="/market/create" style={{ textDecoration: 'none' }}>
                   <Typography
                     variant="subtitle1"
-                    color={pathname === '/market/create' ? 'text.primary' : 'text.secondary'}
+                    color={pathname === '/market/create' ? 'primary' : 'text.secondary'}
                     fontWeight={700}
                   >
                     Create
