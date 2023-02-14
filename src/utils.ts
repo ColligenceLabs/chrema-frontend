@@ -22,9 +22,9 @@ export function getName(connector: Connector) {
 
 export function getConnector(): any {
   const wallet = window.localStorage.getItem('wallet');
-  if (wallet === 'injected') {
+  if (wallet === 'injected' || wallet === 'metamask') {
     return metaMask;
-  } else if (wallet === 'walletconnect') {
+  } else if (wallet === 'walletconnect' || wallet === 'walletConnector') {
     return walletConnect;
   } else if (wallet === 'kaikas') {
     return kaikas;
