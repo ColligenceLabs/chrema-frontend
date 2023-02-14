@@ -116,21 +116,21 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal }) => {
   const onClickWallet = async (wallet) => {
     try {
       if (wallet.name === 'MetaMask') {
+        window.localStorage.setItem('wallet', 'injected');
         await metaMask.activate(5);
         dispatch(setActivatingConnector(metaMask));
-        window.localStorage.setItem('wallet', 'injected');
       } else if (wallet.name === 'Kaikas') {
+        window.localStorage.setItem('wallet', 'kaikas');
         await kaikas.activate(1001);
         dispatch(setActivatingConnector(kaikas));
-        window.localStorage.setItem('wallet', 'kaikas');
       } else if (wallet.name === 'WalletConnect') {
+        window.localStorage.setItem('wallet', 'walletconnect');
         await walletConnect.activate(5);
         dispatch(setActivatingConnector(walletConnect));
-        window.localStorage.setItem('wallet', 'walletconnect');
       } else if (wallet.name === 'Chrema Wallet') {
+        window.localStorage.setItem('wallet', 'walletconnect');
         await walletConnect.activate(5);
         dispatch(setActivatingConnector(walletConnect));
-        window.localStorage.setItem('wallet', 'walletconnect');
       }
     } catch (e) {
       console.log('connect wallet error', e);
