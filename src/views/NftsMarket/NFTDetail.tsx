@@ -110,7 +110,6 @@ const NFTDetail = () => {
                     itemActivityMutateHandler={itemActivityMutateHandler}
                     setItemActivityMutateHandler={(result) => setItemActivityMutateHandler(result)}
                   />
-                  {/*<DetailInformation nft={data?.data} collection={data?.data?.collection_id} />*/}
                   <DetailDescription nft={data?.data} />
                   <Listings
                     id={id!}

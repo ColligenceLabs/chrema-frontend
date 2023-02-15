@@ -23,12 +23,12 @@ import { useLocation } from 'react-router-dom';
 import SellingClock from '../SellingClock';
 import getNftPrice from '../../../../../utils/getNftPrice';
 import { useSelector } from 'react-redux';
-import WalletConnectorDialog from '../../../../../components/WalletConnectorDialog';
 import { getChainId } from '../../../../../utils/commonUtils';
 import sliceFloatNumber from '../../../../../utils/sliceFloatNumber';
 import OfferDialog from '../../OfferDialog';
 import { SUCCESS } from '../../../../../config';
 import { getSellingSerial, setIpfsLink } from '../../../../../services/serials.service';
+import WalletDialog from '../../../../../components/WalletDialog';
 
 interface DetailBuyProps {
   id: string;
@@ -148,10 +148,6 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
     console.log(serial);
     if (serial) setSeller(serial.data.seller);
   };
-
-  useEffect(() => {
-    getSeller();
-  }, [data]);
 
   const stop = async () => {
     setBuyFlag(true);
@@ -279,6 +275,10 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
   const handleCloseOffer = () => {
     setOpenOffer(false);
   };
+
+  useEffect(() => {
+    if (account) getSeller();
+  }, [data, account]);
 
   useEffect(() => {
     setSellingQuantity(data?.data?.quantity_selling);
@@ -562,16 +562,12 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
       {/*    )}*/}
       {/*  </Box>*/}
       {/*</Box>*/}
-      <WalletConnectorDialog
-        selectedNetworkIndex={selectedNetworkId}
+      <WalletDialog
         isOpenConnectModal={isOpenConnectModal}
         handleCloseModal={handleCloseModal}
         activate={activate}
-        ethereum={ethereum}
-        klaytn={klaytn}
-        solana={solana}
-        binance={binance}
       />
+
       <OfferDialog open={openOffer} handleCloseOffer={handleCloseOffer} nft={data?.data} />
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -585,12 +581,6 @@ const DetailBuy: React.FC<DetailBuyProps> = ({
           nftsales@taal.fi
         </Alert>
       </Snackbar>
-
-      {/*<WalletDialog*/}
-      {/*  isOpenConnectModal={isOpenConnectModal}*/}
-      {/*  handleCloseModal={handleCloseModal}*/}
-      {/*  activate={activate}*/}
-      {/*/>*/}
     </Box>
   );
 };
