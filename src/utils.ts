@@ -21,7 +21,7 @@ export function getName(connector: Connector) {
 }
 
 export function getConnector(): any {
-  const wallet = window.localStorage.getItem('wallet');
+  const wallet = window.localStorage.getItem('wallet') ?? 'injected';
   if (wallet === 'injected' || wallet === 'metamask') {
     return metaMask;
   } else if (wallet === 'walletconnect' || wallet === 'walletConnector') {
@@ -34,7 +34,7 @@ export function getConnector(): any {
 }
 
 export function getConnectorHooks(): any {
-  const wallet = window.localStorage.getItem('wallet');
+  const wallet = window.localStorage.getItem('wallet') ?? 'injected';
   console.log('--- wallet ----------------------->', wallet);
   if (wallet === 'injected' || wallet === 'metamask') {
     return metaMaskHooks;

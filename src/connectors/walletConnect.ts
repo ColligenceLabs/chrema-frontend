@@ -15,6 +15,7 @@ import { MAINNET_CHAINS, CHAINS, URLS } from '../chains';
 // );
 
 // valletconnect ver. 2
+// @ts-ignore
 export const [walletConnect, hooks] = initializeConnector<WalletConnect>(
   (actions) =>
     new WalletConnect({
@@ -24,6 +25,5 @@ export const [walletConnect, hooks] = initializeConnector<WalletConnect>(
         projectId: process.env.REACT_APP_WALLETCONNECT_ID,
         chains: Object.keys(CHAINS).map(Number),
       },
-      defaultChainId: 10,
     }),
 );
