@@ -55,7 +55,7 @@
     "@web3-react/network": "^8.1.0-beta.0",
     "@web3-react/types": "^8.1.0-beta.0",
     "@web3-react/url": "^8.1.0-beta.0",
-    "@web3-react/walletconnect": "/Users/peter/Develop/NPM/web3-react/packages/walletconnect",
+    "@web3-react/walletconnect-v2": "/Users/peter/Develop/NPM/web3-react/packages/walletconnect-v2",
     "apexcharts": "^3.23.1",
     "axios": "^0.25.0",
     "axios-mock-adapter": "^1.18.1",

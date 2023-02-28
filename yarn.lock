@@ -4456,15 +4456,10 @@
     "@ethersproject/providers" "^5"
     "@web3-react/types" "^8.1.0-beta.0"
 
-"@web3-react/walletconnect@/Users/peter/Develop/NPM/web3-react/packages/walletconnect":
+"@web3-react/walletconnect-v2@file:../../NPM/web3-react/packages/walletconnect-v2":
   version "8.1.0-beta.0"
   dependencies:
-    "@web3-react/types" "^8.1.0-beta.0"
-    eventemitter3 "^4.0.7"
-
-"@web3-react/walletconnect@file:../../NPM/web3-react/packages/walletconnect":
-  version "8.1.0-beta.0"
-  dependencies:
+    "@walletconnect/ethereum-provider" "^2.4.6"
     "@web3-react/types" "^8.1.0-beta.0"
     eventemitter3 "^4.0.7"
 

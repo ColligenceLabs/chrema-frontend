@@ -1,7 +1,7 @@
 import { initializeConnector } from '@web3-react/core';
-import { WalletConnect } from '@web3-react/walletconnect';
+import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2';
 
-import { MAINNET_CHAINS, CHAINS, URLS } from '../chains';
+import { MAINNET_CHAINS, CHAINS } from '../chains';
 
 // valletconnect ver. 1
 // export const [walletConnect, hooks] = initializeConnector<WalletConnect>(
@@ -15,10 +15,9 @@ import { MAINNET_CHAINS, CHAINS, URLS } from '../chains';
 // );
 
 // valletconnect ver. 2
-// @ts-ignore
-export const [walletConnect, hooks] = initializeConnector<WalletConnect>(
+export const [walletConnectV2, hooks] = initializeConnector<WalletConnectV2>(
   (actions) =>
-    new WalletConnect({
+    new WalletConnectV2({
       actions,
       options: {
         // @ts-ignore

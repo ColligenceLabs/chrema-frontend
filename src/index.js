@@ -15,7 +15,7 @@ import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/cor
 import { coinbaseWallet, hooks as coinbaseWalletHooks } from './connectors/coinbaseWallet';
 import { hooks as metaMaskHooks, metaMask } from './connectors/metaMask';
 import { hooks as networkHooks, network } from './connectors/network';
-import { hooks as walletConnectHooks, walletConnect } from './connectors/walletConnect';
+import { hooks as walletConnectV2Hooks, walletConnectV2 } from './connectors/walletConnect';
 import { hooks as kaikasHooks, kaikas } from './connectors/kaikas';
 import { getConnector, getName } from './utils';
 
@@ -50,7 +50,7 @@ const getLibrary = (provider) => {
 
 const connectors = [
   [metaMask, metaMaskHooks],
-  [walletConnect, walletConnectHooks],
+  [walletConnectV2, walletConnectV2Hooks],
   [coinbaseWallet, coinbaseWalletHooks],
   [network, networkHooks],
   [kaikas, kaikasHooks],

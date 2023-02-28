@@ -2,21 +2,19 @@ import { CoinbaseWallet } from '@web3-react/coinbase-wallet';
 import { GnosisSafe } from '@web3-react/gnosis-safe';
 import { MetaMask } from '@web3-react/metamask';
 import { Network } from '@web3-react/network';
-import { Kaikas } from '@colligence/web3-react-kaikas';
 import type { Connector } from '@web3-react/types';
-import { WalletConnect } from '@web3-react/walletconnect';
+import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2';
 
 import { hooks as metaMaskHooks, metaMask } from './connectors/metaMask';
-import { hooks as walletConnectHooks, walletConnect } from './connectors/walletConnect';
+import { hooks as walletConnectV2Hooks, walletConnectV2 } from './connectors/walletConnect';
 import { hooks as kaikasHooks, kaikas } from './connectors/kaikas';
 
 export function getName(connector: Connector) {
   if (connector instanceof MetaMask) return 'MetaMask';
-  if (connector instanceof WalletConnect) return 'WalletConnect';
+  if (connector instanceof WalletConnectV2) return 'WalletConnect V2';
   if (connector instanceof CoinbaseWallet) return 'Coinbase Wallet';
   if (connector instanceof Network) return 'Network';
   if (connector instanceof GnosisSafe) return 'Gnosis Safe';
-  if (connector instanceof Kaikas) return 'Kaikas';
   return 'Unknown';
 }
 
@@ -25,7 +23,7 @@ export function getConnector(): any {
   if (wallet === 'injected' || wallet === 'metamask') {
     return metaMask;
   } else if (wallet === 'walletconnect' || wallet === 'walletConnector') {
-    return walletConnect;
+    return walletConnectV2;
   } else if (wallet === 'kaikas') {
     return kaikas;
   } else {
@@ -39,7 +37,7 @@ export function getConnectorHooks(): any {
   if (wallet === 'injected' || wallet === 'metamask') {
     return metaMaskHooks;
   } else if (wallet === 'walletconnect' || wallet === 'walletConnector') {
-    return walletConnectHooks;
+    return walletConnectV2Hooks;
   } else if (wallet === 'kaikas') {
     return kaikasHooks;
   } else {
