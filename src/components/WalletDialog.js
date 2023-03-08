@@ -77,10 +77,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const walletEBHList = [
-  {
-    name: 'Chrema Wallet',
-    icons: crmcIcon,
-  },
+  // {
+  //   name: 'Chrema Wallet',
+  //   icons: crmcIcon,
+  // },
   {
     name: 'MetaMask',
     icons: metamaskIcon,
@@ -134,8 +134,9 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal }) => {
       } else if (wallet.name === 'Chrema Wallet') {
         window.localStorage.setItem('wallet', 'walletconnect');
         // TODO : When v2 is active then change this...
-        await walletConnect.activate(5);
-        dispatch(setActivatingConnector(walletConnect));
+        talnetwallet;
+        // await walletConnect.activate(5);
+        // dispatch(setActivatingConnector(walletConnect));
         // await walletConnectV2.activate(5);
         // dispatch(setActivatingConnector(walletConnectV2));
       }
