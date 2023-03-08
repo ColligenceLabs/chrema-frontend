@@ -30,7 +30,8 @@ import { useNavigate } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { metaMask } from '../connectors/metaMask';
-import { walletConnectV2 } from '../connectors/walletConnect';
+import { walletConnect } from '../connectors/walletConnect';
+import { walletConnectV2 } from '../connectors/walletConnectV2';
 import { kaikas } from '../connectors/kaikas';
 import { getConnector, getConnectorHooks } from '../utils';
 
@@ -125,12 +126,18 @@ const WalletDialog = ({ isOpenConnectModal, handleCloseModal }) => {
         dispatch(setActivatingConnector(kaikas));
       } else if (wallet.name === 'WalletConnect') {
         window.localStorage.setItem('wallet', 'walletconnect');
-        await walletConnectV2.activate(5);
-        dispatch(setActivatingConnector(walletConnectV2));
+        // TODO : When v2 is active then change this...
+        await walletConnect.activate(5);
+        dispatch(setActivatingConnector(walletConnect));
+        // await walletConnectV2.activate(5);
+        // dispatch(setActivatingConnector(walletConnectV2));
       } else if (wallet.name === 'Chrema Wallet') {
         window.localStorage.setItem('wallet', 'walletconnect');
-        await walletConnectV2.activate(5);
-        dispatch(setActivatingConnector(walletConnectV2));
+        // TODO : When v2 is active then change this...
+        await walletConnect.activate(5);
+        dispatch(setActivatingConnector(walletConnect));
+        // await walletConnectV2.activate(5);
+        // dispatch(setActivatingConnector(walletConnectV2));
       }
     } catch (e) {
       console.log('connect wallet error', e);

@@ -12,7 +12,8 @@ import { setKlaytn } from '../../redux/slices/wallets';
 import { loginWithAddress } from '../../redux/slices/auth';
 
 import { metaMask } from '../../connectors/metaMask';
-import { walletConnectV2 } from '../../connectors/walletConnect';
+import { walletConnect } from '../../connectors/walletConnect';
+import { walletConnectV2 } from '../../connectors/walletConnectV2';
 import { kaikas } from '../../connectors/kaikas';
 import { getConnectorHooks } from '../../utils';
 import { getAddChainParameters } from '../../chains';
@@ -71,8 +72,11 @@ const KlayWallet = ({ klaytn }) => {
         await metaMask.activate(1001);
         await dispatch(setActivatingConnector(metaMask));
       } else if (wallet.name === 'walletConnector') {
-        await walletConnectV2.activate(1001);
-        await dispatch(setActivatingConnector(walletConnectV2));
+        // TODO : When v2 is active then change this...
+        await walletConnect.activate(1001);
+        await dispatch(setActivatingConnector(walletConnect));
+        // await walletConnectV2.activate(1001);
+        // await dispatch(setActivatingConnector(walletConnectV2));
       } else if (wallet.name === 'kaikas') {
         console.log('##############################################', getAddChainParameters(1001));
         await kaikas.activate(getAddChainParameters(1001));
